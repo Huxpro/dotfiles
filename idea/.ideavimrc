@@ -1,0 +1,32 @@
+
+" search
+set hlsearch
+set incsearch
+set ignorecase
+
+map <C-c> "*yy
+
+" mapping tab switch
+map <S-Right> :tabn<CR>
+map <S-Left>  :tabp<CR>
+
+" mapping window switch without maximizing
+"set wmw=0
+"set wmh=0
+map <C-j> <C-W>j<C-W>
+map <C-k> <C-W>k<C-W>
+map <c-h> <c-w>h<c-w>
+map <c-l> <c-w>l<c-w>
+nnoremap <a-h> gT
+nnoremap <a-l> gt
+nnoremap <c-s-tab> gT
+nnoremap <c-tab> gt
+
+" insert mode mapping
+" imap jk <Esc>
+
+" multiple paste
+"xnoremap p pgvy
+
+" doubly esc for clear search highlight
+nnoremap <esc><esc> :noh<return>

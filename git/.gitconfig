@@ -1,0 +1,127 @@
+# shameless modified from
+# https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
+
+[user]
+        name = Xuan Huang
+        email = huxpro@gmail.com
+
+[core]
+        editor = /usr/bin/vim
+        autocrlf = input
+        excludesfile = ~/.gitignore
+
+[alias]
+        # Staging
+        a = add
+        aa = add --all
+
+        # Branch
+        br = branch
+        branch-name = rev-parse --abbrev-ref HEAD
+        branch-diff = diff master...HEAD
+
+        # Commit
+        c = commit
+        ca = commit -a
+        cm = commit -m
+        amend = commit --amend
+        amend-all = !git add --all && git commit --amend --reuse-message=HEAD
+
+        # Clone
+        cl = clone
+        sclone = clone --depth=1
+
+        # Checkout
+        co = checkout
+        cb = checkout -b
+
+        # Cherry-pick
+        cp = cherry-pick
+
+        # Diff
+        d = diff --color-words
+        dc = diff --cached
+        df = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+        # Merge
+        m = merge
+
+        # Pull
+        pl = pull
+        plom = pull origin master
+        plum = pull upstream master
+        preb = !git fetch upstream && git rebase upstream/master
+
+        # Push
+        p = push
+        pom = push origin master
+        poh = push origin head
+
+        # Reset
+        unstage = reset HEAD --                      # Mixed reset (affects HEAD and Index)
+        undo = reset --soft HEAD~1                   # Undo last commit (affects HEAD only)
+        reset = reset --hard HEAD~1                  # Remove last commit (from HEAD, Index and Working Dir)
+
+        # Remote
+        r = remote -v
+
+        # Misc
+        publish = "!git push --set-upstream origin $(git branch-name)"
+        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+        st = status
+        st = status
+        dt = difftool
+        l = log --stat
+
+# So much color
+[color]
+        ui = always
+
+[color "branch"]
+        current = green bold
+        local = green
+        remote = yellow
+
+[color "diff"]
+        frag = magenta
+        meta = yellow
+        new = green
+        old = red
+
+[color "diff-highlight"]
+        oldNormal = red bold
+        oldHighlight = "red bold 52"
+        newNormal = "green bold"
+        newHighlight = "green bold 22"
+
+
+[color "status"]
+        added = green
+        changed = yellow
+        untracked = red
+
+[pager]
+        # Insanely beautiful diffs ==> npm install -g diff-so-fancy
+        diff = diff-so-fancy | less --tabs=4 -RFX
+        show = diff-so-fancy | less --tabs=4 -RFX
+
+# Push easily http://stackoverflow.com/a/23918418/89484
+[push]
+        # Make `git push` automatically push relevant
+        # annotated tags when pushing branches out
+        followTags = true
+        default = current
+
+
+# large file storage
+[filter "lfs"]
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
+        required = true
+
+
+
+
+
+
