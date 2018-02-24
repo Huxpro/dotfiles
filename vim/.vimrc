@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-set nocompatible              " noc with old vi.
+set nocompatible              " Disable Vi compatibility
 
 " ============ Vundle ============
 " set the runtime path to include Vundle and initialize
@@ -87,12 +87,47 @@ set whichwrap+=<,>,h,l
 
 
 " ============ UI/UX Tweaking ============
+if has("cmdline_info")
+    " Show the cursor line and column number
+    set ruler
+    " Show partial commands in status line
+    set showcmd
+    " Show whether in insert or replace mode
+    set showmode
+endif
+
+if has('statusline')
+    " Always show status line
+    set laststatus=2
+    " Broken down into easily includeable segments
+    " Filename
+    set statusline=%<%f\
+    " Options
+    set statusline+=%w%h%m%r
+    " Current dir
+    set statusline+=\ [%{getcwd()}]
+    " Right aligned file nav info
+    set statusline+=%=%-14.(%l,%c%V%)\ %p%%
+endif
+
+
+if has("wildmenu")
+    " Show a list of possible completions
+    set wildmenu
+    " Tab autocomplete longest possible part of a string, then list
+    set wildmode=longest,list
+    if has ("wildignore")
+        set wildignore+=*.a,*.pyc,*.o,*.orig
+        set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png
+        set wildignore+=.DS_Store,.git,.hg,.svn
+        set wildignore+=*~,*.sw?,*.tmp
+    endif
+endif
+
 " UI
 set display=lastline
 set laststatus=2    " To display the status line always
 set cursorline      " hilight current line
-set showmode        " display current mode
-set wildmenu        " show list instead of just completing
 
 " line number
 set number
@@ -110,15 +145,16 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " highlight matching [{()}] 
 set showmatch
 
-" displaying tabs visually
+" Show 'invisible' characters
 set list
-set listchars=tab:\ \ ,trail:·,extends:>,precedes:<  
+set showbreak=\\
+" Set characters used to indicate 'invisible' characters
+set listchars=tab:▸\ ,trail:·,extends:>,precedes:<
+set listchars+=nbsp:_
+"set listchars+=eol:¬
 
 " at least 7 lines visible - when scrolling vertically using j/k
 set scrolloff=7
-
-" Always show current position
-set ruler
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
@@ -133,19 +169,33 @@ set mouse=a
 
 
 " ============ SEARCH ============
-set hlsearch "highlight
-set incsearch "incremental search
-set ignorecase
+if has("extra_search")
+    " Highlight searches [use :noh to clear]
+    set hlsearch
+    " Highlight dynamically as pattern is typed
+    set incsearch
+    " Ignore case of searches...
+    set ignorecase
+    " ...unless has mixed case
+    set smartcase
+endif
+
 " doubly esc for clear search highlight
 nnoremap <esc><esc> :noh<return>
 " ============ SEARCH ============
 
 
 " ============ THEME (Solarized Dark & Power Line) ============
-" solarized
-syntax enable
-set background=dark
-colorscheme solarized
+if has("syntax")
+    " Enable syntax highlighting
+    syntax enable
+    " Set 256 color terminal support
+    set t_Co=256
+    " Set dark background
+    set background=dark
+    " Set colorscheme
+    silent! colorscheme solarized
+endif
 
 " compatibility
 if !has('gui_running')
@@ -178,6 +228,12 @@ let NERDTreeDirArrows = 1
 " ============ NERDTree ============
 
 
+" ============ CtrlP ============
+" Show hidden files when using ctrlp
+let g:ctrlp_show_hidden = 1
+" ============ CtrlP ============
+
+
 " ============ KEY MAPPING ============
 " system clipboard
 :inoremap <C-v> <ESC>"+pa
@@ -203,6 +259,15 @@ map <c-l> <c-w>l<c-w>
 
 " multiple paste
 xnoremap p pgvy
+
+" Faster viewport scrolling (3 lines at a time)
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+vnoremap <C-e> 3<C-e>
+vnoremap <C-y> 3<C-y>
+
+" Make `Y` work from the cursor to the end of line (which is more logical)
+nnoremap Y y$
 
 " move cursor by display lines when wrapping
 " http://vim.wikia.com/wiki/Move_cursor_by_display_lines_when_wrapping
