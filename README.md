@@ -5,7 +5,7 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 
 ### Screenshot
 
-![screenshot](./screenshot.png)
+![screenshot](./screens.png)
 
 ### Protips
 
