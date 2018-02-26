@@ -3,11 +3,11 @@
 
 I maintain this for my very personal use, but you're quite welcome to refer it, use it, and make suggestions.
 
-### Screenshot
+## Screenshot
 
-![screenshot](./screens.png)
+![screenshot](./scrshot.png)
 
-### Protips
+## Protips
 
 Use `symlink` rather than hard copies!
 
@@ -18,7 +18,7 @@ $ ln -s <source_file> <target_file>
 $ ln -s dotfiles/vim/.vimrc .vimrc
 ```
 
-### Reference
+## Reference
 
 This dotfiles shamelessly borrow a lot from the web. (Thx, the internet!)
 

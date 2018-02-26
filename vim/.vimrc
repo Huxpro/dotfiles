@@ -152,7 +152,7 @@ set listchars+=nbsp:_
 "set listchars+=eol:¬
 
 " at least 7 lines visible - when scrolling vertically using j/k
-set scrolloff=7
+set scrolloff=5
 
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
@@ -209,6 +209,7 @@ endif
 
 " powerline symbols
 let g:airline_powerline_fonts=1
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 "this line will break airline
 "set ambiwidth=double
