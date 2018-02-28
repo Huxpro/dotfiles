@@ -66,6 +66,9 @@ set tabstop=2       " num of visual space per <TAB> char
 set softtabstop=2   " num of spaces for TAB when editing, useful for backspace
 set shiftwidth=2
 
+" Insert \t char literally 
+:inoremap <S-Tab> <C-V><Tab>
+
 " Linebreak on 500 characters
 set linebreak
 set tw=500
@@ -284,3 +287,8 @@ inoremap <Up> <C-o>gk
 
 " autocommand - file extension aliase
 au bufnewfile,bufread *.imp setlocal filetype=lisp
+au bufnewfile,bufread *.ast setlocal filetype=lisp
+au bufnewfile,bufread *.emj setlocal filetype=java
+
+
+

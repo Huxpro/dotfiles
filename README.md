@@ -7,6 +7,13 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 
 ![screenshot](./scrshot.png)
 
+## Dependencies
+
+* Vundle (for vim plugin management)
+* Oh-my-zsh (pre-configured ZShell)
+* Solarized Theme (I only include itermcolor in `/theme`)
+* ... (might be more)
+
 ## Protips
 
 Use `symlink` rather than hard copies!
