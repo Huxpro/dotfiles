@@ -16,3 +16,6 @@ ln -sf ~/dotfiles/vim/.vimrc ~/.ideavimrc
 ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/git/.gitignore ~/.gitignore
 ln -sf ~/dotfiles/git/.gitattributes ~/.gitattributes
+
+# karabiner
+ln -sf ~/dotfiles/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
