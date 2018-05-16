@@ -19,9 +19,12 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 Use `symlink` rather than hard copies!
 
 ```bash
-$ ln -s <source_file> <target_file> 
+$ ln -s <source_file> <target_file>
 
-# e.g. (if you were under $HOME)
+# using linkall.sh (under repo's dir)
+$ sh linkall.sh
+
+# e.g. (under $HOME)
 $ ln -s dotfiles/vim/.vimrc .vimrc
 ```
 

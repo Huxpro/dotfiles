@@ -230,6 +230,7 @@ map <C-n> : NERDTreeToggle<CR>
 " au VimEnter *  NERDTree
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let NERDTreeShowHidden= 1
 " let NERDTreeQuitOnOpen = 1
 " ============ NERDTree ============
 
