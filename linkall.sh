@@ -1,21 +1,18 @@
 #!/bin/bash
 
 # bash
-ln -s bash/.bashrc ~/.bashrc
+ln -sf ~/dotfiles/bash/.bashrc ~/.bashrc
 
 # zsh
-ln -s zsh/.zshrc ~/.zshrc
-ln -s zsh/.zshenv ~/.zshenv
-ln -s zsh/.zprofile ~/.zprofile
+ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
+ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
+ln -sf ~/dotfiles/zsh/.zprofile ~/.zprofile
 
 # vim
-ln -s vim/.vimrc ~/.vimrc
-ln -s vim/.vimrc ~/.ideavimrc
+ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc
+ln -sf ~/dotfiles/vim/.vimrc ~/.ideavimrc
 
 # git
-ln -s git/.gitconfig ~/.gitconfig
-ln -s git/.gitignore ~/.gitignore
-ln -s git/.gitattributes ~/.gitattributes
-
-
-
+ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
+ln -sf ~/dotfiles/git/.gitignore ~/.gitignore
+ln -sf ~/dotfiles/git/.gitattributes ~/.gitattributes
