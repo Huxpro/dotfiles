@@ -9,6 +9,7 @@
         editor = /usr/bin/vim
         autocrlf = input
         excludesfile = ~/.gitignore
+        #safecrlf = false
 
 [alias]
         # Staging
@@ -67,7 +68,7 @@
 
         # Misc
         publish = "!git push --set-upstream origin $(git branch-name)"
-        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+        lg = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
         st = status
         st = status
         dt = difftool
@@ -115,10 +116,10 @@
 
 # large file storage
 [filter "lfs"]
-        clean = git-lfs clean -- %f
-        smudge = git-lfs smudge -- %f
-        process = git-lfs filter-process
-        required = true
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 
 
 

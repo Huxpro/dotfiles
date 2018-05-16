@@ -1,5 +1,6 @@
 scriptencoding utf-8
 
+set ffs=unix,dos
 set nocompatible              " Disable Vi compatibility
 
 " ============ Vundle ============
@@ -22,6 +23,7 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'majutsushi/tagbar'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -139,9 +141,9 @@ let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 
 " change cursor type for iterm2
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+"let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+"let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+"let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " highlight matching [{()}] 
 set showmatch
@@ -166,6 +168,8 @@ set noerrorbells
 " mouse support
 set mouse=a
 
+" timeout
+set timeoutlen=1000 ttimeoutlen=0
 " ============ UI/UX Tweaking ============
 
 
@@ -234,6 +238,12 @@ let NERDTreeDirArrows = 1
 " Show hidden files when using ctrlp
 let g:ctrlp_show_hidden = 1
 " ============ CtrlP ============
+
+
+" ============ Tagbar ============
+" shortcut
+map <C-b> : TagbarToggle<CR>
+" ============ Tagbar ============
 
 
 " ============ KEY MAPPING ============
