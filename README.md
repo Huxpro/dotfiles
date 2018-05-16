@@ -9,10 +9,20 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 
 ## Dependencies
 
-* Vundle (for vim plugin management)
-* Oh-my-zsh (pre-configured ZShell)
-* Solarized Theme (I only include itermcolor in `/theme`)
-* ... (might be more)
+Vundle (for vim plugin management)
+  * `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
+  * `:PluginInstall` in vim
+
+[Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
+  * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+
+Solarized Theme
+  * I include `.itermcolor` in `/theme` for ITerm users
+
+Fira Fonts (if you like this)
+
+
+
 
 ## Protips
 
@@ -21,7 +31,7 @@ Use `symlink` rather than hard copies!
 ```bash
 $ ln -s <source_file> <target_file>
 
-# using linkall.sh (under repo's dir)
+# use my linkall.sh (under repo's dir)
 $ sh linkall.sh
 
 # e.g. (under $HOME)
@@ -38,4 +48,3 @@ You can also find plenty of dotfiles from:
 * <https://github.com/nicksp/dotfiles>
 * <https://github.com/necolas/dotfiles>
 * <https://github.com/paulirish/dotfiles>
-
