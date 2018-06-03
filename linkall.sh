@@ -7,6 +7,7 @@ ln -sf ~/dotfiles/bash/.bashrc ~/.bashrc
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 ln -sf ~/dotfiles/zsh/.zprofile ~/.zprofile
+ln -sf ~/dotfiles/zsh/oh-my-zsh/custom/incr/incr*.zsh ~/.oh-my-zsh/plugins/incr/incr.zsh
 
 # vim
 ln -sf ~/dotfiles/vim/.vimrc ~/.vimrc

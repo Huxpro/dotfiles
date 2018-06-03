@@ -249,6 +249,8 @@ map <C-b> : TagbarToggle<CR>
 
 " ============ KEY MAPPING ============
 " system clipboard
+" make sure `$ vim --version | grep clipboard` give u `+clipboard`
+" otherwise you've to reinstall one with clipboard to make it work
 :inoremap <C-v> <ESC>"+pa
 :vnoremap <C-c> "+y
 :vnoremap <C-d> "+d

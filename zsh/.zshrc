@@ -48,10 +48,17 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# plugins=(zsh-autosuggestions)
+
+# https://github.com/zsh-users/zsh-completions
+# plugins=(zsh-completions)
+
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
