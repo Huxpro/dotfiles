@@ -118,3 +118,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# ocaml / opam
+eval $(opam config env)

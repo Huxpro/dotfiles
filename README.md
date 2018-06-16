@@ -5,7 +5,14 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 
 ## Screenshot
 
-![screenshot](./scrshot.png)
+with One theme:
+![screenshot](./scrshot-one.png)
+
+
+with Solarized theme:
+![screenshot](./scrshot-sol.png)
+
+Both themes support dark and light version (switch with `set background`)
 
 ## Dependencies
 
@@ -17,11 +24,18 @@ Vundle (for vim plugin management)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 
 Solarized Theme
-  * I include `.itermcolor` in `/theme` for ITerm users
+  * To use Solarized theme, you need to: 
+    * Delete/Comment out the `===THEME (ONE) ===` section
+    * Solarized color depend on the terminal one so you need to config your terminal as well.
+    * I include a `.itermcolor` in `/theme` for ITerm users
+
+One Theme
+  " The current default.
+  * One theme is independent with terminal theme, so you don't have to change your terminal theme.
+  * But I also include a `.itermcolor` in `/theme` for ITerm users
 
 Fira Fonts (if you like this)
-
-
+  * checkout "Nerds Font"
 
 
 ## Protips

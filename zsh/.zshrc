@@ -87,7 +87,11 @@ source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 alias sml='rlwrap sml'
 alias uscheme='rlwrap uscheme'
 alias scheme='rlwrap scheme'
-
+alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
+alias prtop='pbpaste | rtop'
 
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }
+
+# ocaml / opam
+eval $(opam config env)
