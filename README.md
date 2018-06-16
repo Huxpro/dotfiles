@@ -52,6 +52,10 @@ $ sh linkall.sh
 $ ln -s dotfiles/vim/.vimrc .vimrc
 ```
 
+## MacOS Tools
+
+* <https://github.com/sindresorhus/quick-look-plugins>
+
 ## Reference
 
 This dotfiles shamelessly borrow a lot from the web. (Thx, the internet!)
