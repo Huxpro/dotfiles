@@ -12,9 +12,9 @@ with One theme:
 with Solarized theme:
 ![screenshot](./scrshot-sol.png)
 
-Both themes support dark and light version (switch with `set background`)
+Both themes support using `set background` to switch between dark and light versions.
 
-## Dependencies
+## Dependencies / Credits
 
 Vundle (for vim plugin management)
   * `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
@@ -23,13 +23,13 @@ Vundle (for vim plugin management)
 [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 
-Solarized Theme
+[Solarized Theme](http://ethanschoonover.com/solarized)
   * To use Solarized theme, you need to: 
     * Delete/Comment out the `===THEME (ONE) ===` section
     * Solarized color depend on the terminal one so you need to config your terminal as well.
     * I include a `.itermcolor` in `/theme` for ITerm users
 
-One Theme
+[One/Vim-One Theme](https://github.com/jordwalke/vim-one)
   " The current default.
   * One theme is independent with terminal theme, so you don't have to change your terminal theme.
   * But I also include a `.itermcolor` in `/theme` for ITerm users

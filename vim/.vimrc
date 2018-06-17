@@ -233,6 +233,7 @@ let g:airline#extensions#tabline#enabled = 1
 
 " ============ THEME (One) ============
 " If you want to use Solarized, you must delete this section
+
 "TRUE COLOR SUPPORT FOR ONE
 "Credit joshdick
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.

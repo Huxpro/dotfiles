@@ -6,7 +6,7 @@
         email = huxpro@gmail.com
 
 [core]
-        editor = /usr/bin/vim
+        editor = vim
         autocrlf = input
         excludesfile = ~/.gitignore
         #safecrlf = false
