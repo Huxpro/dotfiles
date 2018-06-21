@@ -58,7 +58,7 @@ plugins=(git)
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-source ~/.oh-my-zsh/plugins/incr/incr*.zsh
+# source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -95,3 +95,36 @@ prompt_context () { }
 
 # ocaml / opam
 eval $(opam config env)
+
+#####################################
+# auto-fu, insta productivity boost 2
+#####################################
+
+# npm/make/brew autocompletions are super slow. Disable them so that auto-fu's
+# completion doesn't trigger for these
+noopt() {}
+compdef noopt npm make brew
+# enable completion for these commands.
+# See https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org#completing-generic-gnu-commands
+compdef _gnu_generic bsc bsb ocamlc yarn
+
+# https://github.com/hchbaw/auto-fu.zsh
+# Fork with cleaned-up readme:
+# https://github.com/HerringtonDarkholme/auto-fu.zsh
+
+# make sure history-substring-match is disabled (crashes window with auto-fu).
+# auto-fu master currently unstable. Use the `pu` branch instead
+
+# git clone https://github.com/HerringtonDarkholme/auto-fu.zsh ~/.auto-fu
+# cd ~/.auto-fu
+# git checkout pu
+
+if [ -f ~/.auto-fu/auto-fu.zsh ]; then
+  source ~/.auto-fu/auto-fu.zsh
+  function zle-line-init () {
+    auto-fu-init
+  }
+  zle -N zle-line-init
+  zstyle ':completion:*' completer _oldlist _complete
+fi
+zstyle ':auto-fu:var' postdisplay $''

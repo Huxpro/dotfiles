@@ -28,6 +28,14 @@ Plugin 'altercation/vim-colors-solarized'
 "Plugin 'rakr/vim-one'
 Plugin 'jordwalke/vim-one'
 
+" the legacy reason plugin.
+Plugin 'reasonml-editor/vim-reason'
+
+" the new-one doesn't work:
+"Plugin 'roxma/vim-hug-neovim-rpc'
+"Plugin 'roxma/nvim-yarp'
+"Plugin 'autozimu/LanguageClient-neovim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " ============ Vundle ============
@@ -284,6 +292,13 @@ let g:ctrlp_show_hidden = 1
 " shortcut
 map <C-b> : TagbarToggle<CR>
 " ============ Tagbar ============
+
+
+" ============ Merlin for OCaml / Reason ============
+map gd : MerlinLocate<cr>
+map gf : ReasonPrettyPrint<cr>
+map <cr> : MerlinTypeOf<cr>
+" ============ Merlin for OCaml / Reason ============
 
 
 " ============ KEY MAPPING ============
