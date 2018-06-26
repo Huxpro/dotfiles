@@ -15,13 +15,13 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-" Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'rhysd/clever-f.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'reasonml-editor/vim-reason-plus'
 Plugin 'altercation/vim-colors-solarized'
@@ -35,6 +35,10 @@ Plugin 'reasonml-editor/vim-reason'
 "Plugin 'roxma/vim-hug-neovim-rpc'
 "Plugin 'roxma/nvim-yarp'
 "Plugin 'autozimu/LanguageClient-neovim'
+
+" Follow the installation guide to compile language server. It's good
+" https://github.com/Valloric/YouCompleteMe#mac-os-x
+Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -292,6 +296,11 @@ let g:ctrlp_show_hidden = 1
 " shortcut
 map <C-b> : TagbarToggle<CR>
 " ============ Tagbar ============
+
+
+" ============ Clever-f ============
+let g:clever_f_smart_case = 1
+" ============ Clever-f ============
 
 
 " ============ Merlin for OCaml / Reason ============

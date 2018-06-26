@@ -6,7 +6,12 @@ export ZSH=$HOME/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 # ZSH_THEME="af-magic"
-ZSH_THEME="agnoster"
+
+# agnoster handle git sync and becomes condiferably slow.
+# ZSH_THEME="agnoster"
+
+# similar but not: https://github.com/sindresorhus/pure
+ZSH_THEME="refined-lambda"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -88,6 +93,7 @@ alias sml='rlwrap sml'
 alias uscheme='rlwrap uscheme'
 alias scheme='rlwrap scheme'
 alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
+alias reml='pbpaste | refmt --parse re --print ml | pbcopy'
 alias prtop='pbpaste | rtop'
 
 # redefine prompt_context for hiding user@hostname

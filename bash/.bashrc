@@ -93,7 +93,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # FB specific aliases
-alias re='./scripts/re/build-www -w'
+alias re='~/www/scripts/re/build-www'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
