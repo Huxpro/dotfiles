@@ -40,6 +40,8 @@ Plugin 'reasonml-editor/vim-reason'
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
 Plugin 'Valloric/YouCompleteMe'
 
+Plugin 'tpope/vim-commentary'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " ============ Vundle ============
@@ -301,6 +303,12 @@ map <C-b> : TagbarToggle<CR>
 " ============ Clever-f ============
 let g:clever_f_smart_case = 1
 " ============ Clever-f ============
+
+
+" ============ Vim-commentary ============
+" <C_/>
+map <C-_> : Commentary<cr>
+" ============ Vim-commentary ============
 
 
 " ============ Merlin for OCaml / Reason ============
