@@ -42,6 +42,9 @@ Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'tpope/vim-commentary'
 
+" https://github.com/w0rp/ale
+Plugin 'w0rp/ale'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " ============ Vundle ============
@@ -302,6 +305,8 @@ map <C-b> : TagbarToggle<CR>
 
 " ============ Clever-f ============
 let g:clever_f_smart_case = 1
+map ; <Plug>(clever-f-repeat-forward)
+map , <Plug>(clever-f-repeat-back)
 " ============ Clever-f ============
 
 
