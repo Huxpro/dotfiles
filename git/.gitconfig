@@ -40,9 +40,8 @@
         cp = cherry-pick
 
         # Diff
-        d = diff --color-words
-        dc = diff --cached
-        df = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+        df = diff
+        dt = difftool
 
         # Merge
         m = merge
@@ -71,7 +70,6 @@
         lg = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
         st = status
         st = status
-        dt = difftool
         l = log --stat
 
 # So much color
@@ -101,10 +99,6 @@
         changed = yellow
         untracked = red
 
-[pager]
-        # Insanely beautiful diffs ==> npm install -g diff-so-fancy
-        diff = diff-so-fancy | less --tabs=4 -RFX
-        show = diff-so-fancy | less --tabs=4 -RFX
 
 # Push easily http://stackoverflow.com/a/23918418/89484
 [push]
@@ -122,7 +116,9 @@
 	process = git-lfs filter-process
 
 
+# difftool for side-by-side diff in vim
+[diff]
+	tool = vimdiff
 
-
-
-
+[difftool]
+	prompt = false
