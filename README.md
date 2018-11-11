@@ -25,17 +25,18 @@ Vundle (for vim plugin management)
 
 [Solarized Theme](http://ethanschoonover.com/solarized)
   * To use Solarized theme, you need to: 
-    * Delete/Comment out the `===THEME (ONE) ===` section
+    * Delete/Comment out the `===THEME (ONE) ===` section (any easier way to do that? PR welcome)
     * Solarized color depend on the terminal one so you need to config your terminal as well.
-    * I include a `.itermcolor` in `/theme` for ITerm users
+      * I include a `.itermcolor` in `/theme` for ITerm users
 
 [One/Vim-One Theme](https://github.com/jordwalke/vim-one)
   " The current default.
   * One theme is independent with terminal theme, so you don't have to change your terminal theme.
-  * But I also include a `.itermcolor` in `/theme` for ITerm users
+    * It seems not working at macOS native terminal app (PR welcome)
+    * But I also include a `.itermcolor` in `/theme` for ITerm users
 
 Fira Fonts (if you like this)
-  * checkout "Nerds Font"
+  * checkout "Nerds Font" 
 
 
 ## Protips

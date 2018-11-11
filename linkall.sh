@@ -1,24 +1,24 @@
 #!/bin/bash
 
-work_path=$(pwd)
+cwd=$(pwd)
 
 # bash
-ln -sf $work_path"/bash/.bashrc" ~/.bashrc
+ln -sf "$cwd/bash/.bashrc" ~/.bashrc
 
 # zsh
-ln -sf $work_path"/zsh/.zshrc" ~/.zshrc
-ln -sf $work_path"/zsh/.zshenv" ~/.zshenv
-ln -sf $work_path"/zsh/.zprofile" ~/.zprofile
-ln -sf $work_path"/zsh/oh-my-zsh/themes/refined-lambda.zsh-theme" ~/.oh-my-zsh/themes/refined-lambda.zsh-theme
+ln -sf "$cwd/zsh/.zshrc" ~/.zshrc
+ln -sf "$cwd/zsh/.zshenv" ~/.zshenv
+ln -sf "$cwd/zsh/.zprofile" ~/.zprofile
+ln -sf "$cwd/zsh/oh-my-zsh/themes/refined-lambda.zsh-theme" ~/.oh-my-zsh/themes/refined-lambda.zsh-theme
 
 # vim
-ln -sf $work_path"/vim/.vimrc" ~/.vimrc
-ln -sf $work_path"/vim/.vimrc" ~/.ideavimrc
+ln -sf "$cwd/vim/.vimrc" ~/.vimrc
+ln -sf "$cwd/vim/.vimrc" ~/.ideavimrc
 
 # git
-ln -sf $work_path"/git/.gitconfig" ~/.gitconfig
-ln -sf $work_path"/git/.gitignore" ~/.gitignore
-ln -sf $work_path"/git/.gitattributes" ~/.gitattributes
+ln -sf "$cwd/git/.gitconfig" ~/.gitconfig
+ln -sf "$cwd/git/.gitignore" ~/.gitignore
+ln -sf "$cwd/git/.gitattributes" ~/.gitattributes
 
 # karabiner
-ln -sf $work_path"/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
+ln -sf "$cwd/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
