@@ -43,6 +43,8 @@ Homebrew
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 [ITerm2](https://www.iterm2.com/)
+  * Dimming minimal
+  * Panes uncheck titlebar
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
