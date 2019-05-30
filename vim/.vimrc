@@ -116,7 +116,9 @@ Plugin 'reasonml-editor/vim-reason'
 
 " Follow the installation guide to compile language server. It's good
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
-Plugin 'Valloric/YouCompleteMe'
+" Require macvim / python-support etc.
+" Disable for Neovim @fbdev machine temp
+" Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'tpope/vim-commentary'
 
@@ -506,17 +508,18 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '`':'`'}
 
 
 " ============ Merlin for OCaml / Reason ============
-augroup merlin
-  au!
-  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-  execute "set rtp+=" . g:opamshare . "/merlin/vim"
-  set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
+" comment out for fb dev
+" augroup merlin
+"   au!
+"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+"   execute "set rtp+=" . g:opamshare . "/merlin/vim"
+"   set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
 
-  " ----- Keybindings -----
-  au FileType ocaml map gd : MerlinLocate<cr>
-  au FileType ocaml map gf : ReasonPrettyPrint<cr>
-  au FileType ocaml map <cr> : MerlinTypeOf<cr>
-augroup end
+"   " ----- Keybindings -----
+"   au FileType ocaml map gd : MerlinLocate<cr>
+"   au FileType ocaml map gf : ReasonPrettyPrint<cr>
+"   au FileType ocaml map <cr> : MerlinTypeOf<cr>
+" augroup end
 " ============ Merlin for OCaml / Reason ============
 
 

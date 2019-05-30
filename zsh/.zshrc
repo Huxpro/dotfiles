@@ -127,7 +127,8 @@ alias opamswitchsys='opam switch system;     eval `opam config env`'
 # rust (I knew it's weird)
 alias rusti='rustup run nightly-2016-08-01 ~/.cargo/bin/rusti'
 
-if ! [ -x "opam" ]; then
+# only eval opam if opam is executable
+if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
 fi
 
