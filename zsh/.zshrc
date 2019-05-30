@@ -95,13 +95,23 @@ source $ZSH/oh-my-zsh.sh
 #####################################
 
 # neovim
+alias vi='nvim'
 alias vim='nvim'
 alias oldvim='\vim'
 
+# emacs (open in new instance)
+alias emacs='open -n -a Emacs.app .'
+alias emacsterm='\emacs-26.2'
+alias oldemacs='\emacs'
+
 # rlwrap
 alias sml='rlwrap sml'
+alias jake='rlwrap jake'
 alias uscheme='rlwrap uscheme'
 alias scheme='rlwrap scheme'
+
+# grep (recursive, linenum)
+alias greprn='grep -rn'
 
 # reason
 alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
@@ -110,8 +120,12 @@ alias prtop='pbpaste | rtop'
 
 # ocaml / opam switch 
 alias evalcaml='eval `opam config env`'
-alias opamswitchreason='opam switch 4.02.3; eval `opam config env`'
-alias opamswitchsys='opam switch system; eval `opam config env`'
+alias opamswitch402='opam switch reason;     eval `opam config env`'
+alias opamswitch405='opam switch unsafe-str; eval `opam config env`'
+alias opamswitchsys='opam switch system;     eval `opam config env`'
+
+# rust (I knew it's weird)
+alias rusti='rustup run nightly-2016-08-01 ~/.cargo/bin/rusti'
 
 if ! [ -x "opam" ]; then
   eval $(opam config env)

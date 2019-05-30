@@ -3,6 +3,85 @@ scriptencoding utf-8
 set ffs=unix,dos
 set nocompatible              " Disable Vi compatibility
 
+" ============ Vim-plug ============
+"
+call plug#begin('~/.vim/plugged')
+
+Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] } 
+Plug 'jistr/vim-nerdtree-tabs'
+
+Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
+
+" LSP(Langague Server Protocol) client supports for vim
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" ReasonML
+Plug 'reasonml-editor/vim-reason-plus'
+
+" SML
+Plug 'jez/vim-better-sml'
+Plug 'javier-lopez/sml.vim'
+
+" Haskell
+Plug 'Shougo/vimproc.vim'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'itchyny/vim-haskell-indent'
+Plug 'alx741/vim-stylishask'
+Plug 'alx741/vim-hindent'
+Plug 'parsonsmatt/intero-neovim'
+
+" Clojure
+Plug 'tpope/vim-fireplace'
+
+" Markdown
+Plug 'tpope/vim-markdown'
+
+" Both for git and for better sign column
+Plug 'airblade/vim-gitgutter'
+
+" https://github.com/w0rp/ale
+Plug 'w0rp/ale'
+
+Plug 'jiangmiao/auto-pairs'
+
+" https://github.com/ybian/smartim
+Plug 'ybian/smartim'
+
+" Carbon - create beautiful code images
+Plug 'kristijanhusak/vim-carbon-now-sh'
+
+" Unicode glyphs completion
+Plug 'chrisbra/unicode.vim'
+
+" Surround.vim
+Plug 'tpope/vim-surround'
+
+" LaTex
+Plug 'lervag/vimtex'
+
+" Coq (doesn't work for some Python error)
+" Plug 'the-lambda-church/coquille'
+
+" Agda
+Plug 'derekelkins/agda-vim'
+
+" WASM
+Plug 'rhysd/vim-wasm'
+
+" JS
+Plug 'pangloss/vim-javascript'
+
+" Tex input-method
+Plug 'joom/latex-unicoder.vim'
+
+call plug#end()
+" ============ Vim-plug ============
+
+
 " ============ Vundle ============
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -17,24 +96,23 @@ Plugin 'gmarik/Vundle.vim'
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'rhysd/clever-f.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'reasonml-editor/vim-reason-plus'
+
+
+""""" Theme and color
 Plugin 'altercation/vim-colors-solarized'
 "Plugin 'rakr/vim-one'
 Plugin 'jordwalke/vim-one'
 
+""""" Reason
 " the legacy reason plugin.
 Plugin 'reasonml-editor/vim-reason'
 
 " the new-one doesn't work:
 "Plugin 'roxma/vim-hug-neovim-rpc'
 "Plugin 'roxma/nvim-yarp'
-"Plugin 'autozimu/LanguageClient-neovim'
 
 " Follow the installation guide to compile language server. It's good
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
@@ -42,17 +120,85 @@ Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'tpope/vim-commentary'
 
-" https://github.com/w0rp/ale
-Plugin 'w0rp/ale'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+
+set rtp+=~/.vim/plugged/isabelle.vim
 " ============ Vundle ============
 
 
 " line buffer
 set history=100
 
+
+" ============ neovim ============
+if (has("nvim"))
+" close terminal windows input mode with <esc>
+tnoremap <Esc> <C-\><C-n>
+
+" mapping for openning terminal in split windows
+" rather than splitting belowright by default by `set splitright` and `set splitbelow`
+" using `:belowright split` to treat terminal splitting specially
+command! -nargs=* D  belowright split | terminal <args>
+command! -nargs=* DD belowright vsplit | terminal <args>
+
+set inccommand=nosplit
+endif
+" ============ neovim ============
+
+
+" ============ LSP ============
+" use space as <leader>
+let mapleader=" "
+let g:LanguageClient_serverCommands = {
+    \ 'reason': ['ocaml-language-server'],
+    \ }
+
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
+"nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
+nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
+nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
+" ============ LSP ============
+
+
+" ============ ALE ============
+" let g:ale_lint_on_text_changed = 'normal'
+let g:ale_sign_column_always   = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+" work with airline
+let g:airline#extensions#ale#enabled = 1
+let g:ale_linters = {
+\   'ocaml': ['merlin'],
+\   'haskell': ['ghc-mod', 'hlint'],
+\}
+" ============ ALE ============
+
+
+" ============ VIM-MARKDOWN ============
+let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'c', 'asm', 'lisp', 'clj=clojure',  'py=python']
+" ============ VIM-MARKDOWN ============
+
+
+" ============ VIM-SURROUND ============
+" using `s` as well for V-mode, aligned with spacemacs.
+xmap s   <Plug>VSurround
+" ============ VIM-SURROUND ============
+
+
+" ============ VIMTEX ============
+" https://castel.dev/post/lecture-notes-1/
+let g:tex_flavor='latex'
+"let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+"au FileType markdown setlocal conceallevel=1
+"au FileType tex setlocal conceallevel=1
+"let g:tex_conceal='abdmg'
+" ============ VIMTEX ============
+"
 
 " ============ FILE ============
 " Encoding
@@ -210,10 +356,35 @@ nnoremap <esc><esc> :noh<return>
 " ============ SEARCH ============
 
 
+" ============ TERMINAL COLOR (Neovim Terminal) ============
+" https://github.com/lifepillar/vim-solarized8/issues/9
+let g:terminal_color_0 = '#073642'
+let g:terminal_color_1 = '#dc322f'
+let g:terminal_color_2 = '#719e07'
+let g:terminal_color_3 = '#b58900'
+let g:terminal_color_4 = '#268bd2'
+let g:terminal_color_5 = '#d33682'
+let g:terminal_color_6 = '#2aa198'
+let g:terminal_color_7 = '#eee8d5'
+let g:terminal_color_8 = '#002b36'
+let g:terminal_color_9 = '#cb4b16'
+let g:terminal_color_10= '#586e75'
+let g:terminal_color_11= '#657b83'
+let g:terminal_color_12= '#839496'
+let g:terminal_color_13= '#6c71c4'
+let g:terminal_color_14= '#93a1a1'
+let g:terminal_color_15= '#fdf6e3'
+" ============ TERMINAL COLOR (Neovim Terminal) ============
+
+
 " ============ THEME (Solarized Dark & Power Line) ============
 if has("syntax")
     " Enable syntax highlighting
     syntax enable
+
+    " fix some syntax highlighting unsync problem
+    syntax sync minlines=200
+
     " Set 256 color terminal support
     set t_Co=256
 
@@ -276,9 +447,22 @@ if has("syntax")
 endif
 
 let g:airline_theme='one'
+
+" commands for switch between light/dark background
+command! Light set background=light
+command! Dark set background=dark
+
 " ============ THEME (One) ============
 
 
+
+" ============ Hi Conceal  ============
+unlet! g:indentLine_color_term g:indentLine_color_gui
+hi Conceal ctermfg=245
+" ============ Hi Conceal  ============
+ 
+ 
+ 
 " ============ NERDTree ============
 " NERDTree shortcut
 map <C-n> : NERDTreeToggle<CR>
@@ -316,14 +500,101 @@ map <C-_> : Commentary<cr>
 " ============ Vim-commentary ============
 
 
+" ============ Auto Pair ============
+let g:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '`':'`'}
+" ============ Auto Pair ============
+
+
 " ============ Merlin for OCaml / Reason ============
-map gd : MerlinLocate<cr>
-map gf : ReasonPrettyPrint<cr>
-map <cr> : MerlinTypeOf<cr>
+augroup merlin
+  au!
+  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+  execute "set rtp+=" . g:opamshare . "/merlin/vim"
+  set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
+
+  " ----- Keybindings -----
+  au FileType ocaml map gd : MerlinLocate<cr>
+  au FileType ocaml map gf : ReasonPrettyPrint<cr>
+  au FileType ocaml map <cr> : MerlinTypeOf<cr>
+augroup end
 " ============ Merlin for OCaml / Reason ============
 
+
+" ============ Haskell/Ghc-mod ============
+augroup ghcmod
+  au!
+  " ----- Keybindings -----
+  au FileType haskell nnoremap <silent> <cr> :GhcModType<CR>
+  au FileType haskell nnoremap <silent> gd :GhcModInfo<CR>
+  au FileType haskell nnoremap <silent> gc :GhcModSigCodegen<CR>
+  "prefer Stylish-haskell as default since it's less opionated
+  au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
+  au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
+  au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
+augroup end
+let g:hindent_on_save = 0
+let g:stylishask_on_save = 0
+let g:hindent_line_length = 100
+" ============ Haskell/Ghc-mod ============
+
+
+" ============ Haskell/Intero ============
+" not sure if it gonna work but that's give it a try
+" Intero starts automatically. Set this if you'd like to prevent that.
+let g:intero_start_immediately = 0
+
+" Enable type information on hover (when holding cursor at point for ~1 second).
+let g:intero_type_on_hover = 1
+
+" Change the intero window size; default is 10.
+let g:intero_window_size = 15
+
+" Sets the intero window to split vertically; default is horizontal
+let g:intero_vertical_split = 1
+
+" OPTIONAL: Make the update time shorter, so the type info will trigger faster.
+set updatetime=1000
+" ============ Haskell/Intero ============
+
+
+" ============ SML ============
+" let g:sml_auto_create_def_use = 'always'
+
+augroup vimbettersml
+  au!
+
+  " ----- Keybindings -----
+
+  au FileType sml nnoremap <silent> <cr> :SMLTypeQuery<CR>
+  au FileType sml nnoremap <silent> <buffer> gd :SMLJumpToDef<CR>
+
+  " open the REPL terminal buffer
+  au FileType sml nnoremap <silent> <buffer> <leader>is :SMLReplStart<CR>
+  " close the REPL (mnemonic: k -> kill)
+  au FileType sml nnoremap <silent> <buffer> <leader>ik :SMLReplStop<CR>
+  " build the project (using CM if possible)
+  au FileType sml nnoremap <silent> <buffer> <leader>ib :SMLReplBuild<CR>
+  " for opening a structure, not a file
+  au FileType sml nnoremap <silent> <buffer> <leader>io :SMLReplOpen<CR>
+  " use the current file into the REPL (even if using CM)
+  au FileType sml nnoremap <silent> <buffer> <leader>iu :SMLReplUse<CR>
+  " clear the REPL screen
+  au FileType sml nnoremap <silent> <buffer> <leader>ic :SMLReplClear<CR>
+  " set the print depth to 100
+  au FileType sml nnoremap <silent> <buffer> <leader>ip :SMLReplPrintDepth<CR>
+
+  " ----- Other settings -----
+
+  " Uncomment to try out conceal characters
+  au FileType sml setlocal conceallevel=2
+
+  " Uncomment to try out same-width conceal characters
+  " let g:sml_greek_tyvar_show_tick = 1
+augroup END
+" ============ SML ============
 
 " ============ KEY MAPPING ============
+
 " system clipboard
 " make sure `$ vim --version | grep clipboard` give u `+clipboard`
 " otherwise you've to reinstall one with clipboard to make it work
@@ -350,6 +621,8 @@ map <c-l> <c-w>l<c-w>
 
 " multiple paste
 xnoremap p pgvy
+command! PasteOn set paste
+command! PasteOff set nopaste
 
 " Faster viewport scrolling (3 lines at a time)
 nnoremap <C-e> 3<C-e>
@@ -372,12 +645,22 @@ vnoremap <Down> gj
 vnoremap <Up> gk
 inoremap <Down> <C-o>gj
 inoremap <Up> <C-o>gk
+
+" move block of code up and down
+:vnoremap <C-j> :m '>+1<CR>gv=gv
+:vnoremap <C-k> :m '<-2<CR>gv=gv
 " ============ KEY MAPPING ============
 
 " autocommand - file extension aliase
-au bufnewfile,bufread *.imp setlocal filetype=lisp
 au bufnewfile,bufread *.ast setlocal filetype=lisp
 au bufnewfile,bufread *.emj setlocal filetype=java
+au bufnewfile,bufread *.imp setlocal filetype=ocaml
+au bufnewfile,bufread *.v   setlocal filetype=ocaml
+"au bufnewfile,bufread *.v   setlocal filetype=coq      
+au bufnewfile,bufread *.f   setlocal filetype=reason
+au bufnewfile,bufread *.langf   setlocal filetype=sml
+au bufnewfile,bufread *.kk  setlocal filetype=javascript
+au Filetype asm setlocal tabstop=8
 
 
 

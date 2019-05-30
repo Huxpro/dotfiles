@@ -53,6 +53,9 @@ $ sh linkall.sh
 $ ln -s dotfiles/vim/.vimrc .vimrc
 ```
 
+For `ssh` usages, you might want to comment out soem plugins to prevent the vim from starting too slow.
+I Personally only kept a few.
+
 ## MacOS Tools
 
 * <https://github.com/sindresorhus/quick-look-plugins>

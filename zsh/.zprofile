@@ -9,15 +9,36 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/Library/Haskell/bin:$PATH"
 
-# Python
+# Python pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$PYENV_ROOT/shims:$PATH"
 
-# Yarn 
+# Python pip
+export PATH="$HOME/Library/Python/3.6/bin:$PATH"
+
+# Ruby gem
+export GEM_HOME=$HOME/gems
+export PATH=$HOME/gems/bin:$PATH
+
+# JS yarn 
 export PATH="$HOME/.yarn/bin:$PATH"
 
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 export PATH=/usr/local/gcc-8.1/bin:$PATH
+
+# Rust cargo
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# openSSL
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/openssl/lib"
+# export CPPFLAGS="-I/usr/local/opt/openssl/include"
+# export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
+export PATH="/usr/local/sbin:$PATH"
+
+# override coq with brew-installed coq
+export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 
