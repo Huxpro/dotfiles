@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "a0348bc86a8cf50afc73cd4afd7937e4",
+    "content-hash": "c4c6cd620bcb9ebd672c2f2eaa1661a5",
+    "packages": [
+        {
+            "name": "joetannenbaum/alfred-workflow",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joetannenbaum/alfred-workflow.git",
+                "reference": "48a42cea8175d96ccfbfcb71fae99bc6a1fc4712"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joetannenbaum/alfred-workflow/zipball/48a42cea8175d96ccfbfcb71fae99bc6a1fc4712",
+                "reference": "48a42cea8175d96ccfbfcb71fae99bc6a1fc4712",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alfred\\Workflows\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joe Tannenbaum",
+                    "email": "joe@joe.codes"
+                }
+            ],
+            "description": "PHP helper for creating Alfred Workflows.",
+            "time": "2016-05-19 01:51:10"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "joetannenbaum/alfred-workflow": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>iamstevendao.alfred-open-with-vscode</string>
+	<key>connections</key>
+	<dict>
+		<key>D97234CC-4D00-4B8D-A115-5919C89B2B02</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>097910A9-1875-4779-9359-530BE0CC763B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>7617491C-6A8E-4B5C-B925-A544F0BDB009</string>
+				<key>modifiers</key>
+				<integer>524288</integer>
+				<key>modifiersubtext</key>
+				<string>Reveal file in Finder</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Steven Dao</string>
+	<key>description</key>
+	<string>Use "code" to open files/folder with Visual Studio Code</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Open with Visual Studio Code</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>openwith</key>
+				<string>/Applications/Visual Studio Code.app</string>
+				<key>sourcefile</key>
+				<string></string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openfile</string>
+			<key>uid</key>
+			<string>097910A9-1875-4779-9359-530BE0CC763B</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>anchorfields</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>daterange</key>
+				<integer>0</integer>
+				<key>fields</key>
+				<array>
+					<dict>
+						<key>field</key>
+						<string>kMDItemDisplayName</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>field</key>
+						<string>kMDItemAlternateNames</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>field</key>
+						<string>kMDItemFinderComment</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+				</array>
+				<key>includesystem</key>
+				<false/>
+				<key>keyword</key>
+				<string>code</string>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>scopes</key>
+				<array>
+					<string>~</string>
+					<string>~/coding</string>
+				</array>
+				<key>subtext</key>
+				<string>Open with Visual Studio Code</string>
+				<key>title</key>
+				<string>Visual Studio Code</string>
+				<key>types</key>
+				<array>
+					<string>public.folder</string>
+				</array>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.filefilter</string>
+			<key>uid</key>
+			<string>D97234CC-4D00-4B8D-A115-5919C89B2B02</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict/>
+			<key>type</key>
+			<string>alfred.workflow.action.revealfile</string>
+			<key>uid</key>
+			<string>7617491C-6A8E-4B5C-B925-A544F0BDB009</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Using the keyword "f", search for only folders within your home folder.
+
+Hit Return to open the file, or Alt + Return to reveal it in Finder.</string>
+	<key>uidata</key>
+	<dict>
+		<key>097910A9-1875-4779-9359-530BE0CC763B</key>
+		<dict>
+			<key>note</key>
+			<string>2. Pressing the Return key opens the folder you selected in Visual Studio Code</string>
+			<key>xpos</key>
+			<integer>310</integer>
+			<key>ypos</key>
+			<integer>50</integer>
+		</dict>
+		<key>7617491C-6A8E-4B5C-B925-A544F0BDB009</key>
+		<dict>
+			<key>note</key>
+			<string>3. Hold the Alt key when pressing Return to reveal the folder in Finder instead.</string>
+			<key>xpos</key>
+			<integer>310</integer>
+			<key>ypos</key>
+			<integer>280</integer>
+		</dict>
+		<key>D97234CC-4D00-4B8D-A115-5919C89B2B02</key>
+		<dict>
+			<key>note</key>
+			<string>1. Type "code" followed by the name of your folder. The scope is set to home folder only.</string>
+			<key>xpos</key>
+			<integer>50</integer>
+			<key>ypos</key>
+			<integer>160</integer>
+		</dict>
+	</dict>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string>https://github.com/iamstevendao/alfred-open-with-vscode</string>
+</dict>
+</plist>
