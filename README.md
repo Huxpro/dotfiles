@@ -1,6 +1,5 @@
 # Xuan's dotfiles
 
-
 I maintain this for my very personal use, but you're quite welcome to refer it, use it, and make suggestions.
 
 ## Screenshot
@@ -42,7 +41,7 @@ Vundle (for vim plugin management)
 Fira Fonts (if you like this)
   * checkout "Nerds Font" 
 
-## Other common dependencies
+## Other Common Dependencies
 
 Homebrew
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
@@ -52,10 +51,23 @@ Homebrew
   * Panes uncheck titlebar
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+  * there are tricks to share `.vimrc` w/ `vim`
 
 Spacemacs
+  * sync emacs setting
 
 VSCode
+  * sync with `Settings Sync` plugin w/ a private gist
+
+Karabiner
+  * keyboard layout mapping / hacking (e.g. mapping capslock to esc)
+  * sync with its configuration file
+
+Alfred (3)
+  * sync with its preferences file
+  
+[MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins)
+
 
 ## Protips
 
@@ -74,13 +86,20 @@ $ ln -s dotfiles/vim/.vimrc .vimrc
 For `ssh` usages, you might want to comment out soem plugins to prevent the vim from starting too slow.
 I Personally only kept a few.
 
-## MacOS Tools
 
-* <https://github.com/sindresorhus/quick-look-plugins>
+## Common softwares for dev
 
-* Karabiner
+- JS / Node / Flow / TypeScript
+- Python3 / PyRe 
+- Java / JDK / Gradle / Scala / Sbt
+- Rust / Cargo
+- Reason / Esy 
+- OCaml / Opam / Coq / SML
+- Haskell / GHC / Agda
+- Scheme / Racket / Clojure 
+- LLVM / Clang-format
+- Latex
 
-* Alfred
 
 ## Reference
 
