@@ -16,6 +16,10 @@ Both themes support using `set background` to switch between dark and light vers
 
 ## Dependencies / Credits
 
+Vim-plug
+  * `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
+    
 Vundle (for vim plugin management)
   * `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
   * `:PluginInstall` in vim
@@ -49,6 +53,10 @@ Homebrew
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
+Spacemacs
+
+VSCode
+
 ## Protips
 
 Use `symlink` rather than hard copies!
@@ -69,6 +77,10 @@ I Personally only kept a few.
 ## MacOS Tools
 
 * <https://github.com/sindresorhus/quick-look-plugins>
+
+* Karabiner
+
+* Alfred
 
 ## Reference
 
