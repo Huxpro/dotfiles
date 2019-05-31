@@ -170,3 +170,4 @@ if [ -f ~/.auto-fu/auto-fu.zsh ]; then
   zstyle ':completion:*' completer _oldlist _complete
 fi
 zstyle ':auto-fu:var' postdisplay $''
+export PATH="/usr/local/opt/llvm/bin:$PATH"
