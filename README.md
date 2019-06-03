@@ -56,6 +56,7 @@ Homebrew
 Spacemacs
 
 VSCode
+  * `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
 
 ## Protips
 

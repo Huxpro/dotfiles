@@ -90,6 +90,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+HISTSIZE=10000
+HISTFILESIZE=10000
+
 #####################################
 # alias
 #####################################
@@ -134,6 +137,9 @@ fi
 
 # haskell
 alias stack-all='ls $(stack path --programs)'
+
+# permission
+alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
 
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }

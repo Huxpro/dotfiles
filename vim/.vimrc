@@ -18,6 +18,20 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
+" for neovim
+if has('nvim')
+  " Dark powered asynchronous completion framework for neovim/Vim8
+  " seems to be required by LSP
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" for vim 8 with python
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+  " the path to python3 is obtained through executing `:echo exepath('python3')` in vim
+  let g:python3_host_prog = "/absolute/path/to/python3"
+endif
+
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
 
@@ -78,61 +92,41 @@ Plug 'pangloss/vim-javascript'
 " Tex input-method
 Plug 'joom/latex-unicoder.vim'
 
-call plug#end()
-" ============ Vim-plug ============
+" Indent Guides
+Plug 'nathanaelkane/vim-indent-guides'
 
+" Comment
+Plug 'tpope/vim-commentary'
 
-" ============ Vundle ============
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" CtrlP
+Plug 'kien/ctrlp.vim'
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'rhysd/clever-f.vim'
 
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rhysd/clever-f.vim'
+" Theme 
+Plug 'altercation/vim-colors-solarized'
 
+"Plug 'rakr/vim-one'
+Plug 'jordwalke/vim-one'
 
-""""" Theme and color
-Plugin 'altercation/vim-colors-solarized'
-"Plugin 'rakr/vim-one'
-Plugin 'jordwalke/vim-one'
-
-""""" Reason
-" the legacy reason plugin.
-Plugin 'reasonml-editor/vim-reason'
-
-" the new-one doesn't work:
-"Plugin 'roxma/vim-hug-neovim-rpc'
-"Plugin 'roxma/nvim-yarp'
+Plug 'NLKNguyen/papercolor-theme'
 
 " Follow the installation guide to compile language server. It's good
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
 " Require macvim / python-support etc.
 " Disable for Neovim @fbdev machine temp
 " Plugin 'Valloric/YouCompleteMe'
-
-Plugin 'tpope/vim-commentary'
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+"
+call plug#end()
 
 
 set rtp+=~/.vim/plugged/isabelle.vim
-" ============ Vundle ============
-
-
-" line buffer
-set history=100
+" ============ Vim-plug ============
 
 
 " ============ neovim ============
@@ -155,13 +149,15 @@ endif
 " use space as <leader>
 let mapleader=" "
 let g:LanguageClient_serverCommands = {
-    \ 'reason': ['ocaml-language-server'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'reason': ['reason-language-server.exe']
     \ }
 
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
 "nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
 nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
 nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
+nnoremap <silent> gh :call LanguageClient_contextMenu()<CR>
 " ============ LSP ============
 
 
@@ -181,7 +177,7 @@ let g:ale_linters = {
 
 
 " ============ VIM-MARKDOWN ============
-let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
+let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
 " ============ VIM-MARKDOWN ============
 
 
@@ -221,6 +217,9 @@ set autochdir "auto change dir
 set nobackup
 set nowb
 set noswapfile
+
+" line buffer
+set history=100
 " ============ FILE ============
 
 
@@ -253,7 +252,6 @@ set wrap "Wrap lines
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
-
 " ============ TEXT (Tab & Indent) ============
 
 
@@ -299,6 +297,9 @@ endif
 set display=lastline
 set laststatus=2    " To display the status line always
 set cursorline      " hilight current line
+
+" column
+set colorcolumn=80,100,120
 
 " line number
 set number
@@ -500,6 +501,11 @@ map , <Plug>(clever-f-repeat-back)
 " <C_/>
 map <C-_> : Commentary<cr>
 " ============ Vim-commentary ============
+
+
+" ============ Indent Guide ============
+let g:indent_guides_enable_on_vim_startup = 0
+" ============ Indent Guide ============
 
 
 " ============ Auto Pair ============
