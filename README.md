@@ -45,44 +45,22 @@ Dependencies / Credits
   * also checkout "Nerds Font" 
 
 
-<<<<<<< HEAD
-## Other Common Dependencies
-=======
 Other Common Dependencies
 -------------------------
->>>>>>> origin/master
 
 [Homebrew](https://brew.sh/)
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 [ITerm2](https://www.iterm2.com/)
+  * Dimming : minimal
+  * Panes : uncheck titlebar
   * Theming
     * One Light came from [here](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * One Dark  came from another repo (the above one is not satisified)
-    * Keyboard Shortcut: add shortcut `cmd-D`, `cmd-L` for switching between Dark/Light theme via "load color preset"
-  * Dimming : minimal
-  * Panes : uncheck titlebar
+    * add keyboard shortcut `cmd-'`, `cmd-"` for switching via "load color preset"
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
   * there are tricks to share `.vimrc` w/ `vim`
-<<<<<<< HEAD
-
-Spacemacs
-  * sync emacs setting
-
-VSCode
-  * sync with `Settings Sync` plugin w/ a private gist
-
-Karabiner
-  * keyboard layout mapping / hacking (e.g. mapping capslock to esc)
-  * sync with its configuration file
-
-Alfred (3)
-  * sync with its preferences file
-  
-[MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins)
-
-=======
   * [wish] Onivim, Spacevim
 
 [Spacemacs](http://spacemacs.org/)
@@ -103,7 +81,6 @@ Alfred (3)
 [Karabiner](https://pqrs.org/osx/karabiner/)
   * keyboard layout mapping / hacking (e.g. mapping capslock to esc)
   * sync with its configuration file
->>>>>>> origin/master
 
 [Alfred (v3)](https://www.alfredapp.com/)
   * sync with its preferences file
@@ -165,28 +142,6 @@ Isabelle
 
 Scala / Sbt
 - `brew install scala sbt`
-
-<<<<<<< HEAD
-
-## Common softwares for dev
-
-- JS / Node / Flow / TypeScript
-- Python3 / PyRe 
-- Java / JDK / Gradle / Scala / Sbt
-- Rust / Cargo
-- Reason / Esy 
-- OCaml / Opam / Coq / SML
-- Haskell / GHC / Agda
-- Scheme / Racket / Clojure 
-- LLVM / Clang-format
-- Latex
-=======
-Scheme / Racket / Clojure 
-
-LLVM / Clang-format
-
-Latex
->>>>>>> origin/master
 
 
 Reference
