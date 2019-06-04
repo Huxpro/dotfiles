@@ -5,20 +5,20 @@
       "subtext" : {
         "size" : 12,
         "colorSelected" : "#62667EFF",
-        "font" : "Fira Mono for Powerline",
+        "font" : "Menlo",
         "color" : "#61657FFF"
       },
       "shortcut" : {
         "size" : 16,
         "colorSelected" : "#8396FFFF",
-        "font" : "Fira Mono for Powerline",
+        "font" : "Menlo",
         "color" : "#8396FFFF"
       },
       "backgroundSelected" : "#20242BFF",
       "text" : {
         "size" : 16,
         "colorSelected" : "#C774DFFF",
-        "font" : "Fira Mono for Powerline",
+        "font" : "Menlo",
         "color" : "#DDE1F7FF"
       },
       "iconPaddingHorizontal" : 6,
@@ -32,7 +32,7 @@
       "text" : {
         "size" : 24,
         "colorSelected" : "#000000FF",
-        "font" : "Fira Mono for Powerline",
+        "font" : "Menlo",
         "color" : "#DDE1F7FF"
       },
       "backgroundSelected" : "#0096FFFF"

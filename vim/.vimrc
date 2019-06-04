@@ -12,11 +12,27 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
 
+" ============ Plugin LSP ============
 " LSP(Langague Server Protocol) client supports for vim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+
+" for neovim
+if has('nvim')
+  " required by LSP to support autocompletion
+  " Dark powered asynchronous completion framework for neovim/Vim8
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" for vim 8 with python
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+  " the path to python3 is obtained through executing `:echo exepath('python3')` in vim
+  let g:python3_host_prog = "/absolute/path/to/python3"
+endif
+" ============ Plugin LSP ============
 
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
@@ -43,12 +59,10 @@ Plug 'tpope/vim-markdown'
 " Both for git and for better sign column
 Plug 'airblade/vim-gitgutter'
 
-" https://github.com/w0rp/ale
+" Asynchronous Lint Engine w/ LSP support
 Plug 'w0rp/ale'
 
-Plug 'jiangmiao/auto-pairs'
-
-" https://github.com/ybian/smartim
+" Smart input method
 Plug 'ybian/smartim'
 
 " Carbon - create beautiful code images
@@ -60,8 +74,14 @@ Plug 'chrisbra/unicode.vim'
 " Surround.vim
 Plug 'tpope/vim-surround'
 
-" LaTex
+" ?
+Plug 'jiangmiao/auto-pairs'
+
+" LaTex 
 Plug 'lervag/vimtex'
+
+" Tex input-method <C-L>
+Plug 'joom/latex-unicoder.vim'
 
 " Coq (doesn't work for some Python error)
 " Plug 'the-lambda-church/coquille'
@@ -69,68 +89,58 @@ Plug 'lervag/vimtex'
 " Agda
 Plug 'derekelkins/agda-vim'
 
-" WASM
+" Wasm
 Plug 'rhysd/vim-wasm'
 
 " JS
 Plug 'pangloss/vim-javascript'
 
-" Tex input-method
-Plug 'joom/latex-unicoder.vim'
+" Indent Guides
+Plug 'nathanaelkane/vim-indent-guides'
 
-call plug#end()
-" ============ Vim-plug ============
+" Comment
+Plug 'tpope/vim-commentary'
 
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" ============ Vundle ============
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" CtrlP
+Plug 'kien/ctrlp.vim'
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Git wrapper
+Plug 'tpope/vim-fugitive'
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" better `f`
+Plug 'rhysd/clever-f.vim'
 
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rhysd/clever-f.vim'
+" Auto Completion
+Plug 'vim-scripts/AutoComplPop'
 
+"============ Plugin Theme ============
+Plug 'altercation/vim-colors-solarized'
 
-""""" Theme and color
-Plugin 'altercation/vim-colors-solarized'
-"Plugin 'rakr/vim-one'
-Plugin 'jordwalke/vim-one'
+"Plug 'rakr/vim-one'
+"
+Plug 'jordwalke/vim-one'
 
-""""" Reason
-" the legacy reason plugin.
-Plugin 'reasonml-editor/vim-reason'
-
-" the new-one doesn't work:
-"Plugin 'roxma/vim-hug-neovim-rpc'
-"Plugin 'roxma/nvim-yarp'
+Plug 'NLKNguyen/papercolor-theme'
+" ============ Plugin Theme ============
+"
 
 " Follow the installation guide to compile language server. It's good
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
-Plugin 'Valloric/YouCompleteMe'
+" Require macvim / python-support etc.
+" Disable for machine doesn't have python.
+if has('python')
+  Plug 'Valloric/YouCompleteMe'
+endif
 
-Plugin 'tpope/vim-commentary'
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()
 
 
 set rtp+=~/.vim/plugged/isabelle.vim
-" ============ Vundle ============
-
-
-" line buffer
-set history=100
+" ============ Vim-plug ============
 
 
 " ============ neovim ============
@@ -153,13 +163,15 @@ endif
 " use space as <leader>
 let mapleader=" "
 let g:LanguageClient_serverCommands = {
-    \ 'reason': ['ocaml-language-server'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'reason': ['reason-language-server.exe']
     \ }
 
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
 "nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
 nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
 nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
+nnoremap <silent> gh :call LanguageClient_contextMenu()<CR>
 " ============ LSP ============
 
 
@@ -179,7 +191,7 @@ let g:ale_linters = {
 
 
 " ============ VIM-MARKDOWN ============
-let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'c', 'asm', 'lisp', 'clj=clojure',  'py=python']
+let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
 " ============ VIM-MARKDOWN ============
 
 
@@ -219,7 +231,17 @@ set autochdir "auto change dir
 set nobackup
 set nowb
 set noswapfile
+
+" line buffer
+set history=100
 " ============ FILE ============
+
+
+" ============ Auto Completion ============
+" https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+:set completeopt=longest,menuone
+:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" ============ Auto Completion ============
 
 
 " ============ TEXT (Tab & Indent) ============
@@ -251,7 +273,6 @@ set wrap "Wrap lines
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
-
 " ============ TEXT (Tab & Indent) ============
 
 
@@ -297,6 +318,9 @@ endif
 set display=lastline
 set laststatus=2    " To display the status line always
 set cursorline      " hilight current line
+
+" column
+set colorcolumn=80,100,120
 
 " line number
 set number
@@ -500,23 +524,29 @@ map <C-_> : Commentary<cr>
 " ============ Vim-commentary ============
 
 
+" ============ Indent Guide ============
+let g:indent_guides_enable_on_vim_startup = 0
+" ============ Indent Guide ============
+
+
 " ============ Auto Pair ============
 let g:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '`':'`'}
 " ============ Auto Pair ============
 
 
 " ============ Merlin for OCaml / Reason ============
-augroup merlin
-  au!
-  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-  execute "set rtp+=" . g:opamshare . "/merlin/vim"
-  set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
+" comment out for fb dev
+" augroup merlin
+"   au!
+"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+"   execute "set rtp+=" . g:opamshare . "/merlin/vim"
+"   set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
 
-  " ----- Keybindings -----
-  au FileType ocaml map gd : MerlinLocate<cr>
-  au FileType ocaml map gf : ReasonPrettyPrint<cr>
-  au FileType ocaml map <cr> : MerlinTypeOf<cr>
-augroup end
+"   " ----- Keybindings -----
+"   au FileType ocaml map gd : MerlinLocate<cr>
+"   au FileType ocaml map gf : ReasonPrettyPrint<cr>
+"   au FileType ocaml map <cr> : MerlinTypeOf<cr>
+" augroup end
 " ============ Merlin for OCaml / Reason ============
 
 
