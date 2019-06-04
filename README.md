@@ -1,8 +1,11 @@
-# Xuan's dotfiles
+Xuan's dotfiles
+===============
 
 I maintain this for my very personal use, but you're quite welcome to refer it, use it, and make suggestions.
 
-## Screenshot
+
+Screenshots
+-----------
 
 with One theme:
 ![screenshot](./scrshot-one.png)
@@ -13,16 +16,16 @@ with Solarized theme:
 
 Both themes support using `set background` to switch between dark and light versions.
 
-## Dependencies / Credits
+[alpha] PaperWhite theme.
 
-Vim-plug
+
+Dependencies / Credits
+----------------------
+
+[vim-plug](https://github.com/junegunn/vim-plug)
   * `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
     
-Vundle (for vim plugin management)
-  * `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
-  * `:PluginInstall` in vim
-
 [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 
@@ -38,42 +41,58 @@ Vundle (for vim plugin management)
     * It seems not working at macOS native terminal app (PR welcome)
     * But I also include a `.itermcolor` in `/theme` for ITerm users
 
-Fira Fonts (if you like this)
-  * checkout "Nerds Font" 
+[FiraCode](https://github.com/tonsky/FiraCode)
+  * also checkout "Nerds Font" 
 
-## Other Common Dependencies
 
-Homebrew
+Other Common Dependencies
+-------------------------
+
+[Homebrew](https://brew.sh/)
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 [ITerm2](https://www.iterm2.com/)
-  * Dimming minimal
-  * Panes uncheck titlebar
+  * Theming
+    * One Light came from [here](https://github.com/nathanbuchar/atom-one-dark-terminal)
+    * One Dark  came from another repo (the above one is not satisified)
+    * Keyboard Shortcut: add shortcut `cmd-D`, `cmd-L` for switching between Dark/Light theme via "load color preset"
+  * Dimming : minimal
+  * Panes : uncheck titlebar
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
   * there are tricks to share `.vimrc` w/ `vim`
+  * [wish] Onivim, Spacevim
 
-Spacemacs
+[Spacemacs](http://spacemacs.org/)
   * sync emacs setting
 
-VSCode
+[IntelliJ IDEA](https://www.jetbrains.com/idea/)
+  * sync with setting-sync w/ a git repo
+  * require github access token
+
+[VS Code](https://code.visualstudio.com/)
   * sync with `Settings Sync` plugin w/ a private gist
+  * require github access token
+  * the key-repeat issue 
+    * `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
   * `im-select` (used by VSCodeVIM)
     * `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
-
-Karabiner
+   
+[Karabiner](https://pqrs.org/osx/karabiner/)
   * keyboard layout mapping / hacking (e.g. mapping capslock to esc)
   * sync with its configuration file
 
-Alfred (3)
+[Alfred (v3)](https://www.alfredapp.com/)
   * sync with its preferences file
   
 [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins)
+  * `brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize webpquicklook suspicious-package quicklookase qlvideo`
 
 
-## Protips
+Protips
+-------
 
-Use `symlink` rather than hard copies!
+### `symlink` over copy
 
 ```bash
 $ ln -s <source_file> <target_file>
@@ -85,25 +104,54 @@ $ sh linkall.sh
 $ ln -s dotfiles/vim/.vimrc .vimrc
 ```
 
-For `ssh` usages, you might want to comment out soem plugins to prevent the vim from starting too slow.
-I Personally only kept a few.
+### `ssh` performance
+
+For `ssh` usages, you might want to comment out some vim plugins for speeds.
 
 
-## Common softwares for dev
 
-- JS / Node / Flow / TypeScript
-- Python3 / PyRe 
-- Java / JDK / Gradle / Scala / Sbt
-- Rust / Cargo
-- Reason / Esy 
-- OCaml / Opam / Coq / SML
-- Haskell / GHC / Agda
-- Scheme / Racket / Clojure 
-- LLVM / Clang-format
-- Latex
+Other Common Language Softwares 
+--------------------------------
+
+JS / Node / NPM / Flow / TypeScript
+
+Python3 / PyRe 
+
+Java / JDK / Gradle / Scala / Sbt
+
+Rust / Cargo
+- `rustup`, `rls`, `rustc`
+
+OCaml / Opam / Dune (Jbuilder)
+
+[Coq](https://coq.inria.fr/)
+
+Reason / BuckleScript / Esy
+
+SML
+- `brew install smlnj rlwrap`
+
+Haskell / GHC 
+- `ghcup`
+
+Agda
+
+Idris
+
+Isabelle
+
+Scala / Sbt
+- `brew install scala sbt`
+
+Scheme / Racket / Clojure 
+
+LLVM / Clang-format
+
+Latex
 
 
-## Reference
+Reference
+---------
 
 This dotfiles shamelessly borrow a lot from the web. (Thx, the internet!)
 

@@ -90,6 +90,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+HISTSIZE=10000
+HISTFILESIZE=10000
+
 #####################################
 # alias
 #####################################
@@ -127,12 +130,16 @@ alias opamswitchsys='opam switch system;     eval `opam config env`'
 # rust (I knew it's weird)
 alias rusti='rustup run nightly-2016-08-01 ~/.cargo/bin/rusti'
 
-if ! [ -x "opam" ]; then
+# only eval opam if opam is executable
+if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
 fi
 
 # haskell
 alias stack-all='ls $(stack path --programs)'
+
+# permission
+alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
 
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }
@@ -169,3 +176,4 @@ if [ -f ~/.auto-fu/auto-fu.zsh ]; then
   zstyle ':completion:*' completer _oldlist _complete
 fi
 zstyle ':auto-fu:var' postdisplay $''
+export PATH="/usr/local/opt/llvm/bin:$PATH"
