@@ -48,8 +48,12 @@ Homebrew
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 [ITerm2](https://www.iterm2.com/)
-  * Dimming minimal
-  * Panes uncheck titlebar
+  * Theming
+    * One Light came from [here](https://github.com/nathanbuchar/atom-one-dark-terminal)
+    * One Dark  came from another repo (the above one is not satisified)
+    * Keyboard Shortcut: add shortcut "cmd-D", "cmd-L" for switching to Dark/Light theme via "load color preset"
+  * Dimming : minimal
+  * Panes : uncheck titlebar
 
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 

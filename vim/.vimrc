@@ -12,6 +12,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
 
+" ============ Plugin LSP ============
 " LSP(Langague Server Protocol) client supports for vim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -20,8 +21,8 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " for neovim
 if has('nvim')
+  " required by LSP to support autocompletion
   " Dark powered asynchronous completion framework for neovim/Vim8
-  " seems to be required by LSP
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " for vim 8 with python
 else
@@ -31,6 +32,7 @@ else
   " the path to python3 is obtained through executing `:echo exepath('python3')` in vim
   let g:python3_host_prog = "/absolute/path/to/python3"
 endif
+" ============ Plugin LSP ============
 
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
@@ -57,12 +59,10 @@ Plug 'tpope/vim-markdown'
 " Both for git and for better sign column
 Plug 'airblade/vim-gitgutter'
 
-" https://github.com/w0rp/ale
+" Asynchronous Lint Engine w/ LSP support
 Plug 'w0rp/ale'
 
-Plug 'jiangmiao/auto-pairs'
-
-" https://github.com/ybian/smartim
+" Smart input method
 Plug 'ybian/smartim'
 
 " Carbon - create beautiful code images
@@ -74,8 +74,14 @@ Plug 'chrisbra/unicode.vim'
 " Surround.vim
 Plug 'tpope/vim-surround'
 
-" LaTex
+" ?
+Plug 'jiangmiao/auto-pairs'
+
+" LaTex 
 Plug 'lervag/vimtex'
+
+" Tex input-method <C-L>
+Plug 'joom/latex-unicoder.vim'
 
 " Coq (doesn't work for some Python error)
 " Plug 'the-lambda-church/coquille'
@@ -83,14 +89,11 @@ Plug 'lervag/vimtex'
 " Agda
 Plug 'derekelkins/agda-vim'
 
-" WASM
+" Wasm
 Plug 'rhysd/vim-wasm'
 
 " JS
 Plug 'pangloss/vim-javascript'
-
-" Tex input-method
-Plug 'joom/latex-unicoder.vim'
 
 " Indent Guides
 Plug 'nathanaelkane/vim-indent-guides'
@@ -105,23 +108,34 @@ Plug 'vim-airline/vim-airline-themes'
 " CtrlP
 Plug 'kien/ctrlp.vim'
 
+" Git wrapper
 Plug 'tpope/vim-fugitive'
+
+" better `f`
 Plug 'rhysd/clever-f.vim'
 
-" Theme 
+" Auto Completion
+Plug 'vim-scripts/AutoComplPop'
+
+"============ Plugin Theme ============
 Plug 'altercation/vim-colors-solarized'
 
 "Plug 'rakr/vim-one'
+"
 Plug 'jordwalke/vim-one'
 
 Plug 'NLKNguyen/papercolor-theme'
+" ============ Plugin Theme ============
+"
 
 " Follow the installation guide to compile language server. It's good
 " https://github.com/Valloric/YouCompleteMe#mac-os-x
 " Require macvim / python-support etc.
-" Disable for Neovim @fbdev machine temp
-" Plugin 'Valloric/YouCompleteMe'
-"
+" Disable for machine doesn't have python.
+if has('python')
+  Plug 'Valloric/YouCompleteMe'
+endif
+
 call plug#end()
 
 
@@ -221,6 +235,13 @@ set noswapfile
 " line buffer
 set history=100
 " ============ FILE ============
+
+
+" ============ Auto Completion ============
+" https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+:set completeopt=longest,menuone
+:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" ============ Auto Completion ============
 
 
 " ============ TEXT (Tab & Indent) ============
