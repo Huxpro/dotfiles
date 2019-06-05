@@ -73,10 +73,13 @@ Other Common Dependencies
 [VS Code](https://code.visualstudio.com/)
   * sync with `Settings Sync` plugin w/ a private gist
   * require github access token
-  * the key-repeat issue 
+  * [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
     * `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
-  * `im-select` (used by VSCodeVIM)
-    * `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
+  * [blurry font on macOS Mojave for non-retina screen e.g. display](https://github.com/Microsoft/vscode/issues/51132)
+    * `defaults write com.microsoft.VSCode.helper CGFontRenderingFontSmoothingDisabled -bool NO`
+  * smartim-like input method switching 
+    * installing `im-select` (works w/ `VSCodeVIM`)
+      * `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
    
 [Karabiner](https://pqrs.org/osx/karabiner/)
   * keyboard layout mapping / hacking (e.g. mapping capslock to esc)

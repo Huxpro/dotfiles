@@ -5,9 +5,10 @@ KEYTIMEOUT=1
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Haskell cabal/stack/hie etc.
+# Haskell ghcup/cabal/stack/hie etc.
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH="$HOME/.ghcup/bin:$PATH"
 
 # Python pyenv
 export PYENV_ROOT="$HOME/.pyenv"
