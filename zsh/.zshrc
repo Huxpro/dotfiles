@@ -101,6 +101,7 @@ HISTFILESIZE=10000
 alias vi='nvim'
 alias vim='nvim'
 alias oldvim='\vim'
+EDITOR=vim
 
 # emacs (open in new instance)
 alias emacs='open -n -a Emacs.app .'
@@ -140,6 +141,11 @@ alias stack-all='ls $(stack path --programs)'
 
 # permission
 alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
+
+# colorful stderr
+# https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
+# color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
+color()(set -o pipefail;"$@" 2>&1 1>&3|sed $'s,.*,\e[31m&\e[m,'1>&2)3>&1
 
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }

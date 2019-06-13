@@ -89,6 +89,9 @@ Plug 'joom/latex-unicoder.vim'
 " Agda
 Plug 'derekelkins/agda-vim'
 
+" Swift
+Plug 'keith/swift.vim' 
+
 " Wasm
 Plug 'rhysd/vim-wasm'
 
@@ -162,10 +165,13 @@ endif
 " ============ LSP ============
 " use space as <leader>
 let mapleader=" "
+
+"\ 'reason': ['reason-language-server.exe']
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'reason': ['reason-language-server.exe']
+    \ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe']
     \ }
+" let g:LanguageClient_trace="verbose"
 
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
 "nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
@@ -191,7 +197,7 @@ let g:ale_linters = {
 
 
 " ============ VIM-MARKDOWN ============
-let g:markdown_fenced_languages = ['wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 're=reason', 'reason', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
+let g:markdown_fenced_languages = ['sh', 'wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 'reasonml=reason', 'reason', 'json', 'swift', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
 " ============ VIM-MARKDOWN ============
 
 
