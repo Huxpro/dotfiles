@@ -5,10 +5,12 @@
 #  CLN - Collect LiNks                                      #
 #  Xuan Huang @ 2019  https://github.com/huxpro             #
 #                                                           #
+#  Install:                                                 #
+#  $ ln -s path/to/cln.sh /usr/local/bin/cln                #
 #                                                           #
 #  Usage:                                                   #
 #                                                           #
-#  $ sh path/to/cln.sh <dir_contains_links>   -- collect    #
+#  $ cln <dir_contains_links>                 -- collect    #
 #  $ sh <dir_contains_links>/cln_gen.sh       -- replay     #
 #                                                           #
 #############################################################
@@ -21,13 +23,13 @@ function traverse() {
   do
     # only looking for link
     if [ -L "${file}" ] ; then
-        target="$(readlink -f ${file})"
+        source="$(readlink -f ${file})"
         
         # trace
-        echo "[CLN] reading link: ${file} -> ${target}"
+        echo "[CLN] reading link: ${file} -> ${source}"
         
         # append to gen
-        echo "ln -s ${file} ${target}" >> "${GEN}"
+        echo "ln -s ${source} ${file}" >> "${GEN}"
     fi
   done
 }
