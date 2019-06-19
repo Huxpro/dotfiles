@@ -5,13 +5,17 @@
 #  CLN - Collect LiNks                                      #
 #  Xuan Huang @ 2019  https://github.com/huxpro             #
 #                                                           #
+#                                                           #
 #  Install:                                                 #
-#  $ ln -s path/to/cln.sh /usr/local/bin/cln                #
+#  $ ln -s path/to/cln.sh /usr/local/bin/cln -- add to path $
 #                                                           #
 #  Usage:                                                   #
+#  $ cln <dir_contains_links>                -- collect     #
+#  $ sh <dir_contains_links>/cln_gen.sh      -- replay      #
 #                                                           #
-#  $ cln <dir_contains_links>                 -- collect    #
-#  $ sh <dir_contains_links>/cln_gen.sh       -- replay     #
+#  TODO:                                                    #
+#  - different user name                                    #
+#  - different relative path                                #
 #                                                           #
 #############################################################
 
@@ -50,8 +54,8 @@ function main() {
 
   # print gen
   if [[ -f "${GEN}" ]]; then
-    # prepend hashbang
-    echo "$(echo "#!/bin/bash"; cat ${GEN})" > ${GEN}
+    # prepend hashbang (not works well)
+    # echo "$(echo "#!/bin/bash"; cat $GEN)" >> "${GEN}"
 
     # trace
     echo "[CLN] script generated: "
