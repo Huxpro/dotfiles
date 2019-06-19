@@ -7,33 +7,38 @@
 #                                                           #
 #                                                           #
 #  Install:                                                 #
-#  $ ln -s path/to/cln.sh /usr/local/bin/cln -- add to path $
+#  $ ln -s path/to/cln.sh some/where/in/your/PATH           #
 #                                                           #
 #  Usage:                                                   #
 #  $ cln <dir_contains_links>                -- collect     #
-#  $ sh <dir_contains_links>/cln_gen.sh      -- replay      #
+#  $ sh <dir_contains_links>/.cln_gen.sh     -- replay      #
 #                                                           #
-#  TODO:                                                    #
-#  - different user name                                    #
-#  - different relative path                                #
+#  Features:                                                #
+#  - replace $HOME in path to `~`                           #
 #                                                           #
 #############################################################
 
-CWD="$(pwd)"
-GEN="${CWD}/cln_gen.sh"
+CWD=`pwd`
+GEN_NAME=".cln_gen.sh"
+GEN="${CWD}/${GEN_NAME}"
 
 function traverse() {
-  for file in "$1"/*    
+  for target in "$1"/*    
   do
     # only looking for link
-    if [ -L "${file}" ] ; then
-        source="$(readlink -f ${file})"
-        
-        # trace
-        echo "[CLN] reading link: ${file} -> ${source}"
-        
+    if [ -L "${target}" ] ; then
+
+        # read canonical path
+        # require GNU readlink (`brew i coreutils` on mac)
+        source=`greadlink -f ${target}`
+        echo "[CLN] reading link: ${target} -> ${source}"
+
+        # relative to $HOME
+        # echo "[CLN] relative-ize : ${target} -> ${source_rel}"
+        source_rel="${source//$HOME/~}"
+
         # append to gen
-        echo "ln -s ${source} ${file}" >> "${GEN}"
+        echo "ln -s ${source_rel} ${target}" >> "${GEN}"
     fi
   done
 }
@@ -54,8 +59,8 @@ function main() {
 
   # print gen
   if [[ -f "${GEN}" ]]; then
-    # prepend hashbang (not works well)
-    # echo "$(echo "#!/bin/bash"; cat $GEN)" >> "${GEN}"
+    # prepend hashbang 
+    echo "$(echo "#!/bin/bash"; cat $GEN)" > "${GEN}"
 
     # trace
     echo "[CLN] script generated: "
