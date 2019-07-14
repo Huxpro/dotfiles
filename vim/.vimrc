@@ -12,30 +12,57 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
 
+
 " ============ Plugin LSP ============
+" CoC: alternative LSP client
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 " LSP(Langague Server Protocol) client supports for vim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
+" Deoplete is a independent Dark powered asynchronous completion framework for neovim/Vim8.
+" https://github.com/Shougo/deoplete.nvim
+" LC-neovim use it to support LSP-powered autocompletion.
 " for neovim
 if has('nvim')
-  " required by LSP to support autocompletion
-  " Dark powered asynchronous completion framework for neovim/Vim8
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " for vim 8 with python
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
-  " the path to python3 is obtained through executing `:echo exepath('python3')` in vim
-  let g:python3_host_prog = "/absolute/path/to/python3"
 endif
+
+" enable autocomplete
+let g:deoplete#enable_at_startup = 1
+
+" FZF is a independent replacement to CtrlP,
+" But LC-neovim use it for contextMenu when it exists.
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 " ============ Plugin LSP ============
+
+
+" ============ Languages ============
+" FNL
+Plug '~/aros/tungsten/experimental/proto2/editors/fnl-vim'
+ 
+" Rust
+Plug 'rust-lang/rust.vim'
 
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
+
+" Scala
+Plug 'derekwyatt/vim-scala'
+
+" Kotlin
+Plug 'udalov/kotlin-vim'
+
+" TypeScript
+Plug 'leafgarland/typescript-vim'
 
 " SML
 Plug 'jez/vim-better-sml'
@@ -55,6 +82,14 @@ Plug 'tpope/vim-fireplace'
 
 " Markdown
 Plug 'tpope/vim-markdown'
+
+" LaTex 
+Plug 'lervag/vimtex'
+
+" Isabelle
+set rtp+=~/.vim/plugged/isabelle.vim
+" ============ Languages ============
+
 
 " Both for git and for better sign column
 Plug 'airblade/vim-gitgutter'
@@ -76,9 +111,6 @@ Plug 'tpope/vim-surround'
 
 " ?
 Plug 'jiangmiao/auto-pairs'
-
-" LaTex 
-Plug 'lervag/vimtex'
 
 " Tex input-method <C-L>
 Plug 'joom/latex-unicoder.vim'
@@ -109,7 +141,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " CtrlP
-Plug 'kien/ctrlp.vim'
+" Following [SpaceVim](https://github.com/liuchengxu/space-vim/issues/124)
+" Drop CtrlP in favor of FZF as `<C-p>`
+" Plug 'kien/ctrlp.vim'
+
+" Find Project Root
+" Was provided by CtrlP.
+Plug 'airblade/vim-rooter'
 
 " Git wrapper
 Plug 'tpope/vim-fugitive'
@@ -118,9 +156,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'rhysd/clever-f.vim'
 
 " Auto Completion
-Plug 'vim-scripts/AutoComplPop'
+" this seems to be conflict w/ Deoplete (which is much better)
+" Plug 'vim-scripts/AutoComplPop'
 
-"============ Plugin Theme ============
+"============ Theme ============
 Plug 'altercation/vim-colors-solarized'
 
 "Plug 'rakr/vim-one'
@@ -128,7 +167,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'jordwalke/vim-one'
 
 Plug 'NLKNguyen/papercolor-theme'
-" ============ Plugin Theme ============
+" =========== Theme ============
 "
 
 " Follow the installation guide to compile language server. It's good
@@ -140,9 +179,6 @@ if has('python')
 endif
 
 call plug#end()
-
-
-set rtp+=~/.vim/plugged/isabelle.vim
 " ============ Vim-plug ============
 
 
@@ -166,24 +202,54 @@ endif
 " use space as <leader>
 let mapleader=" "
 
-"\ 'reason': ['reason-language-server.exe']
+"\ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe'],
+"
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe']
+    \ 'reason': ['reason-language-server.exe'],
+    \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
     \ }
+
+let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.stderr.log'
+let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
 " let g:LanguageClient_trace="verbose"
+
 
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
 "nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
 nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
-nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
 nnoremap <silent> gh :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
+nnoremap <silent> W :pclose<cr>
+
+
+
+" https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
+function SetLSPShortcuts()
+  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+  autocmd!
+  autocmd FileType fnl,reason,rust,cpp,c call SetLSPShortcuts()
+augroup END
 " ============ LSP ============
 
 
 " ============ ALE ============
+" Ale is a linter frontend supports beyond language server protocol
+" for LSP-powered language supports, LanguageClient-neovim should be sufficient.
 " let g:ale_lint_on_text_changed = 'normal'
-let g:ale_sign_column_always   = 1
+let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
 
@@ -193,11 +259,19 @@ let g:ale_linters = {
 \   'ocaml': ['merlin'],
 \   'haskell': ['ghc-mod', 'hlint'],
 \}
+
+" default is 0
+let g:ale_linters_explicit = 1
+
+" echo format
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " ============ ALE ============
 
 
 " ============ VIM-MARKDOWN ============
-let g:markdown_fenced_languages = ['sh', 'wast', 'agda', 'coq=ocaml', 'ocaml', 'sml', 'reasonml=reason', 'reason', 'json', 'swift', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'c', 'cs', 'rust', 'fnl=rust', 'asm', 'lisp', 'clj=clojure',  'py=python']
+let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
 " ============ VIM-MARKDOWN ============
 
 
@@ -216,7 +290,14 @@ let g:vimtex_quickfix_mode=0
 "au FileType tex setlocal conceallevel=1
 "let g:tex_conceal='abdmg'
 " ============ VIMTEX ============
-"
+
+
+" ============ Latex Unicoder ============
+nnoremap <C-\> :call unicoder#start(0)<CR>
+inoremap <C-\> <Esc>:call unicoder#start(1)<CR>
+vnoremap <C-\> :call unicoder#selection()<CR>
+" ============ Latex Unicoder ============
+
 
 " ============ FILE ============
 " Encoding
@@ -243,11 +324,15 @@ set history=100
 " ============ FILE ============
 
 
-" ============ Auto Completion ============
+" ============ Deoplete (Auto Completion) ============
 " https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
-:set completeopt=longest,menuone
-:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" ============ Auto Completion ============
+" :help Deoplete.txt
+set completeopt+=noinsert
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" https://github.com/Shougo/deoplete.nvim/issues/816
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" ============ Deoplete (Auto Completion) ============
 
 
 " ============ TEXT (Tab & Indent) ============
@@ -327,6 +412,7 @@ set cursorline      " hilight current line
 
 " column
 set colorcolumn=80,100,120
+set signcolumn=yes
 
 " line number
 set number
@@ -507,9 +593,20 @@ let NERDTreeShowHidden= 1
 
 " ============ CtrlP ============
 " Show hidden files when using ctrlp
-let g:ctrlp_show_hidden = 1
+" let g:ctrlp_show_hidden = 1
+" FZF can also do `:Rg`, which I haven't found a 
+
+" ProjectFiles tries to locate files relative to the git root contained in
+" NerdTree, falling back to the current NerdTree dir if not available
+" see https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
+map <C-p> : FZF<CR>
+map <leader>f : Rg<CR>
 " ============ CtrlP ============
 
+
+" ============ Vim Rooter ============
+let g:rooter_patterns = ['.hg', '.git/', 'package.json']
+" ============ Vim Rooter ============
 
 " ============ Tagbar ============
 " shortcut
@@ -536,9 +633,15 @@ let g:indent_guides_enable_on_vim_startup = 0
 
 
 " ============ Auto Pair ============
-let g:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '`':'`'}
+let g:AutoPairs = {'(':')', '[':']', '{':'}'}
+let g:AutoPairsMapBS = 0
+
 " ============ Auto Pair ============
 
+
+" ============ JavaScript / Flow ============
+let g:javascript_plugin_flow = 1
+" ============ JavaScript / Flow ============
 
 " ============ Merlin for OCaml / Reason ============
 " comment out for fb dev
@@ -685,6 +788,11 @@ inoremap <Up> <C-o>gk
 " move block of code up and down
 :vnoremap <C-j> :m '>+1<CR>gv=gv
 :vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" https://vim.fandom.com/wiki/Identify_the_syntax_highlighting_group_used_at_the_cursor
+map <leader>s :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 " ============ KEY MAPPING ============
 
 " autocommand - file extension aliase
@@ -692,6 +800,7 @@ au bufnewfile,bufread *.ast setlocal filetype=lisp
 au bufnewfile,bufread *.emj setlocal filetype=java
 au bufnewfile,bufread *.imp setlocal filetype=ocaml
 au bufnewfile,bufread *.v   setlocal filetype=ocaml
+au FileType json syntax match Comment +\/\/.\+$+
 "au bufnewfile,bufread *.v   setlocal filetype=coq      
 au bufnewfile,bufread *.f   setlocal filetype=reason
 au bufnewfile,bufread *.langf   setlocal filetype=sml

@@ -21,6 +21,7 @@ export PATH="$HOME/Library/Python/3.6/bin:$PATH"
 # Ruby gem
 export GEM_HOME=$HOME/gems
 export PATH=$HOME/gems/bin:$PATH
+export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
 
 # JS yarn 
 export PATH="$HOME/.yarn/bin:$PATH"
@@ -42,4 +43,7 @@ export PATH="/usr/local/sbin:$PATH"
 
 # override coq with brew-installed coq
 export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
+
+# fnl
+export PATH="$HOME/.fnl/bin:$PATH"
 
