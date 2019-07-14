@@ -121,3 +121,6 @@ fi
 
 # ocaml / opam
 eval $(opam config env)
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export PATH=$PATH:/$HOME/.fnl/bin/

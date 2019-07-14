@@ -102,6 +102,7 @@ alias vi='nvim'
 alias vim='nvim'
 alias oldvim='\vim'
 EDITOR=vim
+GIT_EDITOR=vim
 
 # emacs (open in new instance)
 alias emacs='open -n -a Emacs.app .'
@@ -130,6 +131,9 @@ alias opamswitchsys='opam switch system;     eval `opam config env`'
 
 # rust (I knew it's weird)
 alias rusti='rustup run nightly-2016-08-01 ~/.cargo/bin/rusti'
+
+# echo $PATH line by line
+alias echopath='tr ":" "\n" <<< "$PATH"'
 
 # only eval opam if opam is executable
 if [ -x "$(command -v opam)" ]; then
@@ -183,3 +187,6 @@ if [ -f ~/.auto-fu/auto-fu.zsh ]; then
 fi
 zstyle ':auto-fu:var' postdisplay $''
 export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

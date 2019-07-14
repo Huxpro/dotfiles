@@ -62,6 +62,21 @@ Other Common Dependencies
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
   * there are tricks to share `.vimrc` w/ `vim`
   * [wish] Onivim, Spacevim
+  * Potential OSX Mojave and Python problem:
+    * <https://github.com/neovim/neovim/issues/9050>
+
+[FZF](https://github.com/junegunn/fzf)
+
+```
+brew install fzf
+
+# To install useful key bindings and fuzzy completion:
+$(brew --prefix)/opt/fzf/install
+```
+
+[Hub](https://hub.github.com/)
+  * using github from CLI.
+  * `brew install hub`
 
 [Spacemacs](http://spacemacs.org/)
   * sync emacs setting

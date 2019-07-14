@@ -16,6 +16,9 @@
 #  Features:                                                #
 #  - replace $HOME in path to `~`                           #
 #                                                           #
+#  Known Issues:                                            #
+#  - cannot handle espaced space.                           #
+#                                                           #
 #############################################################
 
 CWD=`pwd`
