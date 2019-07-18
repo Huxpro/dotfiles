@@ -47,3 +47,5 @@ export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 # fnl
 export PATH="$HOME/.fnl/bin:$PATH"
 
+# LLVM
+export PATH="/usr/local/opt/llvm/bin:$PATH"

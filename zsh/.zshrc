@@ -140,6 +140,9 @@ if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
 fi
 
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # haskell
 alias stack-all='ls $(stack path --programs)'
 
@@ -177,16 +180,18 @@ compdef _gnu_generic bsc bsb ocamlc yarn
 # cd ~/.auto-fu
 # git checkout pu
 
-if [ -f ~/.auto-fu/auto-fu.zsh ]; then
-  source ~/.auto-fu/auto-fu.zsh
-  function zle-line-init () {
-    auto-fu-init
-  }
-  zle -N zle-line-init
-  zstyle ':completion:*' completer _oldlist _complete
-fi
-zstyle ':auto-fu:var' postdisplay $''
-export PATH="/usr/local/opt/llvm/bin:$PATH"
+# below is commented out to to turn off auto-fu.
+# the main issue is mis-match and performance
+# using ** for FZF for some cases instead
 
-# FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# if [ -f ~/.auto-fu/auto-fu.zsh ]; then
+#   source ~/.auto-fu/auto-fu.zsh
+#   function zle-line-init () {
+#     auto-fu-init
+#   }
+#   zle -N zle-line-init
+#   zstyle ':completion:*' completer _oldlist _complete
+# fi
+# zstyle ':auto-fu:var' postdisplay $''
+
+

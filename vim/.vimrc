@@ -52,6 +52,9 @@ Plug 'rust-lang/rust.vim'
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
 
+" Ham
+Plug '~/.vim/plugged/ham-vim'
+
 " Scala
 Plug 'derekwyatt/vim-scala'
 
