@@ -214,28 +214,21 @@ let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto
 let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
 " let g:LanguageClient_trace="verbose"
 
-
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<cr>
-"nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<cr>
-nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
-nnoremap <silent> gh :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> <cr> :call LanguageClient_textDocument_hover()<cr>
-nnoremap <silent> W :pclose<cr>
-
-
-
 " https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
 function SetLSPShortcuts()
-  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+  nnoremap <leader>d :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>f :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
+  nnoremap <leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>r :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>a :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>c :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <silent><cr> :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>s :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>m :call LanguageClient_contextMenu()<CR>
+  nnoremap <silent> W :pclose<cr>
 endfunction()
 
 augroup LSP
