@@ -74,6 +74,10 @@ brew install fzf
 $(brew --prefix)/opt/fzf/install
 ```
 
+[Rg](https://github.com/BurntSushi/ripgrep)
+  * `brew install ripgrep`
+  * I bound `<space>-f` to `:Rg` provided by `FZF` for grep.
+
 [Hub](https://hub.github.com/)
   * using github from CLI.
   * `brew install hub`
