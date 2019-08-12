@@ -219,7 +219,7 @@ function SetLSPShortcuts()
   nnoremap <leader>d :call LanguageClient#textDocument_definition()<CR>
   nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
   nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>f :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader> gf :call LanguageClient#textDocument_formatting()<CR>
   nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
   nnoremap <leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
   nnoremap <leader>r :call LanguageClient#textDocument_references()<CR>
@@ -659,8 +659,8 @@ augroup ghcmod
   au FileType haskell nnoremap <silent> <cr> :GhcModType<CR>
   au FileType haskell nnoremap <silent> gd :GhcModInfo<CR>
   au FileType haskell nnoremap <silent> gc :GhcModSigCodegen<CR>
-  "prefer Stylish-haskell as default since it's less opionated
-  au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
+  au FileType haskell vnoremap <silent> gf :'<,'>Hindent<CR> 
+  "au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
   au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
   au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
 augroup end
