@@ -14,23 +14,20 @@ Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
 
 
 " ============ Plugin LSP ============
-" CoC: alternative LSP client
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" CoC - Conquer of Completion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" LSP(Langague Server Protocol) client supports for vim
+" Alternative LSP client for vim/nvim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
 " Deoplete is a independent Dark powered asynchronous completion framework for neovim/Vim8.
-" https://github.com/Shougo/deoplete.nvim
-" LC-neovim use it to support LSP-powered autocompletion.
-" for neovim
-if has('nvim')
+" LC-neovim use it to support LSP-powered autocompletion. CoC use its own.
+if has('nvim') " for neovim
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" for vim 8 with python
-else
+else  " for vim 8 with python
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
@@ -199,16 +196,13 @@ endif
 
 
 " ============ LSP ============
-" use space as <leader>
-let mapleader=" "
-
 "\ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe'],
-"
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'reason': ['reason-language-server.exe'],
-    \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
-    \ }
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+"     \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
+"     \ 'reason': ['reason-language-server.exe'],
+"     \ }
 
 let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.stderr.log'
 let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
@@ -233,9 +227,66 @@ endfunction()
 
 augroup LSP
   autocmd!
-  autocmd FileType fnl,reason,rust,cpp,c call SetLSPShortcuts()
+  autocmd FileType cpp,c call SetLSPShortcuts()
 augroup END
 " ============ LSP ============
+
+
+" ============ CoC ============
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+function SetCocShortcuts()
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+  nmap <silent> gn <Plug>(coc-rename)
+  nnoremap <silent> <cr> :call <SID>show_documentation()<CR>
+endfunction()
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Link document highlight to underscore
+highlight default link CocHighlightText SpellBad
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+augroup COC
+  autocmd!
+  autocmd FileType fnl,reason,rust call SetCocShortcuts()
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup END
+" ============ COC ============
 
 
 " ============ ALE ============
@@ -320,11 +371,30 @@ set history=100
 " ============ Deoplete (Auto Completion) ============
 " https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
 " :help Deoplete.txt
-set completeopt+=noinsert
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" set completeopt+=noinsert
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " https://github.com/Shougo/deoplete.nvim/issues/816
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " ============ Deoplete (Auto Completion) ============
 
 
@@ -726,6 +796,8 @@ augroup END
 " ============ SML ============
 
 " ============ KEY MAPPING ============
+" use space as <leader>
+let mapleader=" "
 
 " system clipboard
 " make sure `$ vim --version | grep clipboard` give u `+clipboard`
