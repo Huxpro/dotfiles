@@ -3,28 +3,32 @@ scriptencoding utf-8
 set ffs=unix,dos
 set nocompatible              " Disable Vi compatibility
 
-" ============ Vim-plug ============
-"
+
+" =============================================================================
+" Plugins (via Vim-Plug)
+" =============================================================================
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] } 
-Plug 'jistr/vim-nerdtree-tabs'
-
-Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
-
-
-" ============ Plugin LSP ============
+" -----------------------------------------------------------------------------
 " CoC - Conquer of Completion
+" -----------------------------------------------------------------------------
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" -----------------------------------------------------------------------------
+" LSP
+" -----------------------------------------------------------------------------
 " Alternative LSP client for vim/nvim
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
+" -----------------------------------------------------------------------------
+" Deoplete
 " Deoplete is a independent Dark powered asynchronous completion framework for neovim/Vim8.
-" LC-neovim use it to support LSP-powered autocompletion. CoC use its own.
+" LC-neovim use it to support LSP-powered autocompletion. 
+" CoC use its own.
+" -----------------------------------------------------------------------------
 if has('nvim') " for neovim
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else  " for vim 8 with python
@@ -33,16 +37,25 @@ else  " for vim 8 with python
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-" enable autocomplete
-let g:deoplete#enable_at_startup = 1
-
+" -----------------------------------------------------------------------------
+" FZF
 " FZF is a independent replacement to CtrlP,
-" But LC-neovim use it for contextMenu when it exists.
+" LC-neovim use it for contextMenu when it exists.
+" -----------------------------------------------------------------------------
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-" ============ Plugin LSP ============
 
 
-" ============ Languages ============
+" -----------------------------------------------------------------------------
+" Theme
+" -----------------------------------------------------------------------------
+Plug 'altercation/vim-colors-solarized'
+Plug 'jordwalke/vim-one'
+Plug 'NLKNguyen/papercolor-theme'
+
+
+" -----------------------------------------------------------------------------
+" Languages
+" -----------------------------------------------------------------------------
 " FNL
 Plug '~/aros/tungsten/experimental/proto2/editors/fnl-vim'
  
@@ -80,13 +93,37 @@ Plug 'tpope/vim-fireplace'
 " Markdown
 Plug 'tpope/vim-markdown'
 
+" Coq (doesn't work for some Python error)
+" Plug 'the-lambda-church/coquille'
+
+" Agda
+Plug 'derekelkins/agda-vim'
+
+" Swift
+Plug 'keith/swift.vim' 
+
+" Wasm
+Plug 'rhysd/vim-wasm'
+
+" JS
+Plug 'pangloss/vim-javascript'
+
 " LaTex 
 Plug 'lervag/vimtex'
 
 " Isabelle
 set rtp+=~/.vim/plugged/isabelle.vim
-" ============ Languages ============
 
+
+" -----------------------------------------------------------------------------
+" Misc
+" -----------------------------------------------------------------------------
+" nerdtree
+Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] } 
+Plug 'jistr/vim-nerdtree-tabs'
+
+" work w/ ctag
+Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
 
 " Both for git and for better sign column
 Plug 'airblade/vim-gitgutter'
@@ -106,26 +143,11 @@ Plug 'chrisbra/unicode.vim'
 " Surround.vim
 Plug 'tpope/vim-surround'
 
-" ?
+" auto-pairs 
 Plug 'jiangmiao/auto-pairs'
 
 " Tex input-method <C-L>
 Plug 'joom/latex-unicoder.vim'
-
-" Coq (doesn't work for some Python error)
-" Plug 'the-lambda-church/coquille'
-
-" Agda
-Plug 'derekelkins/agda-vim'
-
-" Swift
-Plug 'keith/swift.vim' 
-
-" Wasm
-Plug 'rhysd/vim-wasm'
-
-" JS
-Plug 'pangloss/vim-javascript'
 
 " Indent Guides
 Plug 'nathanaelkane/vim-indent-guides'
@@ -152,34 +174,19 @@ Plug 'tpope/vim-fugitive'
 " better `f`
 Plug 'rhysd/clever-f.vim'
 
-" Auto Completion
-" this seems to be conflict w/ Deoplete (which is much better)
+" Auto Completion (Deprecated in favor of Deoplete and CoC)
 " Plug 'vim-scripts/AutoComplPop'
-
-"============ Theme ============
-Plug 'altercation/vim-colors-solarized'
-
-"Plug 'rakr/vim-one'
-"
-Plug 'jordwalke/vim-one'
-
-Plug 'NLKNguyen/papercolor-theme'
-" =========== Theme ============
-"
-
-" Follow the installation guide to compile language server. It's good
-" https://github.com/Valloric/YouCompleteMe#mac-os-x
-" Require macvim / python-support etc.
-" Disable for machine doesn't have python.
-if has('python')
-  Plug 'Valloric/YouCompleteMe'
-endif
+" Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
-" ============ Vim-plug ============
 
 
-" ============ neovim ============
+" =============================================================================
+" Vim Configuration
+" =============================================================================
+" -----------------------------------------------------------------------------
+" Neovim
+" -----------------------------------------------------------------------------
 if (has("nvim"))
 " close terminal windows input mode with <esc>
 tnoremap <Esc> <C-\><C-n>
@@ -192,158 +199,11 @@ command! -nargs=* DD belowright vsplit | terminal <args>
 
 set inccommand=nosplit
 endif
-" ============ neovim ============
 
 
-" ============ LSP ============
-"\ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe'],
-
-" let g:LanguageClient_serverCommands = {
-"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-"     \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
-"     \ 'reason': ['reason-language-server.exe'],
-"     \ }
-
-let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.stderr.log'
-let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
-" let g:LanguageClient_trace="verbose"
-
-" https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
-function SetLSPShortcuts()
-  nnoremap <leader>d :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader> gf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
-  nnoremap <leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>r :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>a :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>c :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <silent><cr> :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>s :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>m :call LanguageClient_contextMenu()<CR>
-  nnoremap <silent> W :pclose<cr>
-endfunction()
-
-augroup LSP
-  autocmd!
-  autocmd FileType cpp,c call SetLSPShortcuts()
-augroup END
-" ============ LSP ============
-
-
-" ============ CoC ============
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-function SetCocShortcuts()
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-  nmap <silent> gn <Plug>(coc-rename)
-  nnoremap <silent> <cr> :call <SID>show_documentation()<CR>
-endfunction()
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" Link document highlight to underscore
-highlight default link CocHighlightText SpellBad
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-augroup COC
-  autocmd!
-  autocmd FileType fnl,reason,rust call SetCocShortcuts()
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup END
-" ============ COC ============
-
-
-" ============ ALE ============
-" Ale is a linter frontend supports beyond language server protocol
-" for LSP-powered language supports, LanguageClient-neovim should be sufficient.
-" let g:ale_lint_on_text_changed = 'normal'
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-
-" work with airline
-let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {
-\   'ocaml': ['merlin'],
-\   'haskell': ['ghc-mod', 'hlint'],
-\}
-
-" default is 0
-let g:ale_linters_explicit = 1
-
-" echo format
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-" ============ ALE ============
-
-
-" ============ VIM-MARKDOWN ============
-let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
-" ============ VIM-MARKDOWN ============
-
-
-" ============ VIM-SURROUND ============
-" using `s` as well for V-mode, aligned with spacemacs.
-xmap s   <Plug>VSurround
-" ============ VIM-SURROUND ============
-
-
-" ============ VIMTEX ============
-" https://castel.dev/post/lecture-notes-1/
-let g:tex_flavor='latex'
-"let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-"au FileType markdown setlocal conceallevel=1
-"au FileType tex setlocal conceallevel=1
-"let g:tex_conceal='abdmg'
-" ============ VIMTEX ============
-
-
-" ============ Latex Unicoder ============
-nnoremap <C-\> :call unicoder#start(0)<CR>
-inoremap <C-\> <Esc>:call unicoder#start(1)<CR>
-vnoremap <C-\> :call unicoder#selection()<CR>
-" ============ Latex Unicoder ============
-
-
-" ============ FILE ============
+" -----------------------------------------------------------------------------
+" File
+" -----------------------------------------------------------------------------
 " Encoding
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set fileencodings=utf-8
@@ -365,40 +225,11 @@ set noswapfile
 
 " line buffer
 set history=100
-" ============ FILE ============
 
 
-" ============ Deoplete (Auto Completion) ============
-" https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
-" :help Deoplete.txt
-" set completeopt+=noinsert
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" https://github.com/Shougo/deoplete.nvim/issues/816
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" ============ Deoplete (Auto Completion) ============
-
-
-" ============ TEXT (Tab & Indent) ============
+" -----------------------------------------------------------------------------
+" Text (Tab, Indentation)
+" -----------------------------------------------------------------------------
 " Use spaces instead of tabs
 set expandtab
 
@@ -427,10 +258,11 @@ set wrap "Wrap lines
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
-" ============ TEXT (Tab & Indent) ============
 
 
-" ============ UI/UX Tweaking ============
+" -----------------------------------------------------------------------------
+" UI, UX
+" -----------------------------------------------------------------------------
 if has("cmdline_info")
     " Show the cursor line and column number
     set ruler
@@ -507,6 +339,9 @@ set scrolloff=5
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
 
+" Refresh rate. Shorted time give faster LSP diagnostics.
+set updatetime=300
+
 " No annoying sound on errors
 set noerrorbells
 
@@ -515,10 +350,11 @@ set mouse=a
 
 " timeout
 set timeoutlen=1000 ttimeoutlen=0
-" ============ UI/UX Tweaking ============
 
 
-" ============ SEARCH ============
+" -----------------------------------------------------------------------------
+" Search
+" -----------------------------------------------------------------------------
 if has("extra_search")
     " Highlight searches [use :noh to clear]
     set hlsearch
@@ -532,10 +368,11 @@ endif
 
 " doubly esc for clear search highlight
 nnoremap <esc><esc> :noh<return>
-" ============ SEARCH ============
 
 
-" ============ TERMINAL COLOR (Neovim Terminal) ============
+" -----------------------------------------------------------------------------
+" Terminal Color
+" -----------------------------------------------------------------------------
 " https://github.com/lifepillar/vim-solarized8/issues/9
 let g:terminal_color_0 = '#073642'
 let g:terminal_color_1 = '#dc322f'
@@ -553,10 +390,11 @@ let g:terminal_color_12= '#839496'
 let g:terminal_color_13= '#6c71c4'
 let g:terminal_color_14= '#93a1a1'
 let g:terminal_color_15= '#fdf6e3'
-" ============ TERMINAL COLOR (Neovim Terminal) ============
 
 
-" ============ THEME (Solarized Dark & Power Line) ============
+" -----------------------------------------------------------------------------
+" Theme - Solarized 
+" -----------------------------------------------------------------------------
 if has("syntax")
     " Enable syntax highlighting
     syntax enable
@@ -589,18 +427,12 @@ if !has('gui_running')
     endif
 endif
 
-" powerline symbols
-let g:airline_powerline_fonts=1
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-"this line will break airline
-"set ambiwidth=double
-" ============ THEME (Solarized Dark & Power Line) ============
 
-
-" ============ THEME (One) ============
+" -----------------------------------------------------------------------------
+" Theme - One Dark/Light
+"
 " If you want to use Solarized, you must delete this section
-
+" -----------------------------------------------------------------------------
 "TRUE COLOR SUPPORT FOR ONE
 "Credit joshdick
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -631,171 +463,17 @@ let g:airline_theme='one'
 command! Light set background=light
 command! Dark set background=dark
 
-" ============ THEME (One) ============
 
-
-
-" ============ Hi Conceal  ============
+" -----------------------------------------------------------------------------
+" Hi Conceal
+" -----------------------------------------------------------------------------
 unlet! g:indentLine_color_term g:indentLine_color_gui
 hi Conceal ctermfg=245
-" ============ Hi Conceal  ============
  
  
- 
-" ============ NERDTree ============
-" NERDTree shortcut
-map <C-n> : NERDTreeToggle<CR>
-" auto-open by default
-" au VimEnter *  NERDTree
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeShowHidden= 1
-" let NERDTreeQuitOnOpen = 1
-" ============ NERDTree ============
-
-
-" ============ CtrlP ============
-" Show hidden files when using ctrlp
-" let g:ctrlp_show_hidden = 1
-" FZF can also do `:Rg`, which I haven't found a 
-
-" ProjectFiles tries to locate files relative to the git root contained in
-" NerdTree, falling back to the current NerdTree dir if not available
-" see https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
-map <C-p> : FZF<CR>
-map <leader>f : Rg<CR>
-" ============ CtrlP ============
-
-
-" ============ Vim Rooter ============
-let g:rooter_patterns = ['.hg', '.git/', 'package.json']
-" ============ Vim Rooter ============
-
-" ============ Tagbar ============
-" shortcut
-map <C-b> : TagbarToggle<CR>
-" ============ Tagbar ============
-
-
-" ============ Clever-f ============
-let g:clever_f_smart_case = 1
-map ; <Plug>(clever-f-repeat-forward)
-map , <Plug>(clever-f-repeat-back)
-" ============ Clever-f ============
-
-
-" ============ Vim-commentary ============
-" <C_/>
-map <C-_> : Commentary<cr>
-" ============ Vim-commentary ============
-
-
-" ============ Indent Guide ============
-let g:indent_guides_enable_on_vim_startup = 0
-" ============ Indent Guide ============
-
-
-" ============ Auto Pair ============
-let g:AutoPairs = {'(':')', '[':']', '{':'}'}
-let g:AutoPairsMapBS = 0
-
-" ============ Auto Pair ============
-
-
-" ============ JavaScript / Flow ============
-let g:javascript_plugin_flow = 1
-" ============ JavaScript / Flow ============
-
-" ============ Merlin for OCaml / Reason ============
-" comment out for fb dev
-" augroup merlin
-"   au!
-"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-"   execute "set rtp+=" . g:opamshare . "/merlin/vim"
-"   set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
-
-"   " ----- Keybindings -----
-"   au FileType ocaml map gd : MerlinLocate<cr>
-"   au FileType ocaml map gf : ReasonPrettyPrint<cr>
-"   au FileType ocaml map <cr> : MerlinTypeOf<cr>
-" augroup end
-" ============ Merlin for OCaml / Reason ============
-
-
-" ============ Haskell/Ghc-mod ============
-augroup ghcmod
-  au!
-  " ----- Keybindings -----
-  au FileType haskell nnoremap <silent> <cr> :GhcModType<CR>
-  au FileType haskell nnoremap <silent> gd :GhcModInfo<CR>
-  au FileType haskell nnoremap <silent> gc :GhcModSigCodegen<CR>
-  au FileType haskell vnoremap <silent> gf :'<,'>Hindent<CR> 
-  "au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
-  au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
-  au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
-augroup end
-let g:hindent_on_save = 0
-let g:stylishask_on_save = 0
-let g:hindent_line_length = 100
-" ============ Haskell/Ghc-mod ============
-
-
-" ============ Haskell/Intero ============
-" not sure if it gonna work but that's give it a try
-" Intero starts automatically. Set this if you'd like to prevent that.
-let g:intero_start_immediately = 0
-
-" Enable type information on hover (when holding cursor at point for ~1 second).
-let g:intero_type_on_hover = 1
-
-" Change the intero window size; default is 10.
-let g:intero_window_size = 15
-
-" Sets the intero window to split vertically; default is horizontal
-let g:intero_vertical_split = 1
-
-" OPTIONAL: Make the update time shorter, so the type info will trigger faster.
-set updatetime=1000
-" ============ Haskell/Intero ============
-
-
-" ============ SML ============
-" let g:sml_auto_create_def_use = 'always'
-
-augroup vimbettersml
-  au!
-
-  " ----- Keybindings -----
-
-  au FileType sml nnoremap <silent> <cr> :SMLTypeQuery<CR>
-  au FileType sml nnoremap <silent> <buffer> gd :SMLJumpToDef<CR>
-
-  " open the REPL terminal buffer
-  au FileType sml nnoremap <silent> <buffer> <leader>is :SMLReplStart<CR>
-  " close the REPL (mnemonic: k -> kill)
-  au FileType sml nnoremap <silent> <buffer> <leader>ik :SMLReplStop<CR>
-  " build the project (using CM if possible)
-  au FileType sml nnoremap <silent> <buffer> <leader>ib :SMLReplBuild<CR>
-  " for opening a structure, not a file
-  au FileType sml nnoremap <silent> <buffer> <leader>io :SMLReplOpen<CR>
-  " use the current file into the REPL (even if using CM)
-  au FileType sml nnoremap <silent> <buffer> <leader>iu :SMLReplUse<CR>
-  " clear the REPL screen
-  au FileType sml nnoremap <silent> <buffer> <leader>ic :SMLReplClear<CR>
-  " set the print depth to 100
-  au FileType sml nnoremap <silent> <buffer> <leader>ip :SMLReplPrintDepth<CR>
-
-  " ----- Other settings -----
-
-  " Uncomment to try out conceal characters
-  au FileType sml setlocal conceallevel=2
-
-  " Uncomment to try out same-width conceal characters
-  " let g:sml_greek_tyvar_show_tick = 1
-augroup END
-" ============ SML ============
-
-" ============ KEY MAPPING ============
+" -----------------------------------------------------------------------------
+" Key Bindings
+" -----------------------------------------------------------------------------
 " use space as <leader>
 let mapleader=" "
 
@@ -858,8 +536,380 @@ inoremap <Up> <C-o>gk
 map <leader>s :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-" ============ KEY MAPPING ============
 
+
+" =============================================================================
+" Plugin Configuration
+" =============================================================================
+" -----------------------------------------------------------------------------
+" Airline (Powerline)
+" -----------------------------------------------------------------------------
+" powerline symbols
+let g:airline_powerline_fonts=1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+"this line will break airline
+"set ambiwidth=double
+
+
+" -----------------------------------------------------------------------------
+" Vim-surround
+" -----------------------------------------------------------------------------
+" using `s` as well for V-mode, aligned with spacemacs.
+xmap s   <Plug>VSurround
+
+
+" -----------------------------------------------------------------------------
+" Deoplete (AutoCompletion)
+"
+" https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+" :help Deoplete.txt
+" disabled in favor of CoC
+" -----------------------------------------------------------------------------
+" set completeopt+=noinsert
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" https://github.com/Shougo/deoplete.nvim/issues/816
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" enable autocomplete 
+let g:deoplete#enable_at_startup = 0  " disabled in favor of CoC
+
+
+" -----------------------------------------------------------------------------
+" Nerd Tree
+" -----------------------------------------------------------------------------
+" NERDTree shortcut
+map <C-n> : NERDTreeToggle<CR>
+" auto-open by default
+" au VimEnter *  NERDTree
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeShowHidden= 1
+" let NERDTreeQuitOnOpen = 1
+
+" -----------------------------------------------------------------------------
+" FZF / Ctrl P
+" -----------------------------------------------------------------------------
+" Show hidden files when using ctrlp
+" let g:ctrlp_show_hidden = 1
+" FZF can also do `:Rg`, which I haven't found a 
+
+" ProjectFiles tries to locate files relative to the git root contained in
+" NerdTree, falling back to the current NerdTree dir if not available
+" see https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
+map <C-p> : FZF<CR>
+map <leader>f : Rg<CR>
+
+
+" -----------------------------------------------------------------------------
+" Vim Rooter
+" -----------------------------------------------------------------------------
+let g:rooter_patterns = ['.hg', '.git/', 'package.json']
+
+
+" -----------------------------------------------------------------------------
+" Tagbar
+" -----------------------------------------------------------------------------
+" shortcut
+map <C-b> : TagbarToggle<CR>
+
+
+" -----------------------------------------------------------------------------
+" Clever-F
+" -----------------------------------------------------------------------------
+let g:clever_f_smart_case = 1
+map ; <Plug>(clever-f-repeat-forward)
+map , <Plug>(clever-f-repeat-back)
+
+
+" -----------------------------------------------------------------------------
+" Vim Commentary
+" -----------------------------------------------------------------------------
+" <C_/>
+map <C-_> : Commentary<cr>
+
+
+" -----------------------------------------------------------------------------
+" Indent Guide
+" -----------------------------------------------------------------------------
+let g:indent_guides_enable_on_vim_startup = 0
+
+
+" -----------------------------------------------------------------------------
+" Auto Pairs
+" -----------------------------------------------------------------------------
+let g:AutoPairs = {'(':')', '[':']', '{':'}'}
+let g:AutoPairsMapBS = 0
+
+
+ 
+" =============================================================================
+" Language Specific Configuration
+" =============================================================================
+" -----------------------------------------------------------------------------
+" LanguageClient-NeoVim
+" -----------------------------------------------------------------------------
+"\ 'reason': ['/Users/jsx/reason/reason-language-server/_build/default/bin/Bin.exe'],
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+"     \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
+"     \ 'reason': ['reason-language-server.exe'],
+"     \ }
+
+let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.stderr.log'
+let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
+" let g:LanguageClient_trace="verbose"
+
+" https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
+function SetLSPShortcuts()
+  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
+
+  nnoremap <leader>d :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>t :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>* :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>r :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>gf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>a :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>c :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>o :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>m :call LanguageClient_contextMenu()<CR>
+  nnoremap <silent><cr> :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <silent>W :pclose<cr>
+
+endfunction()
+
+augroup LSP
+  autocmd!
+  autocmd FileType cpp,c call SetLSPShortcuts()
+augroup END
+
+" -----------------------------------------------------------------------------
+" CoC
+" -----------------------------------------------------------------------------
+set shortmess+=c
+
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Link document highlight to underscore
+highlight default link CocHighlightText SpellBad
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+function SetCocShortcuts()
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+  nmap <leader>d <Plug>(coc-definition)
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <leader>* <Plug>(coc-references)
+  nmap <leader>r <Plug>(coc-rename)
+  nmap <silent> gr <Plug>(coc-rename)
+  nmap <leader>t <Plug>(coc-type-definition)
+  nmap <leader>i <Plug>(coc-implementation)
+  nnoremap <silent> <cr> :call <SID>show_documentation()<CR>
+  nnoremap <silent> <leader>a  :<C-u>CocList diagnostics<cr>
+  nnoremap <silent> <leader>e  :<C-u>CocList extensions<cr>
+  nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
+  nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
+  nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
+  nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
+  nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
+  nnoremap <silent> <leader>p  :<C-u>CocListResume<CR>
+endfunction()
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+augroup COC
+  autocmd!
+  autocmd FileType fnl,reason,rust call SetCocShortcuts()
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup END
+
+
+" -----------------------------------------------------------------------------
+" ALE
+" -----------------------------------------------------------------------------
+" Ale is a linter frontend supports beyond language server protocol
+" for LSP-powered language supports, LanguageClient-neovim should be sufficient.
+" let g:ale_lint_on_text_changed = 'normal'
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+" work with airline
+let g:airline#extensions#ale#enabled = 1
+let g:ale_linters = {
+\   'ocaml': ['merlin'],
+\   'haskell': ['ghc-mod', 'hlint'],
+\}
+
+" default is 0
+let g:ale_linters_explicit = 1
+
+" echo format
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+
+" -----------------------------------------------------------------------------
+" Vim Markdown
+" -----------------------------------------------------------------------------
+let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
+
+
+" -----------------------------------------------------------------------------
+" Vim Tex
+" -----------------------------------------------------------------------------
+" https://castel.dev/post/lecture-notes-1/
+let g:tex_flavor='latex'
+"let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+"au FileType markdown setlocal conceallevel=1
+"au FileType tex setlocal conceallevel=1
+"let g:tex_conceal='abdmg'
+
+
+" -----------------------------------------------------------------------------
+" Latex Unicoder
+" -----------------------------------------------------------------------------
+nnoremap <C-\> :call unicoder#start(0)<CR>
+inoremap <C-\> <Esc>:call unicoder#start(1)<CR>
+vnoremap <C-\> :call unicoder#selection()<CR>
+
+
+" -----------------------------------------------------------------------------
+" JavaScript / Flow
+" -----------------------------------------------------------------------------
+let g:javascript_plugin_flow = 1
+
+
+" -----------------------------------------------------------------------------
+" Merlin for OCaml / Reason
+" -----------------------------------------------------------------------------
+" comment out for fb dev
+" augroup merlin
+"   au!
+"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+"   execute "set rtp+=" . g:opamshare . "/merlin/vim"
+"   set rtp^="/Users/hux/.opam/system/share/ocp-indent/vim"
+
+"   " ----- Keybindings -----
+"   au FileType ocaml map gd : MerlinLocate<cr>
+"   au FileType ocaml map gf : ReasonPrettyPrint<cr>
+"   au FileType ocaml map <cr> : MerlinTypeOf<cr>
+" augroup end
+
+
+" -----------------------------------------------------------------------------
+" Haskell - GHC-Mod
+" -----------------------------------------------------------------------------
+augroup ghcmod
+  au!
+  " ----- Keybindings -----
+  au FileType haskell nnoremap <silent> <cr> :GhcModType<CR>
+  au FileType haskell nnoremap <silent> gd :GhcModInfo<CR>
+  au FileType haskell nnoremap <silent> gc :GhcModSigCodegen<CR>
+  au FileType haskell vnoremap <silent> gf :'<,'>Hindent<CR> 
+  "au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
+  au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
+  au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
+augroup end
+let g:hindent_on_save = 0
+let g:stylishask_on_save = 0
+let g:hindent_line_length = 100
+
+
+" -----------------------------------------------------------------------------
+" Haskell - Intero
+" -----------------------------------------------------------------------------
+" not sure if it gonna work but that's give it a try
+" Intero starts automatically. Set this if you'd like to prevent that.
+let g:intero_start_immediately = 0
+
+" Enable type information on hover (when holding cursor at point for ~1 second).
+let g:intero_type_on_hover = 1
+
+" Change the intero window size; default is 10.
+let g:intero_window_size = 15
+
+" Sets the intero window to split vertically; default is horizontal
+let g:intero_vertical_split = 1
+
+
+" -----------------------------------------------------------------------------
+" Standard ML
+" -----------------------------------------------------------------------------
+" let g:sml_auto_create_def_use = 'always'
+
+augroup vimbettersml
+  au!
+
+  " ----- Keybindings -----
+
+  au FileType sml nnoremap <silent> <cr> :SMLTypeQuery<CR>
+  au FileType sml nnoremap <silent> <buffer> gd :SMLJumpToDef<CR>
+
+  " open the REPL terminal buffer
+  au FileType sml nnoremap <silent> <buffer> <leader>is :SMLReplStart<CR>
+  " close the REPL (mnemonic: k -> kill)
+  au FileType sml nnoremap <silent> <buffer> <leader>ik :SMLReplStop<CR>
+  " build the project (using CM if possible)
+  au FileType sml nnoremap <silent> <buffer> <leader>ib :SMLReplBuild<CR>
+  " for opening a structure, not a file
+  au FileType sml nnoremap <silent> <buffer> <leader>io :SMLReplOpen<CR>
+  " use the current file into the REPL (even if using CM)
+  au FileType sml nnoremap <silent> <buffer> <leader>iu :SMLReplUse<CR>
+  " clear the REPL screen
+  au FileType sml nnoremap <silent> <buffer> <leader>ic :SMLReplClear<CR>
+  " set the print depth to 100
+  au FileType sml nnoremap <silent> <buffer> <leader>ip :SMLReplPrintDepth<CR>
+
+  " ----- Other settings -----
+
+  " Uncomment to try out conceal characters
+  au FileType sml setlocal conceallevel=2
+
+  " Uncomment to try out same-width conceal characters
+  " let g:sml_greek_tyvar_show_tick = 1
+augroup END
+
+
+" -----------------------------------------------------------------------------
+" Filetype Aliases
+" -----------------------------------------------------------------------------
 " autocommand - file extension aliase
 au bufnewfile,bufread *.ast setlocal filetype=lisp
 au bufnewfile,bufread *.emj setlocal filetype=java
@@ -871,6 +921,5 @@ au bufnewfile,bufread *.f   setlocal filetype=reason
 au bufnewfile,bufread *.langf   setlocal filetype=sml
 au bufnewfile,bufread *.kk  setlocal filetype=javascript
 au Filetype asm setlocal tabstop=8
-
 
 
