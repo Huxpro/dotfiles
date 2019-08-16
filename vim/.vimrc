@@ -721,8 +721,8 @@ endfunction
 
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
-" Link document highlight to underscore
-highlight default link CocHighlightText SpellBad
+" Link document highlight to underscore (Underlined is colored. It depends on theme)
+highlight default link CocHighlightText SpellBad 
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)

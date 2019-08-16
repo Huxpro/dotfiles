@@ -9,6 +9,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/Library/Haskell/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 # Python pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -48,4 +49,4 @@ export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 export PATH="$HOME/.fnl/bin:$PATH"
 
 # LLVM
-export PATH="/usr/local/opt/llvm/bin:$PATH"
+# export PATH="/usr/local/opt/llvm/bin:$PATH"
