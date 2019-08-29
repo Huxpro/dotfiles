@@ -7,16 +7,24 @@ I maintain this for my very personal use, but you're quite welcome to refer it, 
 Screenshots
 -----------
 
-with One theme:
+with One theme (Default; for True Color Terminal):
 ![screenshot](./scrshot-one.png)
 
 
-with Solarized theme:
+with Solarized theme (for Non True Color Terminal, such as MacOS Terminal.app):
 ![screenshot](./scrshot-sol.png)
 
-Both themes support using `set background` to switch between dark and light versions.
+with PaperColor theme. (works for both Non True Color and True Color Terminal):
+TBD.
 
-[alpha] PaperWhite theme.
+All three themes support using `:Light`/`:Dark` (underlying `set background`) to switch between dark and light versions.
+
+
+Themes Switching
+----------------
+
+Checkout all portions of `.vimrc` starts with `Theme` 
+
 
 
 Dependencies / Credits
@@ -29,18 +37,6 @@ Dependencies / Credits
 [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 
-[Solarized Theme](http://ethanschoonover.com/solarized)
-  * To use Solarized theme, you need to: 
-    * Delete/Comment out the `===THEME (ONE) ===` section (any easier way to do that? PR welcome)
-    * Solarized color depend on the terminal one so you need to config your terminal as well.
-      * I include a `.itermcolor` in `/theme` for ITerm users
-
-[One/Vim-One Theme](https://github.com/jordwalke/vim-one)
-  " The current default.
-  * One theme is independent with terminal theme, so you don't have to change your terminal theme.
-    * It seems not working at macOS native terminal app (PR welcome)
-    * But I also include a `.itermcolor` in `/theme` for ITerm users
-
 [FiraCode](https://github.com/tonsky/FiraCode)
   * also checkout "Nerds Font" 
 
@@ -50,20 +46,30 @@ Other Common Dependencies
 
 [Homebrew](https://brew.sh/)
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+  * [permission issue](https://github.com/Homebrew/homebrew-core/issues/19286)
 
-[ITerm2](https://www.iterm2.com/)
-  * Dimming : minimal
-  * Panes : uncheck titlebar
-  * Theming
+[iTerm2](https://www.iterm2.com/)
+  * Dimming: minimal
+  * Panes: uncheck titlebar
+  * Theme: minimal
+  * Profile colors
     * One Light came from [here](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * One Dark  came from another repo (the above one is not satisified)
     * add keyboard shortcut `cmd-'`, `cmd-"` for switching via "load color preset"
 
+Vim 8.1
+  * Homebrew
+
 [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+  * [nightly release](https://github.com/neovim/neovim/releases) 
   * there are tricks to share `.vimrc` w/ `vim`
   * [wish] Onivim, Spacevim
   * Potential OSX Mojave and Python problem:
     * <https://github.com/neovim/neovim/issues/9050>
+
+[Coc.nvim](https://github.com/neoclide/coc.nvim)
+  * [Coc-highlight](https://github.com/neoclide/coc-highlight): Highlight symbol of current position in all positions of current buffer (when no document highlight provider exists from language server).
+  * [more extensions](https://github.com/neoclide/coc.nvim#extensions)
 
 [FZF](https://github.com/junegunn/fzf)
 

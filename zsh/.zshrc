@@ -98,9 +98,11 @@ HISTFILESIZE=10000
 #####################################
 
 # neovim
-alias vi='nvim'
-alias vim='nvim'
-alias oldvim='\vim'
+# nvim will still invoke nvim stable
+alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
+alias vi='nvimnightly'
+alias vim='nvimnightly'
+alias vim8='\vim' # vim 8.1
 EDITOR=vim
 GIT_EDITOR=vim
 
@@ -129,9 +131,6 @@ alias opamswitch402='opam switch reason;     eval `opam config env`'
 alias opamswitch405='opam switch unsafe-str; eval `opam config env`'
 alias opamswitchsys='opam switch system;     eval `opam config env`'
 
-# rust (I knew it's weird)
-alias rusti='rustup run nightly-2016-08-01 ~/.cargo/bin/rusti'
-
 # echo $PATH line by line
 alias echopath='tr ":" "\n" <<< "$PATH"'
 
@@ -156,6 +155,35 @@ color()(set -o pipefail;"$@" 2>&1 1>&3|sed $'s,.*,\e[31m&\e[m,'1>&2)3>&1
 
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }
+
+
+#####################################
+# iTerm - macOS dark mode awareness
+# https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
+#####################################
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    sith() {
+        val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+        if [[ $val == "Dark" ]]; then
+            i
+        fi
+    }
+
+    i() {
+        if [[ $ITERM_PROFILE == "Default" ]]; then
+            echo -ne "\033]50;SetProfile=Dark\a"
+            export ITERM_PROFILE="Dark"
+        else
+            echo -ne "\033]50;SetProfile=Default\a"
+            export ITERM_PROFILE="Default"
+        fi
+    }
+
+    sith
+fi
+
+
 
 #####################################
 # auto-fu, insta productivity boost 2

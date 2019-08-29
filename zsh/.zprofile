@@ -31,6 +31,9 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 export PATH=/usr/local/gcc-8.1/bin:$PATH
 
+# sqlite
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+
 # Rust cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -50,3 +53,7 @@ export PATH="$HOME/.fnl/bin:$PATH"
 
 # LLVM
 # export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+# https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8

@@ -92,9 +92,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# FB specific aliases
-alias re='~/www/scripts/re/build-www'
-
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -118,9 +115,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# ocaml / opam
-eval $(opam config env)
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export PATH=$PATH:/$HOME/.fnl/bin/

@@ -57,7 +57,10 @@ Plug 'NLKNguyen/papercolor-theme'
 " Languages
 " -----------------------------------------------------------------------------
 " FNL
-Plug '~/aros/tungsten/experimental/proto2/editors/fnl-vim'
+Plug '~/proto2/editors/fnl-vim'
+
+" FCL
+Plug '~/fcl/fcl-vim'
  
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -210,9 +213,9 @@ set fileencodings=utf-8
 set encoding=utf-8
 
 " Enable filetype plugins
-filetype on
-filetype plugin on
-filetype indent on
+" https://superuser.com/questions/68226/filetype-detection-not-working
+filetype off
+filetype plugin indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -302,7 +305,6 @@ endif
 
 " UI
 set display=lastline
-set laststatus=2    " To display the status line always
 set cursorline      " hilight current line
 
 " column
@@ -371,97 +373,131 @@ nnoremap <esc><esc> :noh<return>
 
 
 " -----------------------------------------------------------------------------
-" Terminal Color
+" Theme - True Color Support for True Color Theme
 " -----------------------------------------------------------------------------
-" https://github.com/lifepillar/vim-solarized8/issues/9
-let g:terminal_color_0 = '#073642'
-let g:terminal_color_1 = '#dc322f'
-let g:terminal_color_2 = '#719e07'
-let g:terminal_color_3 = '#b58900'
-let g:terminal_color_4 = '#268bd2'
-let g:terminal_color_5 = '#d33682'
-let g:terminal_color_6 = '#2aa198'
-let g:terminal_color_7 = '#eee8d5'
-let g:terminal_color_8 = '#002b36'
-let g:terminal_color_9 = '#cb4b16'
-let g:terminal_color_10= '#586e75'
-let g:terminal_color_11= '#657b83'
-let g:terminal_color_12= '#839496'
-let g:terminal_color_13= '#6c71c4'
-let g:terminal_color_14= '#93a1a1'
-let g:terminal_color_15= '#fdf6e3'
+function! TrueColor()
+  "Credit joshdick
+  "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+  "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+  "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+  if (empty($TMUX))
+    if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+    "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+    "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+    if (has("termguicolors"))
+      set termguicolors
+    endif
+  endif
+endfunction()
 
 
 " -----------------------------------------------------------------------------
 " Theme - Solarized 
+" - True Color Terminal: NOOOOO.
+" - Non True Color Terminal: GOOD with Terminal Theme support.
 " -----------------------------------------------------------------------------
-if has("syntax")
-    " Enable syntax highlighting
-    syntax enable
+function SetupSolarizedTheme()
+  if has("syntax")
+      silent! colorscheme solarized
 
-    " fix some syntax highlighting unsync problem
-    syntax sync minlines=200
+      " For dark version
+      set background=dark
 
-    " Set 256 color terminal support
-    set t_Co=256
+      " For light version
+      "set background=light
+  endif
 
-    " For dark version
-    set background=dark
-    " For light version
-    "set background=light
-    
-    " Set default colorscheme to solarized
-    " Noted that solarized theme require iterm use solarized as well.
-    silent! colorscheme solarized
-endif
-
-" compatibility
-if !has('gui_running')
-    " Compatibility for Terminal
-    let g:solarized_termtrans=1
-    if (&t_Co >= 256 || $TERM == 'xterm-256color')
-        " Do nothing, it handles itself.
-    else
-        " Make Solarized use 16 colors for Terminal support
-        let g:solarized_termcolors=16
-    endif
-endif
+  " compatibility
+  if !has('gui_running')
+      " Compatibility for Terminal
+      let g:solarized_termtrans=1
+      if (&t_Co >= 256 || $TERM == 'xterm-256color')
+          " Do nothing, it handles itself.
+      else
+          " Make Solarized use 16 colors for Terminal support
+          let g:solarized_termcolors=16
+      endif
+  endif
+endfunction()
 
 
 " -----------------------------------------------------------------------------
 " Theme - One Dark/Light
-"
-" If you want to use Solarized, you must delete this section
+" - True Color Terminal: GOOD.
+" - Non True Color Terminal: NOOOOO.
 " -----------------------------------------------------------------------------
-"TRUE COLOR SUPPORT FOR ONE
-"Credit joshdick
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+function! SetupOneTheme()
+  if has("syntax")
+      " Noted that One theme can use with any itermcolor
+      silent! colorscheme one
   endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
+
+  let g:airline_theme='one'
+
+  " I love italic for comments
+  let g:one_allow_italics = 1
+endfunction()
+
+
+" -----------------------------------------------------------------------------
+" Theme - PaperColor
+" - True Color Terminal: GOOD.
+" - Non True Color Terminal: surprisingly good even w/o Terminal Theme support.
+" -----------------------------------------------------------------------------
+function SetupPaperColorTheme()
+  if has("syntax")
+      silent! colorscheme PaperColor
+
+      " I much much preferred its Light version than Dark.
+      set background=light
   endif
-endif
 
-if has("syntax")
-    " Override theme to one
-    " Noted that One theme can use with any itermcolor
-    silent! colorscheme one
-endif
+  let g:airline_theme='papercolor'
+endfunction()
 
-let g:airline_theme='one'
 
+" -----------------------------------------------------------------------------
+" Theme - Dark/Light switching
+" -----------------------------------------------------------------------------
 " commands for switch between light/dark background
 command! Light set background=light
 command! Dark set background=dark
+
+function! AutoDarkLight()
+  " https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
+  " the main issue that "hot key" switching profiles won't update the env var.
+  let iterm_profile = $ITERM_PROFILE
+
+  if iterm_profile == "Dark"
+      set background=dark
+  else
+      set background=light
+  endif
+endfunction()
+
+
+" -----------------------------------------------------------------------------
+" Theme - Choose theme by terminal program using.
+" -----------------------------------------------------------------------------
+let term_prog = $TERM_PROGRAM
+
+" Non True Color
+if term_prog == "Apple_Terminal" 
+    " Set 256 color terminal support
+    set t_Co=256
+
+    "call SetupSolarizedTheme()
+    call SetupPaperColorTheme()
+" Assume True Color
+else 
+    call TrueColor()
+    call SetupOneTheme()
+    call AutoDarkLight()
+endif  
 
 
 " -----------------------------------------------------------------------------
@@ -654,13 +690,9 @@ let g:AutoPairsMapBS = 0
 
 " let g:LanguageClient_serverCommands = {
 "     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-"     \ 'fnl': ['fnl', '-fls', '-fls-trace-path','/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.log'],
+"     \ 'fnl': ['fnl', '-fls', '-fls-trace-path','~/proto2/editors/fnl-code-samples/.fls.vim.log'],
 "     \ 'reason': ['reason-language-server.exe'],
 "     \ }
-
-let g:LanguageClient_serverStderr = '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.stderr.log'
-let g:LanguageClient_loggingFile =  '/Users/jsx/aros/tungsten/experimental/proto2/editors/fnl-code-samples/.fls.vim.client.log'
-" let g:LanguageClient_trace="verbose"
 
 " https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
 function SetLSPShortcuts()
@@ -679,7 +711,6 @@ function SetLSPShortcuts()
   nnoremap <leader>m :call LanguageClient_contextMenu()<CR>
   nnoremap <silent><cr> :call LanguageClient#textDocument_hover()<CR>
   nnoremap <silent>W :pclose<cr>
-
 endfunction()
 
 augroup LSP
@@ -753,7 +784,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 augroup COC
   autocmd!
-  autocmd FileType fnl,reason,rust call SetCocShortcuts()
+  autocmd FileType fnl,reason,rust,sh,python,html,css,yaml call SetCocShortcuts()
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 
@@ -787,8 +818,34 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " -----------------------------------------------------------------------------
 " Vim Markdown
 " -----------------------------------------------------------------------------
-let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
+let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'fcl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
 
+" Modified from <https://stsievert.com/blog/2016/01/06/vim-jekyll-mathjax/>.
+" https://stackoverflow.com/questions/32865744/vim-syntax-and-latex-math-inside-markdown
+function! MathAndLiquid()
+    "" Define certain regions
+    " Block math. Look for "$$[anything]$$"
+    syn region math start=/\$\$/ end=/\$\$/
+    " inline math. Look for "$[not $][anything]$"
+    syn match math_block '\$[^$].\{-}\$'
+
+    " Liquid single line. Look for "{%[anything]%}"
+    syn match liquid '{%.*%}'
+    " Liquid multiline. Look for "{%[anything]%}[anything]{%[anything]%}"
+    syn region highlight_block start='{% highlight .*%}' end='{%.*%}'
+
+    " THIS MUST BE DELETED SO "GFM FENCED CODE BLOCK" CAN STILL HIGHLIGHT BY LANG AS BEFORE.
+    " syn region highlight_block start='```' end='```'
+
+    "" Actually highlight those regions.
+    hi link math Statement
+    hi link liquid Statement
+    hi link highlight_block Function
+    hi link math_block Function
+endfunction
+
+" Call everytime we open a Markdown file
+autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
 
 " -----------------------------------------------------------------------------
 " Vim Tex
@@ -846,7 +903,7 @@ augroup ghcmod
   "au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
   au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
   au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
-augroup end
+augroup END
 let g:hindent_on_save = 0
 let g:stylishask_on_save = 0
 let g:hindent_line_length = 100
@@ -872,20 +929,17 @@ let g:intero_vertical_split = 1
 " -----------------------------------------------------------------------------
 " Standard ML
 " -----------------------------------------------------------------------------
-" let g:sml_auto_create_def_use = 'always'
-
-augroup vimbettersml
+augroup BetterSML
   au!
 
   " ----- Keybindings -----
 
   au FileType sml nnoremap <silent> <cr> :SMLTypeQuery<CR>
-  au FileType sml nnoremap <silent> <buffer> gd :SMLJumpToDef<CR>
-
+  au FileType sml nnoremap <silent> gd :SMLJumpToDef<CR>
   " open the REPL terminal buffer
-  au FileType sml nnoremap <silent> <buffer> <leader>is :SMLReplStart<CR>
+  au FileType sml nnoremap <silent> <leader>is :SMLReplStart<CR>
   " close the REPL (mnemonic: k -> kill)
-  au FileType sml nnoremap <silent> <buffer> <leader>ik :SMLReplStop<CR>
+  au FileType sml nnoremap <silent> <leader>ik :SMLReplStop<CR>
   " build the project (using CM if possible)
   au FileType sml nnoremap <silent> <buffer> <leader>ib :SMLReplBuild<CR>
   " for opening a structure, not a file
@@ -900,10 +954,14 @@ augroup vimbettersml
   " ----- Other settings -----
 
   " Uncomment to try out conceal characters
-  au FileType sml setlocal conceallevel=2
+  " au FileType sml setlocal conceallevel=2
 
   " Uncomment to try out same-width conceal characters
   " let g:sml_greek_tyvar_show_tick = 1
+  
+  " Mlton def-use
+  " let g:sml_auto_create_def_use = 'always'
+
 augroup END
 
 
@@ -913,13 +971,14 @@ augroup END
 " autocommand - file extension aliase
 au bufnewfile,bufread *.ast setlocal filetype=lisp
 au bufnewfile,bufread *.emj setlocal filetype=java
-au bufnewfile,bufread *.imp setlocal filetype=ocaml
+au bufnewfile,bufread *.imp setlocal filetype=fnl
 au bufnewfile,bufread *.v   setlocal filetype=ocaml
-au FileType json syntax match Comment +\/\/.\+$+
 "au bufnewfile,bufread *.v   setlocal filetype=coq      
 au bufnewfile,bufread *.f   setlocal filetype=reason
-au bufnewfile,bufread *.langf   setlocal filetype=sml
+au bufnewfile,bufread *.lgf  setlocal filetype=sml
+au bufnewfile,bufread *.toks setlocal filetype=sml  "langf dumped toks files
+au bufnewfile,bufread *.langf setlocal filetype=sml
 au bufnewfile,bufread *.kk  setlocal filetype=javascript
+au FileType json syntax match Comment +\/\/.\+$+
 au Filetype asm setlocal tabstop=8
-
 
