@@ -97,12 +97,16 @@ HISTFILESIZE=10000
 # alias
 #####################################
 
-# neovim
-# nvim will still invoke nvim stable
-alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
-alias vi='nvimnightly'
-alias vim='nvimnightly'
-alias vim8='\vim' # vim 8.1
+# alias vim to neovim
+if [ -x "$(command -v nvim)" ]; then
+  # nvim will still invoke nvim stable
+  alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
+  alias vi='nvimnightly'
+  alias vim='nvimnightly'
+  alias vim8='\vim' # vim 8.1
+fi
+
+# vim
 EDITOR=vim
 GIT_EDITOR=vim
 
