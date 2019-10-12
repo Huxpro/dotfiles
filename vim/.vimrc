@@ -50,6 +50,7 @@ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 " -----------------------------------------------------------------------------
 Plug 'altercation/vim-colors-solarized'
 Plug 'jordwalke/vim-one'
+Plug 'jordwalke/vim-taste'
 Plug 'NLKNguyen/papercolor-theme'
 
 
@@ -94,6 +95,7 @@ Plug 'parsonsmatt/intero-neovim'
 Plug 'tpope/vim-fireplace'
 
 " Markdown
+" Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-markdown'
 
 " Coq (doesn't work for some Python error)
@@ -115,7 +117,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'lervag/vimtex'
 
 " Isabelle
-set rtp+=~/.vim/plugged/isabelle.vim
+"Plug '~/.vim/plugged/isabelle'  "unusable
+"set rtp+=~/.vim/plugged/isabelle.vim
 
 
 " -----------------------------------------------------------------------------
@@ -353,6 +356,13 @@ set mouse=a
 " timeout
 set timeoutlen=1000 ttimeoutlen=0
 
+" syntax highlight sync
+" syntax sync minlines=300
+
+" https://vim.fandom.com/wiki/Fix_syntax_highlighting 
+" huge perf impact
+" autocmd BufEnter * :syntax sync fromstart
+
 
 " -----------------------------------------------------------------------------
 " Search
@@ -400,7 +410,7 @@ endfunction()
 " - True Color Terminal: NOOOOO.
 " - Non True Color Terminal: GOOD with Terminal Theme support.
 " -----------------------------------------------------------------------------
-function SetupSolarizedTheme()
+function! SetThemeSolarized()
   if has("syntax")
       silent! colorscheme solarized
 
@@ -430,16 +440,16 @@ endfunction()
 " - True Color Terminal: GOOD.
 " - Non True Color Terminal: NOOOOO.
 " -----------------------------------------------------------------------------
-function! SetupOneTheme()
+function! SetThemeOne()
   if has("syntax")
       " Noted that One theme can use with any itermcolor
       silent! colorscheme one
   endif
 
-  let g:airline_theme='one'
-
   " I love italic for comments
   let g:one_allow_italics = 1
+
+  let g:airline_theme='one'
 endfunction()
 
 
@@ -448,7 +458,7 @@ endfunction()
 " - True Color Terminal: GOOD.
 " - Non True Color Terminal: surprisingly good even w/o Terminal Theme support.
 " -----------------------------------------------------------------------------
-function SetupPaperColorTheme()
+function! SetThemePaperColor()
   if has("syntax")
       silent! colorscheme PaperColor
 
@@ -461,21 +471,53 @@ endfunction()
 
 
 " -----------------------------------------------------------------------------
+" Theme - Taste
+" - True Color Terminal: GOOD.
+" - Non True Color Terminal: surprisingly good even w/o Terminal Theme support.
+" -----------------------------------------------------------------------------
+function! SetThemeTaste()
+  if has("syntax")
+      silent! colorscheme taste
+  endif
+
+  let g:airline_theme='taste'
+endfunction()
+
+
+" -----------------------------------------------------------------------------
+" Theme - Util
+" -----------------------------------------------------------------------------
+function! SetTheme(name, bg)
+  if a:name == "PaperColor"
+    call SetThemePaperColor()
+  elseif a:name == "Taste"
+    call SetThemeTaste()
+  elseif a:name == "Solarized"
+    call SetThemeSolarized()
+  else 
+    call SetThemeOne()
+  endif
+
+  if a:bg == "Dark"
+      set background=dark
+  else
+      set background=light
+  endif
+endfunction()
+
+
+" -----------------------------------------------------------------------------
 " Theme - Dark/Light switching
 " -----------------------------------------------------------------------------
-" commands for switch between light/dark background
-command! Light set background=light
-command! Dark set background=dark
-
 function! AutoDarkLight()
   " https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
   " the main issue that "hot key" switching profiles won't update the env var.
   let iterm_profile = $ITERM_PROFILE
 
   if iterm_profile == "Dark"
-      set background=dark
+    call SetTheme("One", "Dark")
   else
-      set background=light
+    call SetTheme("PaperColor", "Light")
   endif
 endfunction()
 
@@ -489,16 +531,27 @@ let term_prog = $TERM_PROGRAM
 if term_prog == "Apple_Terminal" 
     " Set 256 color terminal support
     set t_Co=256
-
-    "call SetupSolarizedTheme()
-    call SetupPaperColorTheme()
+    call SetTheme("PaperColor", "Light")
 " Assume True Color
 else 
     call TrueColor()
-    call SetupOneTheme()
     call AutoDarkLight()
-endif  
+endif
 
+" -----------------------------------------------------------------------------
+" Theme - Key binding for switching themes
+"
+" still have problems that markdown injected syntax would not refresh.
+" so the current best way is still to do `i` in the iterm, or macOS dark mode.
+" -----------------------------------------------------------------------------
+command! Light set background=light
+command! Dark set background=dark
+command! One :call SetThemeOne() | :AirlineRefresh
+command! Taste :call SetThemeTaste() | :AirlineRefresh
+command! Paper :call SetThemePaperColor() | :AirlineRefresh
+command! Solarized :call SetThemeSolarized()
+command! OneDark :call SetTheme("One", "Dark") | :AirlineRefresh
+command! PaperLight :call SetTheme("PaperColor", "Light") | :AirlineRefresh
 
 " -----------------------------------------------------------------------------
 " Hi Conceal
@@ -617,6 +670,9 @@ let g:deoplete#enable_at_startup = 0  " disabled in favor of CoC
 " -----------------------------------------------------------------------------
 " NERDTree shortcut
 map <C-n> : NERDTreeToggle<CR>
+let NERDTreeMapOpenSplit='-'
+let NERDTreeMapOpenVSplit='\'
+
 " auto-open by default
 " au VimEnter *  NERDTree
 let NERDTreeMinimalUI = 1
@@ -647,8 +703,8 @@ let g:rooter_patterns = ['.hg', '.git/', 'package.json']
 " -----------------------------------------------------------------------------
 " Tagbar
 " -----------------------------------------------------------------------------
-" shortcut
-map <C-b> : TagbarToggle<CR>
+" Okay to override since I don't use Vim native tag yet.
+map <C-t> : TagbarToggle<CR>
 
 
 " -----------------------------------------------------------------------------
@@ -695,7 +751,7 @@ let g:AutoPairsMapBS = 0
 "     \ }
 
 " https://github.com/autozimu/LanguageClient-neovim/wiki/Recommended-Settings
-function SetLSPShortcuts()
+function! SetLSPShortcuts()
   nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
   nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
   nnoremap <silent> gf :call LanguageClient#textDocument_rangeFormatting()<CR>
@@ -758,7 +814,7 @@ highlight default link CocHighlightText SpellBad
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-function SetCocShortcuts()
+function! SetCocShortcuts()
   nmap <silent> [c <Plug>(coc-diagnostic-prev)
   nmap <silent> ]c <Plug>(coc-diagnostic-next)
   nmap <leader>d <Plug>(coc-definition)
@@ -784,7 +840,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 augroup COC
   autocmd!
-  autocmd FileType fnl,reason,rust,sh,python,html,css,yaml call SetCocShortcuts()
+  autocmd FileType c,cpp,fnl,reason,ocaml,rust,java,sh,python,html,css,yaml call SetCocShortcuts()
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 
@@ -818,8 +874,6 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " -----------------------------------------------------------------------------
 " Vim Markdown
 " -----------------------------------------------------------------------------
-let g:markdown_fenced_languages = ['sh', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'fcl', 'asm', 'wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim']
-
 " Modified from <https://stsievert.com/blog/2016/01/06/vim-jekyll-mathjax/>.
 " https://stackoverflow.com/questions/32865744/vim-syntax-and-latex-math-inside-markdown
 function! MathAndLiquid()
@@ -843,6 +897,17 @@ function! MathAndLiquid()
     hi link highlight_block Function
     hi link math_block Function
 endfunction
+"let g:vim_markdown_fenced_languages =
+let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'fcl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'py=python', 'python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
+
+" buggy
+let g:vim_markdown_folding_disabled = 1
+
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_new_list_item_indent = 0
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
 
 " Call everytime we open a Markdown file
 autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
@@ -964,21 +1029,90 @@ augroup BetterSML
 
 augroup END
 
+au Filetype sml setlocal tabstop=3
+au Filetype sml setlocal softtabstop=3
+au Filetype sml setlocal shiftwidth=3
+
 
 " -----------------------------------------------------------------------------
-" Filetype Aliases
+" Isabelle
 " -----------------------------------------------------------------------------
-" autocommand - file extension aliase
-au bufnewfile,bufread *.ast setlocal filetype=lisp
-au bufnewfile,bufread *.emj setlocal filetype=java
-au bufnewfile,bufread *.imp setlocal filetype=fnl
-au bufnewfile,bufread *.v   setlocal filetype=ocaml
-"au bufnewfile,bufread *.v   setlocal filetype=coq      
-au bufnewfile,bufread *.f   setlocal filetype=reason
-au bufnewfile,bufread *.lgf  setlocal filetype=sml
-au bufnewfile,bufread *.toks setlocal filetype=sml  "langf dumped toks files
-au bufnewfile,bufread *.langf setlocal filetype=sml
-au bufnewfile,bufread *.kk  setlocal filetype=javascript
+
+au BufRead,BufNewFile *.thy setfiletype isabelle
+au BufRead,BufNewFile *.thy set conceallevel=2
+
+" -----------------------------------------------------------------------------
+" Language specfic settings - Syntax Extension
+" -----------------------------------------------------------------------------
+" Add comment to JSON
 au FileType json syntax match Comment +\/\/.\+$+
+
+
+" -----------------------------------------------------------------------------
+" Language specfic settings - Tab size
+" -----------------------------------------------------------------------------
 au Filetype asm setlocal tabstop=8
 
+
+" -----------------------------------------------------------------------------
+" Language specfic settings - Binary (as Hexdump)
+" -----------------------------------------------------------------------------
+" https://vim.fandom.com/wiki/Improved_hex_editing
+" vim -b : edit binary using xxd-format!
+augroup Binary
+  au!
+  au BufReadPre  *.bin let &bin=1
+  au BufReadPost *.bin if &bin | %!xxd
+  au BufReadPost *.bin set ft=xxd | endif
+  au BufWritePre *.bin if &bin | %!xxd -r
+  au BufWritePre *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd
+  au BufWritePost *.bin set nomod | endif
+augroup END
+
+
+" -----------------------------------------------------------------------------
+" File-extension-based Alias
+" -----------------------------------------------------------------------------
+
+" Tiger
+au bufnewfile,bufread *.tig  setlocal filetype=ocaml
+
+" Coq
+au bufnewfile,bufread *.v   setlocal filetype=ocaml
+
+" Emjc
+au bufnewfile,bufread *.ast setlocal filetype=lisp
+au bufnewfile,bufread *.emj setlocal filetype=java
+au bufnewfile,bufread *.flex setlocal filetype=lex
+
+" PLT
+au bufnewfile,bufread *.imp setlocal filetype=fnl
+
+" LangF
+au bufnewfile,bufread *.lgf  setlocal filetype=sml   "CC
+au bufnewfile,bufread *.langf setlocal filetype=sml  "PLT
+au bufnewfile,bufread *.scan.toks setlocal filetype=sml
+au bufnewfile,bufread *.scan.*.toks setlocal filetype=sml
+au bufnewfile,bufread *.parse.pt setlocal filetype=sml
+au bufnewfile,bufread *.parse.*.pt setlocal filetype=sml
+au bufnewfile,bufread *.type-check.ast setlocal filetype=sml
+au bufnewfile,bufread *.type-check.*.ast setlocal filetype=sml
+au bufnewfile,bufread *.convert-to-core.core setlocal filetype=sml
+au bufnewfile,bufread *.convert-to-anf.anf setlocal filetype=sml
+au bufnewfile,bufread *.pre.core setlocal filetype=sml
+au bufnewfile,bufread *.post.core setlocal filetype=sml
+au bufnewfile,bufread *.pre.anf setlocal filetype=sml
+au bufnewfile,bufread *.post.anf setlocal filetype=sml
+au bufnewfile,bufread *.reploc setlocal filetype=sml
+au bufnewfile,bufread *.vmcode setlocal filetype=javascript
+
+" Koka
+au bufnewfile,bufread *.kk  setlocal filetype=javascript
+
+
+" -----------------------------------------------------------------------------
+" Hot-reload .vimrc changes
+" https://vim.fandom.com/wiki/Change_vimrc_with_auto_reload
+" -----------------------------------------------------------------------------
+autocmd! bufwritepost .vimrc source %
