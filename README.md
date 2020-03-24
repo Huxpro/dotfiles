@@ -31,9 +31,7 @@ Dependencies / Credits
 ----------------------
 
 [vim-plug](https://github.com/junegunn/vim-plug)
-  * `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
-    
+
 [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 
@@ -107,8 +105,9 @@ $(brew --prefix)/opt/fzf/install
       * `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
    
 [Karabiner](https://pqrs.org/osx/karabiner/)
-  * keyboard layout mapping / hacking (e.g. mapping capslock to esc)
+  * keyboard layout mapping / hacking (e.g. mapping capslock to esc + ctrl)
   * sync with its configuration file
+  * In Catalina, you might want to refer to issue `#1867` to add `karabiner_grabber` manually
 
 [Alfred (v3)](https://www.alfredapp.com/)
   * sync with its preferences file
@@ -170,6 +169,43 @@ Isabelle
 
 Scala / Sbt
 - `brew install scala sbt`
+
+
+A Complete New Macbook
+----------------------
+
+### System 
+
+1. Swap Spotlight and Input Source (`ctrl` <-> `cmd`)
+2. Turn on "Three finger drag", "Tap to click", "App expose"
+
+
+### Replacing Capslock
+
+could be easier configured to `escape` or `ctrl`, but could be more powerful with Karabiner
+
+
+### Install dependencies
+
+`brew`, `zsh`, `vim-plug` could all be installed with one-line.
+
+
+### Run `linkall.sh`
+
+Hopefully you will get 
+- Karabiner configuration sync-ed
+- `zsh` with `lambda` theme
+
+
+### Setup Vim
+
+Run `:PlugInstall` inside `vim`
+Then you should get pretty `PaperColor` theme for `Terminal.app` (Not True Color)
+
+
+### Install `Rectangle.app` for windows manager
+
+set to Magnet keyboard shortcut
 
 
 Reference
