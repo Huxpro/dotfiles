@@ -171,8 +171,8 @@ Scala / Sbt
 - `brew install scala sbt`
 
 
-A Complete New Macbook
-----------------------
+New Mac Setup Guide
+-------------------
 
 ### System 
 
@@ -206,6 +206,17 @@ Then you should get pretty `PaperColor` theme for `Terminal.app` (Not True Color
 ### Install `Rectangle.app` for windows manager
 
 set to Magnet keyboard shortcut
+
+
+### Adjusting Git Configuration
+
+Although git auth users by their github username/password, the commits are logged and tracked by the email recorded on your local `git config`.
+So please follow [Why are my commits linked to the wrong user?
+](https://help.github.com/en/github/committing-changes-to-your-project/why-are-my-commits-linked-to-the-wrong-user) to adjust your local configs:
+
+```sh
+$ git config --global user.email "email@example.com"
+```
 
 
 Reference
