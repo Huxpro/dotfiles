@@ -1,46 +1,33 @@
 Xuan's dotfiles
 ===============
 
-I maintain this for my very personal use, but you're quite welcome to refer it, use it, and make suggestions.
+I maintain this for my personal uses, but you're quite welcome to refer and use ;)
 
 
 Screenshots
 -----------
 
-with One theme (Default; for True Color Terminal):
+with One theme (for 24-bit *true color* terminal):
 ![screenshot](./scrshot-one.png)
 
 
-with Solarized theme (for Non True Color Terminal, such as MacOS Terminal.app):
+with Solarized theme (for 8-bit 256 colors terminal, e.g. MacOS's `Terminal.app`):
 ![screenshot](./scrshot-sol.png)
 
-with PaperColor theme. (works for both Non True Color and True Color Terminal):
+
+with PaperColor theme. (for both)
 TBD.
 
-All three themes support using `:Light`/`:Dark` (underlying `set background`) to switch between dark and light versions.
+
+Using `:Light`/`:Dark` (underlying `set background`) to switch between dark and light versions of each themes.
+See `Theme - Key binding` for commands to switch between themes (WIP).
 
 
-Themes Switching
-----------------
-
-Checkout all portions of `.vimrc` starts with `Theme` 
-
-
-
-Dependencies / Credits
-----------------------
-
-[vim-plug](https://github.com/junegunn/vim-plug)
+Dependencies - CLI
+------------------
 
 [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
   * `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
-
-[FiraCode](https://github.com/tonsky/FiraCode)
-  * also checkout "Nerds Font" 
-
-
-Other Common Dependencies
--------------------------
 
 [Homebrew](https://brew.sh/)
   * `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
@@ -54,20 +41,6 @@ Other Common Dependencies
     * One Light came from [here](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * One Dark  came from another repo (the above one is not satisified)
     * add keyboard shortcut `cmd-'`, `cmd-"` for switching via "load color preset"
-
-Vim 8.1
-  * Homebrew
-
-[Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
-  * [nightly release](https://github.com/neovim/neovim/releases) 
-  * there are tricks to share `.vimrc` w/ `vim`
-  * [wish] Onivim, Spacevim
-  * Potential OSX Mojave and Python problem:
-    * <https://github.com/neovim/neovim/issues/9050>
-
-[Coc.nvim](https://github.com/neoclide/coc.nvim)
-  * [Coc-highlight](https://github.com/neoclide/coc-highlight): Highlight symbol of current position in all positions of current buffer (when no document highlight provider exists from language server).
-  * [more extensions](https://github.com/neoclide/coc.nvim#extensions)
 
 [FZF](https://github.com/junegunn/fzf)
 
@@ -86,6 +59,30 @@ $(brew --prefix)/opt/fzf/install
   * using github from CLI.
   * `brew install hub`
 
+
+Dependencies - Editors
+----------------------
+
+Vim 8.1
+
+[vim-plug](https://github.com/junegunn/vim-plug)
+
+[Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
+  * [nightly release](https://github.com/neovim/neovim/releases) 
+  * there are tricks to share `.vimrc` w/ `vim`
+  * Potential OSX Mojave and Python problem:
+    * <https://github.com/neovim/neovim/issues/9050>
+
+OniVim
+
+SpaceVim
+
+[Coc.nvim](https://github.com/neoclide/coc.nvim)
+  * [Coc-highlight](https://github.com/neoclide/coc-highlight): Highlight symbol of current position in all positions of current buffer (when no document highlight provider exists from language server).
+  * [more extensions](https://github.com/neoclide/coc.nvim#extensions)
+
+Emacs
+
 [Spacemacs](http://spacemacs.org/)
   * sync emacs setting
 
@@ -103,7 +100,21 @@ $(brew --prefix)/opt/fzf/install
   * smartim-like input method switching 
     * installing `im-select` (works w/ `VSCodeVIM`)
       * `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
-   
+
+Android Studio
+
+XCode
+
+
+Dependencies - Visual
+---------------------
+
+[FiraCode](https://github.com/tonsky/FiraCode) or [Iosevka](https://github.com/be5invis/Iosevka)
+
+
+Dependencies - MacOS
+--------------------
+
 [Karabiner](https://pqrs.org/osx/karabiner/)
   * keyboard layout mapping / hacking (e.g. mapping capslock to esc + ctrl)
   * sync with its configuration file
@@ -111,7 +122,7 @@ $(brew --prefix)/opt/fzf/install
 
 [Alfred (v3)](https://www.alfredapp.com/)
   * sync with its preferences file
-  
+
 [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins)
   * `brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize webpquicklook suspicious-package quicklookase qlvideo`
 
@@ -136,43 +147,50 @@ $ ln -s dotfiles/vim/.vimrc .vimrc
 For `ssh` usages, you might want to comment out some vim plugins for speeds.
 
 
+Notes - Common Language Softwares
+---------------------------------
 
-Other Common Language Softwares 
---------------------------------
+JS
+- `node`, `npm`, Flow, TypeScript
 
-JS / Node / NPM / Flow / TypeScript
+Python3
 
-Python3 / PyRe 
+Java
+- Gradle
 
-Java / JDK / Gradle / Scala / Sbt
+Scala
+- Sbt `brew install scala sbt`
 
-Rust / Cargo
-- `rustup`, `rls`, `rustc`
+Rust
+- Cargo, `rustup`, `rls`, `rustc`
 
-OCaml / Opam / Dune (Jbuilder)
+OCaml
+- Opam / Dune (Jbuilder)
 
 [Coq](https://coq.inria.fr/)
+- CoqMake
 
-Reason / BuckleScript / Esy
+Reason
+- BuckleScript / Esy
 
 SML
 - `brew install smlnj rlwrap`
+- MLton
 
-Haskell / GHC 
-- `ghcup`
+Haskell
+- GHC, `ghcup`
 
 Agda
 
-Idris
-
 Isabelle
 
-Scala / Sbt
-- `brew install scala sbt`
+Dart
+
+Swift
 
 
-New Mac Setup Guide
--------------------
+Notes - New Mac Setup Guide
+---------------------------
 
 ### System 
 
