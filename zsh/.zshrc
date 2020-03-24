@@ -131,12 +131,23 @@ alias prtop='pbpaste | rtop'
 
 # ocaml / opam switch 
 alias evalcaml='eval `opam config env`'
-alias opamswitch402='opam switch reason;     eval `opam config env`'
-alias opamswitch405='opam switch unsafe-str; eval `opam config env`'
-alias opamswitchsys='opam switch system;     eval `opam config env`'
+
+# 4.02.3 for ocaml/reason/ocamlmerlin and Coq 8.4
+alias opamswitch402='opam switch reason && eval `opam config env`'
+alias opamswitchre=opamswitch402
+
+# 4.05.* for Coq 8.8.2
+alias opamswitch405='opam switch unsafe-str && eval `opam config env`'
+alias opamswitchcoq=opamswitch405
 
 # echo $PATH line by line
 alias echopath='tr ":" "\n" <<< "$PATH"'
+
+# cloc coq .v
+alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
+
+# langfc 
+alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
 # only eval opam if opam is executable
 if [ -x "$(command -v opam)" ]; then

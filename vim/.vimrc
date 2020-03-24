@@ -357,7 +357,7 @@ set mouse=a
 set timeoutlen=1000 ttimeoutlen=0
 
 " syntax highlight sync
-" syntax sync minlines=300
+syntax sync minlines=256
 
 " https://vim.fandom.com/wiki/Fix_syntax_highlighting 
 " huge perf impact
@@ -670,8 +670,10 @@ let g:deoplete#enable_at_startup = 0  " disabled in favor of CoC
 " -----------------------------------------------------------------------------
 " NERDTree shortcut
 map <C-n> : NERDTreeToggle<CR>
+
+" binding like spacemacs
 let NERDTreeMapOpenSplit='-'
-let NERDTreeMapOpenVSplit='\'
+let NERDTreeMapOpenVSplit='<Bar>'
 
 " auto-open by default
 " au VimEnter *  NERDTree
@@ -840,7 +842,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 augroup COC
   autocmd!
-  autocmd FileType c,cpp,fnl,reason,ocaml,rust,java,sh,python,html,css,yaml call SetCocShortcuts()
+  autocmd FileType c,h,cpp,fnl,reason,ocaml,rust,java,sh,python,html,css,yaml call SetCocShortcuts()
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 
@@ -1079,7 +1081,8 @@ augroup END
 au bufnewfile,bufread *.tig  setlocal filetype=ocaml
 
 " Coq
-au bufnewfile,bufread *.v   setlocal filetype=ocaml
+" ocaml will trigger language server which will report err
+au bufnewfile,bufread *.v   setlocal filetype=sml
 
 " Emjc
 au bufnewfile,bufread *.ast setlocal filetype=lisp

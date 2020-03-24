@@ -2,13 +2,13 @@
 # https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
 
 [user]
-        name = Xuan Huang
-        email = huxpro@gmail.com
+	name = Xuan Huang
+	email = huxpro@gmail.com
 
 [core]
         editor = vim
         autocrlf = input
-        excludesfile = ~/.gitignore
+	excludesfile = /Users/hux/.gitignore
         #safecrlf = false
 
 [alias]
@@ -56,6 +56,9 @@
         p = push
         pom = push origin master
         poh = push origin head
+
+        # http://www.codeblocq.com/2016/01/Untrack-files-already-added-to-git-repository-based-on-gitignore/
+        re-ignore = !git rm -r --cached . && git add . && git commit -m "reset .gitignore"
 
         # Reset
         unstage = reset HEAD --                      # Mixed reset (affects HEAD and Index)
@@ -122,3 +125,11 @@
 
 [difftool]
 	prompt = false
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/hux/.stCommitMsg

@@ -27,9 +27,8 @@ export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
 # JS yarn 
 export PATH="$HOME/.yarn/bin:$PATH"
 
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
-export PATH=/usr/local/gcc-8.1/bin:$PATH
+# Flutter
+export PATH="$HOME/flutter/bin:$PATH"
 
 # sqlite
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
@@ -52,8 +51,14 @@ export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 export PATH="$HOME/.fnl/bin:$PATH"
 
 # LLVM
-# export PATH="/usr/local/opt/llvm/bin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
+export PATH=/usr/local/gcc-8.1/bin:$PATH
