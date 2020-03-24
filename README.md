@@ -123,6 +123,10 @@ Dependencies - MacOS
 [Alfred (v3)](https://www.alfredapp.com/)
   * sync with its preferences file
 
+[Rectangle](https://rectangleapp.com/)
+  * Window manager, better alternatives of Spectacle.
+  * set to *Magnet* keyboard shortcut
+
 [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins)
   * `brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize webpquicklook suspicious-package quicklookase qlvideo`
 
@@ -200,12 +204,13 @@ Notes - New Mac Setup Guide
 
 ### Replacing Capslock
 
-could be easier configured to `escape` or `ctrl`, but could be more powerful with Karabiner
+could be easier configured to `escape` or `ctrl`,
+but could be more powerful with Karabiner
 
 
 ### Install dependencies
 
-`brew`, `zsh`, `vim-plug` could all be installed with one-line.
+`brew`, `zsh`, `vim-plug`, Karabiner, Rectangle...
 
 
 ### Run `linkall.sh`
@@ -221,11 +226,6 @@ Run `:PlugInstall` inside `vim`
 Then you should get pretty `PaperColor` theme for `Terminal.app` (Not True Color)
 
 
-### Install `Rectangle.app` for windows manager
-
-set to Magnet keyboard shortcut
-
-
 ### Adjusting Git Configuration
 
 Although git auth users by their github username/password, the commits are logged and tracked by the email recorded on your local `git config`.
@@ -235,6 +235,8 @@ So please follow [Why are my commits linked to the wrong user?
 ```sh
 $ git config --global user.email "email@example.com"
 ```
+
+### More Dependencies...
 
 
 Reference
