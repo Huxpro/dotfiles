@@ -1,4 +1,4 @@
-Notes - New Mac Setup Guide
+Xuan's New Mac Setup Guide
 ===========================
 
 MacOS System
@@ -25,7 +25,7 @@ Install _Meta_ Dependencies
 
 ### MacOS Apps
 
-- [iTerm2](https://www.iterm2.com/)
+- [iTerm2](https://www.iterm2.com/), better terminal.
 
 - [Karabiner](https://pqrs.org/osx/karabiner/) for replacing `capslock`.
   - [Does not work on MacOS Catalina #1867](https://github.com/pqrs-org/Karabiner-Elements/issues/1867)
@@ -129,6 +129,8 @@ $(brew --prefix)/opt/fzf/install
 - [Hub](https://hub.github.com/)
   - `brew install hub`
 
+- "Readline Wrap"
+  - `brew install rlwrap`
 
 
 More on Editors
@@ -164,45 +166,56 @@ More on Editors
 More on Developer Softwares
 ---------------------------------
 
-JS
-- `node`, `npm`, Flow, TypeScript
+> This is WIP. 
+> 
+> It's intended to track non-trivial dependencies, but it's not very useful at this moment.
 
-Python3
+### Mainstream
 
-Java
-- Gradle
+- JavaScript
+  - NodeJS, `brew install node`
+  - Flow, TypeScript
+  - Expo (React Native)
 
-Scala
-- Sbt `brew install scala sbt`
+- Python 3
 
-Rust
-- Cargo, `rustup`, `rls`, `rustc`
+- Java
+  - Gradle
 
-OCaml
-- Opam / Dune (Jbuilder)
+- Scala
+  - Sbt, `brew install scala sbt`
 
-[Coq](https://coq.inria.fr/)
-- CoqMake
+### System
 
-Reason
-- BuckleScript / Esy
+- LLVM / Clang
 
-SML
-- `brew install smlnj rlwrap`
-- MLton
+- Rust
+  - Rustup
 
-Haskell
-- GHC, `ghcup`
+### Others
 
-Agda
+- OCaml
+  - Opam
 
-Isabelle
+- Reason
+  - BuckleScript / Esy
 
-Dart
+- SML
+  - SMLNJ, `brew install smlnj`
+  - MLton
 
-Swift
+- [Coq](https://coq.inria.fr/)
+  - CoqMake
 
-Racket
-- `brew install racket` (miminal)
+- Haskell
+  - GHC, `ghcup`
 
+- Racket
+  - `brew install racket` (miminal)
+
+- Agda
+
+- Isabelle
+
+- Prolog
 
