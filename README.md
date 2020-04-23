@@ -192,6 +192,9 @@ Dart
 
 Swift
 
+Racket
+- `brew install racket` (miminal)
+
 
 Notes - New Mac Setup Guide
 ---------------------------

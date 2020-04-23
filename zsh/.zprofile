@@ -55,6 +55,10 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
+# Clang
+# https://clang.llvm.org/docs/CommandGuide/clang.html#environment
+export CPATH=`xcrun --show-sdk-path`/usr/include
+
 # https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

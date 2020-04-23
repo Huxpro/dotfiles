@@ -5,12 +5,11 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="af-magic"
 
-# agnoster handle git sync and becomes condiferably slow.
+# bullet-like, but it handle git sync-ly and becomes condiferably slow.
 # ZSH_THEME="agnoster"
 
-# similar but not: https://github.com/sindresorhus/pure
+# a fork of <https://github.com/sindresorhus/pure>
 ZSH_THEME="refined-lambda"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -97,6 +96,9 @@ HISTFILESIZE=10000
 # alias
 #####################################
 
+# highlight dir from file
+alias ls='ls -FHG'
+
 # alias vim to neovim
 if [ -x "$(command -v nvim)" ]; then
   # nvim will still invoke nvim stable
@@ -120,6 +122,7 @@ alias sml='rlwrap sml'
 alias jake='rlwrap jake'
 alias uscheme='rlwrap uscheme'
 alias scheme='rlwrap scheme'
+alias racket='rlwrap racket'
 
 # grep (recursive, linenum)
 alias greprn='grep -rn'
@@ -129,16 +132,14 @@ alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
 alias reml='pbpaste | refmt --parse re --print ml | pbcopy'
 alias prtop='pbpaste | rtop'
 
-# ocaml / opam switch 
-alias evalcaml='eval `opam config env`'
+# ocaml / opam switch (upgrade to opam 2.0)
+alias evalopamenv='eval $(opam env)'
 
-# 4.02.3 for ocaml/reason/ocamlmerlin and Coq 8.4
-alias opamswitch402='opam switch reason && eval `opam config env`'
-alias opamswitchre=opamswitch402
+# 4.02.3 for Reason/BuckleScript <=5 and Coq 8.4 (JSCert)
+alias opamswitch402='opam switch reason && evalopamenv'
 
-# 4.05.* for Coq 8.8.2
-alias opamswitch405='opam switch unsafe-str && eval `opam config env`'
-alias opamswitchcoq=opamswitch405
+# 4.05.* for Coq 8.8.2 (Software Foundation)
+alias opamswitch405='opam switch unsafe-str && evalopamenv'
 
 # echo $PATH line by line
 alias echopath='tr ":" "\n" <<< "$PATH"'
@@ -146,10 +147,10 @@ alias echopath='tr ":" "\n" <<< "$PATH"'
 # cloc coq .v
 alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
 
-# langfc 
+# langfc
 alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
-# only eval opam if opam is executable
+# only eval opam on `source .zshrc` if opam is an executable
 if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
 fi
@@ -197,6 +198,8 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 
     sith
 fi
+
+alias iterm-dark-mode="i"
 
 
 
