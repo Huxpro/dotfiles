@@ -3,7 +3,9 @@
 # 10ms for key sequences
 KEYTIMEOUT=1
 
+# System binaries
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="/usr/local/sbin:$PATH"
 
 # Haskell ghcup/cabal/stack/hie etc.
 export PATH=$HOME/.local/bin:$PATH
@@ -24,7 +26,7 @@ export GEM_HOME=$HOME/gems
 export PATH=$HOME/gems/bin:$PATH
 export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
 
-# JS yarn 
+# Yarn
 export PATH="$HOME/.yarn/bin:$PATH"
 
 # Flutter
@@ -42,12 +44,10 @@ export PATH="/usr/local/opt/openssl/bin:$PATH"
 # export CPPFLAGS="-I/usr/local/opt/openssl/include"
 # export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
-export PATH="/usr/local/sbin:$PATH"
-
 # override coq with brew-installed coq
 export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 
-# fnl
+# FNL
 export PATH="$HOME/.fnl/bin:$PATH"
 
 # LLVM
@@ -59,10 +59,14 @@ export CPPFLAGS="-I/usr/local/opt/llvm/include"
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
 export CPATH=`xcrun --show-sdk-path`/usr/include
 
+# GCC
+export PATH=/usr/local/gcc-8.1/bin:$PATH
+
+# GNU utils
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
 # https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
-export PATH=/usr/local/gcc-8.1/bin:$PATH
