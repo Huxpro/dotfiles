@@ -46,8 +46,8 @@ Install _Meta_ Dependencies
   - A weaker alternatives is to use macOS native modifer keys mapping.
 
 
-Applied Configurations (For Immediate Comforts!)
-------------------------------------------------
+Applying Configurations (For Immediate Comforts!)
+-------------------------------------------------
 
 ### Clone this repo and run `linkall.sh`
 
@@ -119,12 +119,15 @@ Install Must-have Dependencies
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
+- [搜狗输入法](https://pinyin.sogou.com/mac/)
+
+- [Dash](https://kapeli.com/dash)
 
 
 Install Good-to-have Dependencies
 ------------------------------
 
-### CLI (some are also invoked in Vim)
+### CLI (some are also used in Vim)
 
 - [FZF](https://github.com/junegunn/fzf)
 
@@ -157,9 +160,7 @@ More on Editors
 - [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
   * [nightly release](https://github.com/neovim/neovim/releases) 
   * there are tricks to share `.vimrc` w/ `vim`
-  * Potential OSX Mojave and Python problem:
-    * <https://github.com/neovim/neovim/issues/9050>
-
+  * Potential [issue](https://github.com/neovim/neovim/issues/9050) on Python and macOS Mojave.
 
 ### Emacs
 
