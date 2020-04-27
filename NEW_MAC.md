@@ -10,6 +10,17 @@ MacOS System
 4. Set "Appearences" to "Auto"
 5. Set "Default web browser" to "Google Chrome"
 
+### ⚠️  Allow apps from "Anywhere"
+
+Staring from macOS Sierra, apple has removed "Anywhere" from "Security & Privary" settings:
+
+```sh
+# to get "Anywhere" back
+sudo spctl --master-disable
+```
+
+N.B. this does not require you to turn off [SIP (System Integrity Protection)](https://support.apple.com/en-us/HT204899).
+
 
 Install _Meta_ Dependencies
 ------------------------------
@@ -21,6 +32,8 @@ Install _Meta_ Dependencies
 
 - [Homebrew](https://brew.sh/)
   - `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+  - N.B. you might want to [change the ownership of some `usr/local/` from `root` to you](https://docs.brew.sh/FAQ#why-does-homebrew-prefer-i-install-to-usrlocal)
+    - `sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin`
 
 
 ### MacOS Apps
@@ -74,6 +87,8 @@ Install Must-have Dependencies
     * Theme: "minimal"
     * Panes: uncheck "per-pane title bar"
     * Dimming: uncheck "dim inactive"
+  - Profiles/Terminal
+    - Notifications: check "Silence bell"
   - Profiles/Colors
     * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * _One Dark_ (forget where's from but better than above repo)
