@@ -19,7 +19,7 @@ Staring from macOS Sierra, apple has removed "Anywhere" from "Security & Privary
 sudo spctl --master-disable
 ```
 
-N.B. this does not require you to turn off SIP (System Integrity Protection).
+N.B. this does not require you to turn off [SIP (System Integrity Protection)](https://support.apple.com/en-us/HT204899).
 
 
 Install _Meta_ Dependencies
