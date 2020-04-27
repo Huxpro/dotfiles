@@ -117,7 +117,8 @@ Install Must-have Dependencies
 - [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* shortcuts.
 
 - [Alfred (v3)](https://www.alfredapp.com/), better Spotlight
-  - Preferences file is synced by this repo as well.
+  - Preferences folder is located by this repo as well.
+  - Activate power pack to sync on preference folder.
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
