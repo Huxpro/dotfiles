@@ -87,6 +87,8 @@ Install Must-have Dependencies
     * Theme: "minimal"
     * Panes: uncheck "per-pane title bar"
     * Dimming: uncheck "dim inactive"
+  - Profiles/Terminal
+    - Notifications: check "Silence bell"
   - Profiles/Colors
     * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * _One Dark_ (forget where's from but better than above repo)
