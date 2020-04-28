@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/hux/xh5403 Drive/742_CC~anh/grading/Spring185/Sec01/assign0/txy2539/assign0/src/assign0'
-let g:netrw_dirhist_2='/Users/hux/xh5403 Drive/641_Haskell'
-let g:netrw_dirhist_3='/Users/hux/xh5403 Drive/641_Haskell/Rec02-HOF'
-let g:netrw_dirhist_4='/Users/hux/xh5403 Drive/641_Haskell/READ_PFDS'
-let g:netrw_dirhist_5='/Users/hux/xh5403 Drive/641_Haskell'
-let g:netrw_dirhist_6='/Users/hux/xh5403 Drive/799_Indep_Coq/xh5403/plf'
-let g:netrw_dirhist_7='/Users/hux/xh5403 Drive/742_CC~anh/grading'
