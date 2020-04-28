@@ -534,6 +534,9 @@ if term_prog == "Apple_Terminal"
     " Set 256 color terminal support
     set t_Co=256
     call SetTheme("PaperColor", "Light")
+" The vim itself might support 256 color only as well
+elseif &t_Co <= 256
+    call SetTheme("PaperColor", "Light")
 " Assume True Color
 else 
     call TrueColor()
