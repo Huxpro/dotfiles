@@ -16,10 +16,12 @@ ln -sf "$cwd/vim/.vimrc" ~/.vimrc
 ln -sf "$cwd/vim/.vimrc" ~/.ideavimrc
 
 # neovim
-ln -sf "$cwd/nvim" ~/.config/nvim
+ln -sf "$cwd/nvim/init.vim" ~/.config/nvim/init.vim
+ln -sf "$cwd/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
+ln -sf "$cwd/nvim/coc-settings.json" ~/.vim/coc-settings.json         # fallback to vim
 
-# back port nvim Coc to vim
-ln -sf "$cwd/nvim/coc-settings.json" ~/.vim/coc-settings.json
+# vscode
+ln -sf "$cwd/vscode/settings.json" ~/Library/Application\ Support/Code/User/settings.json
 
 # git
 ln -sf "$cwd/git/.gitconfig" ~/.gitconfig
