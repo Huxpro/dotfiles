@@ -132,4 +132,4 @@
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [commit]
-	template = /Users/hux/.stCommitMsg
+	; template = /Users/hux/.stCommitMsg

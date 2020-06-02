@@ -97,7 +97,63 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 
 #####################################
-# alias
+# Alias (Hermes Dev Mac)
+#####################################
+ 
+# Re-configure
+alias confighermes='./utils/build/configure.py ~/hermes-build'
+alias confighermes-oss='./utils/build/configure.py ~/hermes-build-oss'
+
+# CMake Build
+alias cmakehermes='(cd ~/hermes-build && ninja)'
+alias cmkhermes='cmakehermes'
+alias cmakehermes-oss='(cd ~/hermes-build-oss && ninja)'
+alias cmkhermes-oss='cmakehermes-oss'
+
+# From Source (`her` for short)
+alias herrepl='rlwrap ~/hermes-build/bin/hermes'
+alias her='herrepl'
+alias herrepl-oss='rlwrap ~/hermes-build-oss/bin/hermes'
+alias her-oss='herrepl-oss'
+
+# From JSVU
+alias hermes-repl='rlwrap hermes-repl'
+
+# Buck Build
+alias buckhermes='buck build --out .hermes hermes'
+
+# Buck Testing
+alias testhermes='buck test //xplat/hermes/test:quick'
+alias testhermesfull='buck test //xplat/hermes/...'
+
+# Format
+alias formathermes='./utils/format.sh'
+
+
+#####################################
+# Alias (FB)
+#####################################
+
+alias hgjf='echo ":wq" | hg commit --amend && jf s'
+
+# change to a function so it can take a message parameter
+#hgjf() {
+#  echo ":wq" | hg commit --amend && jf s -s -m $1
+#}
+
+# alias node='~/fbsource/xplat/third-party/node/bin/node'
+
+# a hux-ized machine
+alias sshdev='ssh devvm433.atn0.facebook.com'
+
+# a cleaner machine
+alias sshdev2='ssh devvm2238.vll0.facebook.com'
+
+# a CentOS7 machine
+alias sshcent7='ssh devvm3030.prn2.facebook.com'
+
+#####################################
+# Alias
 #####################################
 
 # highlight dir from file
@@ -112,9 +168,7 @@ if [ -x "$(command -v nvim)" ]; then
   alias vim8='\vim' # vim 8.1
 fi
 
-# vim
-EDITOR=vim
-GIT_EDITOR=vim
+# alias vim='/usr/local/Cellar/vim/8.2.0654/bin/vim'
 
 # emacs (open in new instance)
 alias emacs='open -n -a Emacs.app .'
@@ -154,6 +208,24 @@ alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
 # langfc
 alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
+# cling
+alias cpprepl='cling'
+
+# haskell
+alias stack-all='ls $(stack path --programs)'
+
+# permission
+alias sudochownlocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
+
+
+#####################################
+# Initilization on log
+#####################################
+
+# NVM (https://github.com/nvm-sh/nvm)
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 # only eval opam on `source .zshrc` if opam is an executable
 if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
@@ -161,12 +233,6 @@ fi
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# haskell
-alias stack-all='ls $(stack path --programs)'
-
-# permission
-alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
 
 # colorful stderr
 # https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
@@ -176,34 +242,38 @@ color()(set -o pipefail;"$@" 2>&1 1>&3|sed $'s,.*,\e[31m&\e[m,'1>&2)3>&1
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }
 
+# vim
+EDITOR=vim
+GIT_EDITOR=vim
+
 
 #####################################
 # iTerm - macOS dark mode awareness
 # https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
 #####################################
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-    sith() {
-        val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
-        if [[ $val == "Dark" ]]; then
-            i
-        fi
-    }
+# if [[ "$(uname -s)" == "Darwin" ]]; then
+#     sith() {
+#         val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+#         if [[ $val == "Dark" ]]; then
+#             i
+#         fi
+#     }
 
-    i() {
-        if [[ $ITERM_PROFILE == "Default" ]]; then
-            echo -ne "\033]50;SetProfile=Dark\a"
-            export ITERM_PROFILE="Dark"
-        else
-            echo -ne "\033]50;SetProfile=Default\a"
-            export ITERM_PROFILE="Default"
-        fi
-    }
+#     i() {
+#         if [[ $ITERM_PROFILE == "Default" ]]; then
+#             echo -ne "\033]50;SetProfile=Dark\a"
+#             export ITERM_PROFILE="Dark"
+#         else
+#             echo -ne "\033]50;SetProfile=Default\a"
+#             export ITERM_PROFILE="Default"
+#         fi
+#     }
 
-    sith
-fi
+#     sith
+# fi
 
-alias iterm-dark-mode="i"
+# alias iterm-dark-mode="i"
 
 
 
@@ -243,3 +313,9 @@ compdef _gnu_generic bsc bsb ocamlc yarn
 #   zstyle ':completion:*' completer _oldlist _complete
 # fi
 # zstyle ':auto-fu:var' postdisplay $''
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools

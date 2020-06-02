@@ -69,6 +69,9 @@ Plug 'rust-lang/rust.vim'
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
 
+" Hack
+Plug 'hhvm/vim-hack'
+
 " Scala
 Plug 'derekwyatt/vim-scala'
 
@@ -196,16 +199,16 @@ call plug#end()
 " Neovim
 " -----------------------------------------------------------------------------
 if (has("nvim"))
-" close terminal windows input mode with <esc>
-tnoremap <Esc> <C-\><C-n>
+  " close terminal windows input mode with <esc>
+  tnoremap <Esc> <C-\><C-n>
 
-" mapping for openning terminal in split windows
-" rather than splitting belowright by default by `set splitright` and `set splitbelow`
-" using `:belowright split` to treat terminal splitting specially
-command! -nargs=* D  belowright split | terminal <args>
-command! -nargs=* DD belowright vsplit | terminal <args>
+  " mapping for openning terminal in split windows
+  " rather than splitting belowright by default by `set splitright` and `set splitbelow`
+  " using `:belowright split` to treat terminal splitting specially
+  command! -nargs=* D  belowright split | terminal <args>
+  command! -nargs=* DD belowright vsplit | terminal <args>
 
-set inccommand=nosplit
+  set inccommand=nosplit
 endif
 
 
@@ -350,6 +353,7 @@ set lazyredraw
 set updatetime=300
 
 " No annoying sound on errors
+set visualbell
 set noerrorbells
 
 " mouse support
@@ -633,6 +637,9 @@ map <leader>s :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+" terminal
+:onoremap <C-`> :term
+
 
 " =============================================================================
 " Plugin Configuration
@@ -908,7 +915,7 @@ function! MathAndLiquid()
     hi link math_block Function
 endfunction
 "let g:vim_markdown_fenced_languages =
-let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
+let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'rosetta=fnl', 'rosettas=scala', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=hack', 'vim', 'lex', 'yacc', 'grm=sml']
 
 " buggy
 let g:vim_markdown_folding_disabled = 1

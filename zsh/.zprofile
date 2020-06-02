@@ -48,26 +48,43 @@ export PATH="/usr/local/opt/openssl/bin:$PATH"
 # export CPPFLAGS="-I/usr/local/opt/openssl/include"
 # export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
-# override coq with brew-installed coq
+# Coq, override coq with brew-installed coq
 export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 
-# FNL
+# FB - XR
 export PATH="$HOME/.fnl/bin:$PATH"
+export PATH="$PATH:$HOME/aros/xros/bin"
+
+# Emscripten
+export PATH="$HOME/github/emsdk:$PATH"
+EMSDK="$HOME/github/emsdk"
+EM_CONFIG="$HOME/.emscripten"
 
 # LLVM
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/llvm/lib"
 export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
+# MacOS Catalina SDKs
+# xcode-select-ed to XCode 10.15
+# https://github.com/Homebrew/homebrew-core/pull/45304
+# This alone fixed all the `/usr/local/opt/llvm/bin/..` issues!
+export SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
+
+# CMake
+export CMAKE_OSX_SYSROOT="$SDKROOT"
+export LLVM_DIR="/usr/local/Cellar/llvm/10.0.0_3/lib/cmake"
+
 # Clang
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
-export CPATH=`xcrun --show-sdk-path`/usr/include
+export CPATH="$SDKROOT/usr/include"
+
 
 # GCC
-export PATH=/usr/local/gcc-8.1/bin:$PATH
+# export PATH=/usr/local/gcc-8.1/bin:$PATH
 
 # GNU utils
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
 export LC_ALL=en_US.UTF-8

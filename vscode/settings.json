@@ -118,6 +118,16 @@
     },
   ],
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "workbench.colorTheme": "One Dark Pro",
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "Quiet Light",
+  "workbench.preferredDarkColorTheme": "One Dark Pro",
+  "workbench.preferredLightColorTheme": "Quiet Light",
+  "editor.suggestSelection": "first",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "reason_language_server.mlfmt": "~/reason/napkinscript/lib/napkinscript.exe -print ns",
+  "clangd.path": "/Users/jsx/Library/Application Support/Code/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/10.0.0/clangd_10.0.0/bin/clangd",
+  "gitlens.codeLens.enabled": false
 }
