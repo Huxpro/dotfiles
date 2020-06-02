@@ -517,7 +517,7 @@ endfunction()
 " -----------------------------------------------------------------------------
 function! AutoDarkLight()
   " https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
-  " the main issue that "hot key" switching profiles won't update the env var.
+  " A hot-key or iterm-script approach won't update Env so VIM won't know.
   let iterm_profile = $ITERM_PROFILE
 
   if iterm_profile == "Dark"
