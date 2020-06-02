@@ -27,6 +27,9 @@ fi
 # vscode
 ln -sf "$cwd/vscode/settings.json" ~/Library/Application\ Support/Code/User/settings.json
 
+# spacemacs
+ln -sf "$cwd/emacs/.spacemacs" ~/.spacemacs
+
 # git
 ln -sf "$cwd/git/.gitconfig" ~/.gitconfig
 ln -sf "$cwd/git/.gitignore" ~/.gitignore
