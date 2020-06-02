@@ -166,7 +166,8 @@ More on Editors
 ### Emacs
 
 - [Spacemacs](http://spacemacs.org/)
-  * sync emacs setting
+  * synced under `emacs/.spacemacs`
+  * GUI app options: `emacs-plus`, `emacs-mac`
 
 ### IDE
 
