@@ -529,6 +529,9 @@ endfunction()
 " -----------------------------------------------------------------------------
 let term_prog = $TERM_PROGRAM
 
+" Try to set True Color Flag
+call TrueColor()
+
 " Non True Color
 if term_prog == "Apple_Terminal" 
     " Set 256 color terminal support
@@ -539,7 +542,6 @@ elseif &t_Co <= 256
     call SetTheme("PaperColor", "Light")
 " Assume True Color
 else 
-    call TrueColor()
     call AutoDarkLight()
 endif
 
@@ -947,10 +949,13 @@ let g:javascript_plugin_flow = 1
 
 
 " -----------------------------------------------------------------------------
-" Git Message
+" Git/Hg Commit Message
 " -----------------------------------------------------------------------------
 au FileType gitcommit setlocal tw=72
-au FileType gitcommit set colorcolumn=50,72
+au FileType gitcommit set colorcolumn=50,67,72
+
+au FileType hgcommit setlocal tw=72
+au FileType hgcommit set colorcolumn=50,67,72
 
 
 " -----------------------------------------------------------------------------

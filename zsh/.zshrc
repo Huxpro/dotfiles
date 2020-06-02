@@ -50,13 +50,17 @@ ZSH_THEME="refined-lambda"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  zsh-syntax-highlighting
+  # zsh-autosuggestions
+  zsh-completions
+)
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# plugins=(zsh-autosuggestions)
 
 # https://github.com/zsh-users/zsh-completions
-# plugins=(zsh-completions)
+#plugins=(zsh-completions)
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"

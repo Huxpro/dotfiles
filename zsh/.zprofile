@@ -13,26 +13,30 @@ export PATH="$HOME/Library/Haskell/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 
-# Python pyenv
+# Python Pyenv verison manager
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$PYENV_ROOT/shims:$PATH"
 
 # Python pip
 export PATH="$HOME/Library/Python/3.6/bin:$PATH"
+export PATH="$HOME/Library/Python/3.7/bin:$PATH"
 
 # Ruby gem
 export GEM_HOME=$HOME/gems
 export PATH=$HOME/gems/bin:$PATH
 export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
 
-# Yarn
+# JS Yarn
 export PATH="$HOME/.yarn/bin:$PATH"
+
+# JS JSVU
+export PATH="$HOME/.jsvu:$PATH"
 
 # Flutter
 export PATH="$HOME/flutter/bin:$PATH"
 
-# sqlite
+# Sqlite
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
 
 # Rust cargo
