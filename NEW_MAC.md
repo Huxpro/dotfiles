@@ -39,6 +39,10 @@ Install _Meta_ Dependencies
 ### MacOS Apps
 
 - [iTerm2](https://www.iterm2.com/), better terminal.
+  - Profiles/Terminal
+    - Notifications: check "Silence bell"
+  - Profiles/General
+    - Working Directory: check "Reuse previous session's directory"
 
 - [Karabiner](https://pqrs.org/osx/karabiner/) for replacing `capslock`.
   - [Does not work on MacOS Catalina #1867](https://github.com/pqrs-org/Karabiner-Elements/issues/1867)
@@ -68,10 +72,6 @@ This should give you
 sync-ed immediately.
 
 
-### Performance under `ssh`
-
-Commentout some expensive vim plugins for speeding up.
-
 
 
 Install Must-have Dependencies
@@ -87,8 +87,6 @@ Install Must-have Dependencies
     * Theme: "minimal"
     * Panes: uncheck "per-pane title bar"
     * Dimming: uncheck "dim inactive"
-  - Profiles/Terminal
-    - Notifications: check "Silence bell"
   - Profiles/Colors
     * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
     * _One Dark_ (forget where's from but better than above repo)
@@ -117,7 +115,8 @@ Install Must-have Dependencies
 - [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* shortcuts.
 
 - [Alfred (v3)](https://www.alfredapp.com/), better Spotlight
-  - Preferences file is synced by this repo as well.
+  - Preferences folder is located by this repo as well.
+  - Activate power pack to sync on preference folder.
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
@@ -142,7 +141,7 @@ $(brew --prefix)/opt/fzf/install
 
 - [Rg](https://github.com/BurntSushi/ripgrep)
   - `brew install ripgrep`
-  - I bound `<space>-f` to `:Rg`
+  - I bound Vim `<space>-f` to `:Rg`
 
 - [Hub](https://hub.github.com/)
   - `brew install hub`

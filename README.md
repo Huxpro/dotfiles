@@ -3,7 +3,7 @@ Xuan's dotfiles
 
 I maintain this for my personal uses, but you're quite welcome to refer or use it ;)
 
-> [💻 Interested in reading through my personal setup guide for a new mac?](./NEW_MAC.md)
+> Interested in reading through my personal setup guide for a [💻new mac](./NEW_MAC.md) or [☁️ new dev server](./NEW_SERVER.md)
 
 
 

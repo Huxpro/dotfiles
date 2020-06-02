@@ -534,6 +534,9 @@ if term_prog == "Apple_Terminal"
     " Set 256 color terminal support
     set t_Co=256
     call SetTheme("PaperColor", "Light")
+" The vim itself might support 256 color only as well
+elseif &t_Co <= 256
+    call SetTheme("PaperColor", "Light")
 " Assume True Color
 else 
     call TrueColor()
@@ -903,7 +906,7 @@ function! MathAndLiquid()
     hi link math_block Function
 endfunction
 "let g:vim_markdown_fenced_languages =
-let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'fcl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
+let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
 
 " buggy
 let g:vim_markdown_folding_disabled = 1
@@ -941,6 +944,13 @@ vnoremap <C-\> :call unicoder#selection()<CR>
 " JavaScript / Flow
 " -----------------------------------------------------------------------------
 let g:javascript_plugin_flow = 1
+
+
+" -----------------------------------------------------------------------------
+" Git Message
+" -----------------------------------------------------------------------------
+au FileType gitcommit setlocal tw=72
+au FileType gitcommit set colorcolumn=50,72
 
 
 " -----------------------------------------------------------------------------
