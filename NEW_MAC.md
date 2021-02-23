@@ -101,7 +101,10 @@ Install Must-have Dependencies
 
 - Vim: [vim-plug](https://github.com/junegunn/vim-plug) and `:PlugInstall`.
 
-- VSCode: [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
+- VSCode: 
+  - Settings Sync 
+    - It's now official: <https://code.visualstudio.com/docs/editor/settings-sync>
+    - [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
   - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
   - [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
     - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
