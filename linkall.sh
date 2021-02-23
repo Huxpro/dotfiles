@@ -13,7 +13,7 @@ ln -sf "$cwd/zsh/oh-my-zsh/themes/refined-lambda.zsh-theme" ~/.oh-my-zsh/themes/
 
 # vim
 ln -sf "$cwd/vim/.vimrc" ~/.vimrc
-ln -sf "$cwd/vim/.vimrc" ~/.ideavimrc
+ln -sf "$cwd/idea/.ideavimrc" ~/.ideavimrc
 
 # neovim and coc
 if [ -d "~/.config/nvim" ]; then
