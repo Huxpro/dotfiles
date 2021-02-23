@@ -42,12 +42,6 @@ export PATH="/usr/local/opt/sqlite/bin:$PATH"
 # Rust cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# openSSL
-export PATH="/usr/local/opt/openssl/bin:$PATH"
-# export LDFLAGS="-L/usr/local/opt/openssl/lib"
-# export CPPFLAGS="-I/usr/local/opt/openssl/include"
-# export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
-
 # Coq, override coq with brew-installed coq
 export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 
@@ -59,11 +53,42 @@ export PATH="$PATH:$HOME/aros/xros/bin"
 export PATH="$HOME/github/emsdk:$PATH"
 EMSDK="$HOME/github/emsdk"
 EM_CONFIG="$HOME/.emscripten"
+EM_fastcomp="$HOME/github/emsdk/fastcomp/emscripten"
+EM_upstream="$HOME/github/emsdk/upstream/emscripten"
 
-# LLVM
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
+# https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Hermes Android Build
+export HERMES_WS_DIR=~/github
+
+####### Native Toolchain
+
+# Android
+# this was required by building RN from source
+# export ANDROID_NDK="/opt/android_ndk/r17fb2"
+# export ANDROID_NDK="/opt/android_sdk/ndk/20.1.5948944"
+export ANDROID_SDK="/opt/android_sdk"
+export ANDROID_NDK="/opt/android_ndk/android-ndk-r20b"
+
+
+### https://docs.oracle.com/cd/E17276_01/html/installation/build_unix_flags.html
+# LDFLAGS  - linker (also CMake?)
+# CPPFLAGS - C-preprocessor
+# CXXFLAGS - C++ compiler
+
+# openSSL
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/openssl/lib"
+# export CPPFLAGS="-I/usr/local/opt/openssl/include"
+# export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
+# LLVM (brew installed)
+### disabled since FB Chef installed LLVM in `/opt/llvm` and linked in `/usr/local/opt/llvm`
+# export PATH="/usr/local/opt/llvm/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/llvm/lib"
+# export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # MacOS Catalina SDKs
 # xcode-select-ed to XCode 10.15
@@ -77,17 +102,17 @@ export LLVM_DIR="/usr/local/Cellar/llvm/10.0.0_3/lib/cmake"
 
 # Clang
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
-export CPATH="$SDKROOT/usr/include"
-
+#
+# Disable since it
+# Break the `pos install` of "Flipper-Glog (0.3.6)" using by React Native iOS
+# - by forcing an IOS ARM builds to use the MacOS Intel headers...then BLOW UP
+# 
+# export CPATH="$SDKROOT/usr/include"
 
 # GCC
 # export PATH=/usr/local/gcc-8.1/bin:$PATH
 
 # GNU utils
 # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
-# https://discourse.brew.sh/t/failed-to-set-locale-category-lc-numeric-to-en-ru/5092/19
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
 
 

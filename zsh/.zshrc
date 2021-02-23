@@ -97,49 +97,222 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 
 #####################################
-# Alias (Hermes Dev Mac)
+# Alias - Hermes
 #####################################
+
+########## Build
+
+# Maybe someday I should add -oss/dbg/rel as CLI args to simulate Buck flavor
+H_CLION="$HOME/hermes-clion"
+H_CMAKE_DBG="$HOME/hermes-cmake-build-dbg"
+H_CMAKE_REL="$HOME/hermes-cmake-build-rel"
+H_CMAKE_OSS_DBG="$HOME/hermes-cmake-build-oss-dbg"
+# H_CMAKE_OSS_REL="$HOME/hermes-cmake-build-oss-rel"
+H_CMAKE_OSS_REL="$HOME/github/build_release" # https://hermesengine.dev/docs/react-native-integration
+H_EM_DBG="$HOME/hermes-embuild" # fastcomp
+H_EM_FASTCOMP_REL="$HOME/embuild-fastcomp-rel"
+H_EM_UPSTREAM_REL="$HOME/embuild-upstream-rel"
+
+# [CMake] Configure the build
+alias config-cmake-hermes="./utils/build/configure.py $H_CMAKE_DBG"
+alias config-cmake-hermes-rel="./utils/build/configure.py --distribute $H_CMAKE_REL"
+alias config-cmake-hermes-oss="./utils/build/configure.py $H_CMAKE_OSS_DBG"
+alias config-cmake-hermes-oss-rel="./utils/build/configure.py --distribute $H_CMAKE_OSS_REL"
+
+# [Emscripten] Configure the build
+# assuming the existence of \host-hermesc
+config-em-hermes-2() {
+  local cmake_flags=" -DIMPORT_HERMESC:PATH=$PWD/host-hermesc/ImportHermesc.cmake "
+
+  python3 ./utils/build/configure.py \
+    --cmake-flags "$cmake_flags" \
+    --distribute \
+    --wasm \
+    --emscripten-platform=fastcomp \
+    --emscripten-root="${EM_fastcomp}" \
+    $H_EM_FASTCOMP_REL
+}
+
+config-em-hermes() {
+  cmake . \
+        -Bembuild \
+        -GNinja \
+        -DCMAKE_TOOLCHAIN_FILE="${EM_fastcomp}/cmake/Modules/Platform/Emscripten.cmake" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DEMSCRIPTEN_FASTCOMP=1 \
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1"
+        -DIMPORT_HERMESC="$PWD/host-hermesc/ImportHermesc.cmake"
+}
+
+config-em-hermes-upstream() {
+  cmake . \
+        -Bembuild \
+        -GNinja \
+        -DCMAKE_TOOLCHAIN_FILE="${EM_upstream}/cmake/Modules/Platform/Emscripten.cmake" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DEMSCRIPTEN_FASTCOMP=1 \
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1"
+        -DIMPORT_HERMESC="$H_CMAKE_OSS_DBG/ImportHermesc.cmake"
+}
+
+
+# [CMake] Build
+alias cmake-hermes="(cd $H_CMAKE_DBG && ninja)"
+alias cmake-hermes-rel="(cd $H_CMAKE_REL && ninja)"
+alias cmake-hermes-oss="(cd $H_CMAKE_OSS_DBG && ninja)"
+alias cmake-hermes-oss-rel="(cd $H_CMAKE_OSS_REL && ninja)"
+
+# [CMake] Clean Build
+# drop for now
+
+# [Emscripten] Build
+alias em-hermes="cmake --build $H_EM_DBG --target hermes"
+alias em-hermes-fastcomp-rel="cmake --build $H_EM_FASTCOMP_REL --target hermes"
+alias em-hermes-upstream-rel="cmake --build $H_EM_UPSTREAM_REL --target hermes"
+
+# [Buck] Build
+alias buck-hermes='buck build //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-dbg='buck build @xplat/mode/hermes/dbg //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-asan='buck build @xplat/mode/hermes/asan //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-handlesan='buck build @xplat/mode/hermes/handlesan //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-home='buck build --out ~/hermes-buck-out //xplat/hermes/tools/hermes:hermes' # rare use
+
+########## Executables
+
+# [Exe] Build Artifacts
+alias her-clion="rlwrap $H_CLION/bin/hermes" 
+alias her-cmake="rlwrap $H_CMAKE_DBG/bin/hermes"
+alias her-cmake-rel="rlwrap $H_CMAKE_REL/bin/hermes"
+alias her-cmake-oss="rlwrap $H_CMAKE_OSS_DBG/bin/hermes"
+alias her-cmake-oss-rel="rlwrap $H_CMAKE_OSS_REL/bin/hermes"
+alias her-buck="rlwrap ~/fbsource/buck-out/gen/xplat/hermes/tools/hermes/hermes"
+alias her-buck-home="rlwrap ~/hermes-buck-out" # rare use
  
-# Re-configure
-alias confighermes='./utils/build/configure.py ~/hermes-build'
-alias confighermes-oss='./utils/build/configure.py ~/hermes-build-oss'
+# [Exe] Convenient Aliases
+alias her="her-buck"
+alias herc="her-clion"
+alias hercr="her-cmake-rel"
+alias her-p="her -Xes6-promise"
+alias herc-p="herc -Xes6-promise"
+alias hercr-p="hercr -Xes6-promise"
+alias her-oss="her-cmake-oss"
 
-# CMake Build
-alias cmakehermes='(cd ~/hermes-build && ninja)'
-alias cmkhermes='cmakehermes'
-alias cmakehermes-oss='(cd ~/hermes-build-oss && ninja)'
-alias cmkhermes-oss='cmakehermes-oss'
+# [Exe] [JSVU] optimized builds, useful for benchmarking/uses
+alias her-jsvu="hermes"  # .jsvu added to the path
 
-# From Source (`her` for short)
-alias herrepl='rlwrap ~/hermes-build/bin/hermes'
-alias her='herrepl'
-alias herrepl-oss='rlwrap ~/hermes-build-oss/bin/hermes'
-alias her-oss='herrepl-oss'
+js-to-bin-hbc() {
+  her -emit-binary -out $1.hbc $1.js
+}
 
-# From JSVU
-alias hermes-repl='rlwrap hermes-repl'
+js-to-dis-hbc() {
+  her -dump-bytecode $1.js > $1.dis
+}
 
-# Buck Build
-alias buckhermes='buck build --out .hermes hermes'
+hbc-bin-to-dis-hbc() {
+  her -b -dump-bytecode $1.hbc > $1.dis
+}
 
-# Buck Testing
-alias testhermes='buck test //xplat/hermes/test:quick'
-alias testhermesfull='buck test //xplat/hermes/...'
 
-# Format
-alias formathermes='./utils/format.sh'
+# [Exe] [Buck]
+alias her-run='buck run tools/hermes'
+alias her-run-strict='buck run tools/hermes -- -strict'
+
+# [Exe] [Emscripten]
+alias her-em="node $H_EM_DBG/bin/hermes.js"
+alias her-em-fastcomp-rel="node $H_EM_FASTCOMP_REL/bin/hermes.js"
+alias her-em-upstream-rel="node $H_EM_UPSTREAM_REL/bin/hermes.js"
+
+
+########## Testing
+
+# [CMake] Clion only
+alias cmake-test-hermes="cd $H_CLION && ninja check-hermes"
+
+# [Buck] Testing
+alias test-hermes-all='buck test //xplat/hermes/...'
+alias test-hermes-quic='buck test //xplat/hermes/test:quick'
+alias test-hermes-asan='buck test @fbandroid/mode/asan @xplat/mode/hermes/asan'
+alias test-hermes-lit='buck test //xplat/hermes/test:lit'
+alias test-hermes-lit-ser='buck test @xplat/mode/hermes/serialize test:lit'
+alias test-hermes-lit-asan='buck test @fbandroid/mode/asan test:lit'
+alias test-lit="test-hermes-lit"
+alias test-lit-asan="test-hermes-lit-asan"
+
+# [Buck] Testing Test262
+alias test262-hermes-matchAll-string='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/String/prototype/matchAll'
+alias test262-hermes-replaceAll-string='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/String/prototype/replaceAll'
+alias test262-hermes-matchAll-regexp='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/RegExp/prototype/Symbol.matchAll'
+alias test262-hermes-builtin='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/'
+alias test262-hermes-lang='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites//test262/test/language/'
+alias test262-hermes-all='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test'
+
+alias test262-hermes-async-fn-decl="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/statements/async-function"
+alias test262-hermes-async-arrow="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/expressions/async-arrow-function"
+alias test262-hermes-async-fn-expr="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/expressions/async-function"
+alias test262-hermes-asyncFn="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/AsyncFunction/"
+alias test262-hermes-async="test262-hermes-async-fn-decl && test262-hermes-async-fn-expr && test262-hermes-async-arrow"
+
+
+########## Dev Convenience
+
+alias format-fb="arc lint -a"
+alias format-hermes="./utils/format.sh"
+
+########## ESHOST
+## https://github.com/bterlson/eshost-cli
+
+alias estable='eshost --table'
+alias esex='eshost --tags esvu-web -itsx'
+
+########## ANDROID
+ 
+alias android-emulator='ENABLE_WIFI=1 ~/fbsource/fbandroid/scripts/start_emulator -gpu host'
+alias fb4a='cd ~/fbsource/fbandroid && buck install -r fb4a'
+alias catalyst='cd ~/fbsource/fbandroid && buck install -r catalyst-android'
+
+########## React Native
+
+alias rn-clean-build-android='cd android && ./gradlew clean && cd .. && npx react-native run-android'
+
+RNTESTER="${HOME}/react-native/react-native/packages/rn-tester"
+
+# under RNTester
+alias hash-apk-debug="unzip -p ${RNTESTER}/android/app/build/outputs/apk/hermes/debug/app-hermes-armeabi-v7a-debug.apk lib/armeabi-v7a/libhermes.so | shasum"
+alias hash-apk-rel="unzip -p ${RNTESTER}/android/app/build/outputs/apk/hermes/release/app-hermes-armeabi-v7a-release.apk lib/armeabi-v7a/libhermes.so | shasum"
+hash-hermes-debug() {
+  tar zxfO ~/hermes-releases/v$1/hermes-engine-v$1.tgz package/android/hermes-debug.aar | tar xfO - jni/armeabi-v7a/libhermes.so | shasum
+}
+hash-hermes-rel() {
+  tar zxfO ~/hermes-releases/v$1/hermes-engine-v$1.tgz package/android/hermes-release.aar | tar xfO - jni/armeabi-v7a/libhermes.so | shasum
+}
 
 
 #####################################
-# Alias (FB)
+# Alias - FB Source Control
 #####################################
 
-alias hgjf='echo ":wq" | hg commit --amend && jf s'
+# submit then update info
+alias jfsu='jf s -u'
+alias jfsun='jf s -u -n' # draft
 
-# change to a function so it can take a message parameter
-#hgjf() {
-#  echo ":wq" | hg commit --amend && jf s -s -m $1
-#}
+# `e` for edit, same as `hg commit --amend`
+alias hg-amend-e='hg amend -e'
+
+# HG amend; Then JF push
+alias hgjf='hg amend && jf s'
+alias hgjfn='hg amend && jf s -n'
+
+# HG amend; Editing commit message; Then JF push.
+alias hgejfsu='hg amend -e && jf s -u'
+alias hgejfsun='hg amend -e && jf s -u -n'
+
+# HG revert is so damn hard to use
+alias hgco='hg revert'           # git co -- <filename>
+alias hgcoall='hg revert all'    # git co -- .
+alias hgcoHEAD='hg revert -r .^' # git co HEAD^ <filename>
+
+# bruto git push
+alias gitpush='git add . && git commit -m "auto" && git push origin master'
 
 # alias node='~/fbsource/xplat/third-party/node/bin/node'
 
@@ -149,8 +322,6 @@ alias sshdev='ssh devvm433.atn0.facebook.com'
 # a cleaner machine
 alias sshdev2='ssh devvm2238.vll0.facebook.com'
 
-# a CentOS7 machine
-alias sshcent7='ssh devvm3030.prn2.facebook.com'
 
 #####################################
 # Alias
