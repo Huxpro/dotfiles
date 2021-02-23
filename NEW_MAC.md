@@ -99,7 +99,10 @@ Install Must-have Dependencies
 
 ### Editors:
 
-- Vim: [vim-plug](https://github.com/junegunn/vim-plug) and `:PlugInstall`.
+- Vim
+  - Install [vim-plug](https://github.com/junegunn/vim-plug) 
+    - `curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
+  - Within `vim`, run `:PlugInstall`.
 
 - VSCode: 
   - Settings Sync 
