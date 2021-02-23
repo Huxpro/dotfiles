@@ -85,12 +85,14 @@ Install Must-have Dependencies
 
 - iTerm settings
   - Appearence
-    * Theme: "minimal"
-    * Panes: uncheck "per-pane title bar"
-    * Dimming: uncheck "dim inactive"
-  - Profiles/Colors
-    * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
-    * _One Dark_ (forget where's from but better than above repo)
+    * General - Theme - "Minimal"
+    * Panes - uncheck "Show per-pane title bar with split panes"
+    * Dimming - uncheck "Dim inactive split panes"
+  - Profiles
+    * General - Working Directory - switch to "Reuse previous session's directory".
+    * Colors - Color Presets...
+      * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
+      * _One Dark_ (I'm using the one from this repo but I forget where's from)
 
 - Terminal.app
   - Profiles
