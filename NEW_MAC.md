@@ -9,6 +9,7 @@ MacOS System
 3. Setup Touch ID (if available)
 4. Set "Appearences" to "Auto"
 5. Set "Default web browser" to "Google Chrome"
+6. Disable HDR for my HDR display (I dunno but the HDR looks really bad)
 
 ### ⚠️  Allow apps from "Anywhere"
 
