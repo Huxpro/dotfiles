@@ -131,6 +131,8 @@ Install Must-have Dependencies
 
 - [Dash](https://kapeli.com/dash)
 
+- [Back and Sync](https://www.google.com/drive/download/)
+
 
 Install Good-to-have Dependencies
 ------------------------------
@@ -181,6 +183,7 @@ More on Editors
 - XCode
 - Android Studio
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/) (CLion, PyCharm...)
+  * via "JetBrains Toolbox"
   * sync with `setting-sync` w/ a git repo
   * require github access token
 
