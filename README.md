@@ -12,15 +12,15 @@ My personal setup instructions for a [💻 new mac](./NEW_MAC.md) or [☁️  ne
 
 > Each theme can be toggled between its light and dark variants via `:Light` and `:Dark` commands.
 > 
-> Personally, I prefer the light mode of _PaperColor_ and the dark mode of _One_.
+> Personally, I prefer the light mode of the _PaperColor_ and the dark mode of the _One_.
 
-_One_ theme (only working on 24-bit *true color* terminal):
+The _One_ theme (only working on 24-bit *true color* terminal):
 ![screenshot](./scrshot-one.png)
 
-With _Solarized_ theme (only working on 8-bit 256 colors terminal, e.g. MacOS's `Terminal.app`):
+The _Solarized_ theme (only working on 8-bit 256 colors terminal, e.g. MacOS's `Terminal.app`):
 ![screenshot](./scrshot-sol.png)
 
-With _PaperColor_ theme. (working on both)
+The _PaperColor_ theme. (working on both)
 ![screenshot](./scrshot-paper.png)
 
 
