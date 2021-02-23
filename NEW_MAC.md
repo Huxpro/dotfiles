@@ -75,8 +75,8 @@ sync-ed immediately.
 
 
 
-Install Must-have Dependencies
----------------------------------
+Install _Must-have_ Dependencies
+--------------------------------
 
 ### Appearences (very important!)
 
@@ -136,8 +136,8 @@ Install Must-have Dependencies
 - [Back and Sync](https://www.google.com/drive/download/)
 
 
-Install Good-to-have Dependencies
-------------------------------
+Install _Good-to-have_ Dependencies
+-----------------------------------
 
 ### CLI (some are also used in Vim)
 
