@@ -24,9 +24,6 @@ else
   ln -sf "$cwd/nvim/coc-settings.json" ~/.vim/coc-settings.json
 fi
 
-# vscode
-ln -sf "$cwd/vscode/settings.json" ~/Library/Application\ Support/Code/User/settings.json
-
 # spacemacs
 ln -sf "$cwd/emacs/.spacemacs" ~/.spacemacs
 
