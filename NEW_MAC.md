@@ -9,6 +9,7 @@ MacOS System
 3. Setup Touch ID (if available)
 4. Set "Appearences" to "Auto"
 5. Set "Default web browser" to "Google Chrome"
+6. Disable HDR for my HDR display (I dunno but the HDR looks really bad)
 
 ### ⚠️  Allow apps from "Anywhere"
 
@@ -98,9 +99,15 @@ Install Must-have Dependencies
 
 ### Editors:
 
-- Vim: [vim-plug](https://github.com/junegunn/vim-plug) and `:PlugInstall`.
+- Vim
+  - Install [vim-plug](https://github.com/junegunn/vim-plug) 
+    - `curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
+  - Within `vim`, run `:PlugInstall`.
 
-- VSCode: [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
+- VSCode: 
+  - Settings Sync 
+    - It's now official: <https://code.visualstudio.com/docs/editor/settings-sync>
+    - [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
   - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
   - [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
     - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
