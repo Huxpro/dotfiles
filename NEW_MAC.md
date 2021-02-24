@@ -26,6 +26,8 @@ N.B. this does not require you to turn off [SIP (System Integrity Protection)](h
 Install _Meta_ Dependencies
 ------------------------------
 
+> Dependencies of dependencies.
+
 ### CLI:
 
 - [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
@@ -40,11 +42,8 @@ Install _Meta_ Dependencies
 ### MacOS Apps
 
 - [iTerm2](https://www.iterm2.com/), better terminal.
-  - Profiles/Terminal
-    - Notifications: check "Silence bell"
-  - Profiles/General
-    - Working Directory: check "Reuse previous session's directory"
-
+  - See configuration below.
+ 
 - [Karabiner](https://pqrs.org/osx/karabiner/) for replacing `capslock`.
   - [Does not work on MacOS Catalina #1867](https://github.com/pqrs-org/Karabiner-Elements/issues/1867)
     - add `/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_grabber`
@@ -53,6 +52,8 @@ Install _Meta_ Dependencies
 
 Applying Configurations (For Immediate Comforts!)
 -------------------------------------------------
+
+> Immediately giving a sense of HOME.
 
 ### Clone this repo and run `linkall.sh`
 
@@ -73,31 +74,32 @@ This should give you
 sync-ed immediately.
 
 
-
-
-Install _Must-have_ Dependencies
---------------------------------
-
-### Appearences (very important!)
+### CLI Appearences & Configuration
 
 - Fonts [Iosevka (SS05)](https://github.com/be5invis/Iosevka)
   - (was [FiraCode](https://github.com/tonsky/FiraCode))
 
-- iTerm settings
+- iTerm
   - Appearence
     * General - Theme - "Minimal"
     * Panes - uncheck "Show per-pane title bar with split panes"
     * Dimming - uncheck "Dim inactive split panes"
   - Profiles
+    * Terminal - Notifications - check "Silence bell"
     * General - Working Directory - switch to "Reuse previous session's directory".
     * Colors - Color Presets...
       * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
       * _One Dark_ (I'm using the one from this repo but I forget where's from)
 
-- Terminal.app
+- Terminal.app (if you use it)
   - Profiles
     - _PaperColor_
 
+
+Install _Must-have_ Dependencies
+--------------------------------
+
+> Retrieve back my normal workflow.
 
 ### Editors:
 
@@ -110,7 +112,7 @@ Install _Must-have_ Dependencies
   - Settings Sync 
     - It's now official: <https://code.visualstudio.com/docs/editor/settings-sync>
     - [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
-  - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
+    - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
   - [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
     - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
   - [blurry font on macOS Mojave for non-retina screen e.g. display](https://github.com/Microsoft/vscode/issues/51132)
@@ -121,19 +123,19 @@ Install _Must-have_ Dependencies
 
 ### MacOS Apps
 
-- [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* shortcuts.
+- [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* (now the default) shortcuts.
 
 - [Alfred (v3)](https://www.alfredapp.com/), better Spotlight
-  - Preferences folder is located by this repo as well.
+  - Preferences folder is symlinked to this repo.
   - Activate power pack to sync on preference folder.
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
-- [搜狗输入法](https://pinyin.sogou.com/mac/)
+- [Sogou PinYin (Zh input method)](https://pinyin.sogou.com/mac/)
 
-- [Dash](https://kapeli.com/dash)
+- [Google Back and Sync](https://www.google.com/drive/download/)
 
-- [Back and Sync](https://www.google.com/drive/download/)
+- Xcode, for the toolchain.
 
 
 Install _Good-to-have_ Dependencies
@@ -160,6 +162,30 @@ $(brew --prefix)/opt/fzf/install
 - "Readline Wrap"
   - `brew install rlwrap`
 
+### MacOS Apps
+
+- [Dash](https://kapeli.com/dash)
+
+- Docker, required by `circleci` CLI.
+ 
+- [IINA](https://iina.io/), open source media player for macOS.
+
+- [PDF Expert](https://pdfexpert.com/), the pdf reader that I got used to.
+
+- Final Cut Pro & ArcTime Pro, vlogging.
+
+- Monodraw
+
+- Web shortcuts
+  - Workplace
+  - Excalidraw
+  - Notion
+  - Gmail
+  - Prettier
+  - Babel
+  - Hermes Playground
+  - Youtube Music
+
 
 More on Editors
 ---------------
@@ -182,12 +208,15 @@ More on Editors
 
 ### IDE
 
-- XCode
+- XCode, aforementioned.
 - Android Studio
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (CLion, PyCharm...)
-  * via "JetBrains Toolbox"
+- [JetBrains Toolbox](https://www.jetbrains.com/) for Idea, CLion, PyCharm...
   * sync with `setting-sync` w/ a git repo
   * require github access token
+  * *Must-have* Plugins:
+    * IdeaVim
+    * OneDark Theme
+    * VSCode Keymap
 
 
 
@@ -202,8 +231,9 @@ More on Developer Softwares
 
 - JavaScript
   - NodeJS, `brew install node`
-  - Flow, TypeScript
-  - Expo (React Native)
+  - Flow
+  - TypeScript `npm i -g typescript`
+  - Expo CLI (React Native)
 
 - Python 3
 
@@ -215,7 +245,11 @@ More on Developer Softwares
 
 ### System
 
-- LLVM / Clang
+- LLVM `brew install llvm` 
+
+- Emscripten SDK [`emsdk`](https://emscripten.org/docs/getting_started/downloads.html)
+
+- CMake `brew install cmake`  
 
 - Rust
   - Rustup
@@ -225,8 +259,7 @@ More on Developer Softwares
 - OCaml
   - Opam
 
-- Reason
-  - BuckleScript / Esy
+- ReScript/ReasonML
 
 - SML
   - SMLNJ, `brew install smlnj`
