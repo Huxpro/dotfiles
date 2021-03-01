@@ -14,16 +14,39 @@ My personal setup instructions for a [💻 new mac](./NEW_MAC.md) or [☁️  ne
 > 
 > Personally, I prefer the light mode of the _PaperColor_ and the dark mode of the _One_.
 
-The _One_ theme (only working on 24-bit *true color* terminal):
+The _One_ theme (only works on 24-bit *true color* terminal and *true color* vim):
 ![screenshot](./scrshot-one.png)
 
-The _Solarized_ theme (only working on 8-bit 256 colors terminal, e.g. MacOS's `Terminal.app`):
+The _Solarized_ theme (only works on 8-bit 256 colors terminal, e.g. MacOS's `Terminal.app`):
 ![screenshot](./scrshot-sol.png)
 
-The _PaperColor_ theme. (working on both)
+The _PaperColor_ theme. (works on both)
 ![screenshot](./scrshot-paper.png)
 
+### Check is your terminal support *true color*
 
+```
+printf "\x1b[38;2;255;100;0mTRUECOLOR\x1b[0m\n"
+```
+
+Read more at <https://gist.github.com/XVilka/8346728#terminal-colors>
+
+
+### Check if your vim support *true color* 
+
+`vim --version` will print if `termguicolors` is included (+) or not (-):
+
+```
+# macOS built-in is pre-built with true color turned off:
+λ /usr/bin/vim --version | grep 'termguicolors'
++autocmd           +find_in_path      +mouse_xterm       -termguicolors
+
+# brew install vim
+λ /usr/local/bin/vim --version | grep 'termguicolors'
+-autoservername    +folding           +multi_byte        +termguicolors
+```
+
+Neovim is usually built with `termguicolors` turned on.
 
 
 ⚠️ For Whoever Not Me Reading/Using This
