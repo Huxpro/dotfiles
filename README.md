@@ -38,11 +38,15 @@ Although git auth users by their github username/password, the commits are track
 $ git config --global user.email "email@example.com"
 ```
 
+### VSCode Auto Settings Sync
+
+If you forked and used an older version of this setup where `~/Library/Application\ Support/Code/User/settings.json` is linked to `path/to/dotfiles/vscode/settings.json`. You will need to first `rm ~/Library/Application\ Support/Code/User/settings.json` to remove the link so the VSCode Auto Setting can synchronize correctly.
+
 
 References
 ----------
 
-This dotfiles shamelessly borrow a lot from the web. (Thx, the internet!)
+This dotfiles (especially the older version) shamelessly borrow a lot from the web. (Thx, the internet!)
 
 * <https://dotfiles.github.io/>
 * <https://github.com/nicksp/dotfiles>
