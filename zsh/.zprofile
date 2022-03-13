@@ -98,7 +98,7 @@ export SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
 
 # CMake
 export CMAKE_OSX_SYSROOT="$SDKROOT"
-export LLVM_DIR="/usr/local/Cellar/llvm/10.0.0_3/lib/cmake"
+export LLVM_DIR="/usr/local/opt/llvm/lib/cmake"
 
 # Clang
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
@@ -115,4 +115,6 @@ export LLVM_DIR="/usr/local/Cellar/llvm/10.0.0_3/lib/cmake"
 # GNU utils
 # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
+# XROS
+export PATH="$PATH:$HOME/aros/xros/bin"
 

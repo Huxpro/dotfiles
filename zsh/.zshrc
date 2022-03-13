@@ -100,8 +100,9 @@ HISTFILESIZE=10000
 # Alias - Hermes
 #####################################
 
-########## Build
+########## Paths
 
+# [CMake] 
 # Maybe someday I should add -oss/dbg/rel as CLI args to simulate Buck flavor
 H_CLION="$HOME/hermes-clion"
 H_CMAKE_DBG="$HOME/hermes-cmake-build-dbg"
@@ -109,9 +110,21 @@ H_CMAKE_REL="$HOME/hermes-cmake-build-rel"
 H_CMAKE_OSS_DBG="$HOME/hermes-cmake-build-oss-dbg"
 # H_CMAKE_OSS_REL="$HOME/hermes-cmake-build-oss-rel"
 H_CMAKE_OSS_REL="$HOME/github/build_release" # https://hermesengine.dev/docs/react-native-integration
-H_EM_DBG="$HOME/hermes-embuild" # fastcomp
+
+H_HOST_HERMESC="$HOME/hermes-host-hermesc"
+
+# [Emscripten] 
+H_EM_DBG="$HOME/hermes-embuild" # upstream
+H_EM_REL="$HOME/hermes-embuild-rel" # upstream
 H_EM_FASTCOMP_REL="$HOME/embuild-fastcomp-rel"
-H_EM_UPSTREAM_REL="$HOME/embuild-upstream-rel"
+alias emcc_upstream="$EM_upstream/emcc"
+alias emcc_fastcomp="$EM_fastcomp/emcc"
+alias emcc=emcc_upstream
+
+# [BUCK] 
+H_BUCK_OUT="$HOME/fbsource/buck-out/gen/xplat/hermes/tools/hermes"
+
+########## Configure the Build
 
 # [CMake] Configure the build
 alias config-cmake-hermes="./utils/build/configure.py $H_CMAKE_DBG"
@@ -121,40 +134,43 @@ alias config-cmake-hermes-oss-rel="./utils/build/configure.py --distribute $H_CM
 
 # [Emscripten] Configure the build
 # assuming the existence of \host-hermesc
-config-em-hermes-2() {
-  local cmake_flags=" -DIMPORT_HERMESC:PATH=$PWD/host-hermesc/ImportHermesc.cmake "
-
-  python3 ./utils/build/configure.py \
-    --cmake-flags "$cmake_flags" \
-    --distribute \
-    --wasm \
-    --emscripten-platform=fastcomp \
-    --emscripten-root="${EM_fastcomp}" \
-    $H_EM_FASTCOMP_REL
+build_host_hermesc() {
+  ./utils/build/configure.py $H_HOST_HERMESC
+  cmake --build $H_HOST_HERMESC --target hermesc
 }
 
 config-em-hermes() {
-  cmake . \
-        -Bembuild \
-        -GNinja \
-        -DCMAKE_TOOLCHAIN_FILE="${EM_fastcomp}/cmake/Modules/Platform/Emscripten.cmake" \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DEMSCRIPTEN_FASTCOMP=1 \
-        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1"
-        -DIMPORT_HERMESC="$PWD/host-hermesc/ImportHermesc.cmake"
+  python3 ./utils/build/configure.py \
+    --cmake-flags " -DIMPORT_HERMESC:PATH=$H_HOST_HERMESC/ImportHermesc.cmake " \
+    --distribute \
+    --wasm \
+    --emscripten-platform=upstream \
+    --emscripten-root="${EM_upstream}" \
+    $H_EM_DBG
 }
 
-config-em-hermes-upstream() {
+# TODO: enable LTO
+config-em-hermes-rel() {
   cmake . \
-        -Bembuild \
-        -GNinja \
+        -B $H_EM_REL \
+        -G Ninja \
         -DCMAKE_TOOLCHAIN_FILE="${EM_upstream}/cmake/Modules/Platform/Emscripten.cmake" \
         -DCMAKE_BUILD_TYPE=Release \
-        -DEMSCRIPTEN_FASTCOMP=1 \
-        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1"
-        -DIMPORT_HERMESC="$H_CMAKE_OSS_DBG/ImportHermesc.cmake"
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1" \
+        -DIMPORT_HERMESC:PATH="$H_HOST_HERMESC/ImportHermesc.cmake"
 }
 
+config-em-hermes-fastcomp() {
+  cmake . \
+        -B $H_EM_FASTCOMP_REL \
+        -G Ninja \
+        -DCMAKE_TOOLCHAIN_FILE="${EM_fastcomp}/cmake/Modules/Platform/Emscripten.cmake" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=0 -s ALLOW_MEMORY_GROWTH=1" \
+        -DIMPORT_HERMESC:PATH="$H_HOST_HERMESC/ImportHermesc.cmake"
+}
+
+########## Build
 
 # [CMake] Build
 alias cmake-hermes="(cd $H_CMAKE_DBG && ninja)"
@@ -162,43 +178,48 @@ alias cmake-hermes-rel="(cd $H_CMAKE_REL && ninja)"
 alias cmake-hermes-oss="(cd $H_CMAKE_OSS_DBG && ninja)"
 alias cmake-hermes-oss-rel="(cd $H_CMAKE_OSS_REL && ninja)"
 
-# [CMake] Clean Build
-# drop for now
-
-# [Emscripten] Build
-alias em-hermes="cmake --build $H_EM_DBG --target hermes"
-alias em-hermes-fastcomp-rel="cmake --build $H_EM_FASTCOMP_REL --target hermes"
-alias em-hermes-upstream-rel="cmake --build $H_EM_UPSTREAM_REL --target hermes"
-
 # [Buck] Build
 alias buck-hermes='buck build //xplat/hermes/tools/hermes:hermes'
 alias buck-hermes-dbg='buck build @xplat/mode/hermes/dbg //xplat/hermes/tools/hermes:hermes'
 alias buck-hermes-asan='buck build @xplat/mode/hermes/asan //xplat/hermes/tools/hermes:hermes'
 alias buck-hermes-handlesan='buck build @xplat/mode/hermes/handlesan //xplat/hermes/tools/hermes:hermes'
-alias buck-hermes-home='buck build --out ~/hermes-buck-out //xplat/hermes/tools/hermes:hermes' # rare use
+
+# [Emscripten] Build
+alias em-hermes="cmake --build $H_EM_DBG --target hermes"
+alias em-hermes-rel="cmake --build $H_EM_REL --target hermes"
+alias em-hermes-fastcomp-rel="cmake --build $H_EM_FASTCOMP_REL --target hermes"
 
 ########## Executables
 
-# [Exe] Build Artifacts
-alias her-clion="rlwrap $H_CLION/bin/hermes" 
-alias her-cmake="rlwrap $H_CMAKE_DBG/bin/hermes"
-alias her-cmake-rel="rlwrap $H_CMAKE_REL/bin/hermes"
+# [Exe] CMake
+alias her-clion="rlwrap $H_CLION/bin/hermes"  # Config CLion to use this path
+alias her-cmake="rlwrap $H_CMAKE_DBG/bin/hermes" # rare use
+alias her-cmake-rel="rlwrap $H_CMAKE_REL/bin/hermes" # rare use
 alias her-cmake-oss="rlwrap $H_CMAKE_OSS_DBG/bin/hermes"
-alias her-cmake-oss-rel="rlwrap $H_CMAKE_OSS_REL/bin/hermes"
-alias her-buck="rlwrap ~/fbsource/buck-out/gen/xplat/hermes/tools/hermes/hermes"
-alias her-buck-home="rlwrap ~/hermes-buck-out" # rare use
+alias her-cmake-oss-rel="rlwrap $H_CMAKE_OSS_REL/bin/hermes" # rare use
+
+# [Exe] [Buck]
+alias her-buck-run='buck run //xplat/hermes/tools/hermes'
+alias her-buck-run-ser='buck run //xplat/hermes/tools/hermes @fbsource//xplat/mode/hermes/dbg @fbsource//xplat/mode/hermes/ncgen @xplat/mode/hermes/serialize --'
+alias her-buck-run-strict='buck run tools/hermes -- -strict'
+# Only available after her-buck-run or buck-hermes is ran once.
+alias her-buck="rlwrap $H_BUCK_OUT/hermes"
  
+# [Exe] [Emscripten]
+alias her-em="node $H_EM_DBG/bin/hermes.js"
+alias her-em-rel="node $H_EM_REL/bin/hermes.js" # rare use
+alias her-em-fastcomp-rel="node $H_EM_FASTCOMP_REL/bin/hermes.js" # rare use
+
 # [Exe] Convenient Aliases
-alias her="her-buck"
-alias herc="her-clion"
-alias hercr="her-cmake-rel"
-alias her-p="her -Xes6-promise"
-alias herc-p="herc -Xes6-promise"
-alias hercr-p="hercr -Xes6-promise"
+alias her="her-clion" 
 alias her-oss="her-cmake-oss"
+alias herc="her-clion"
+alias herb="her-buck"
+alias here="her-em"
 
 # [Exe] [JSVU] optimized builds, useful for benchmarking/uses
-alias her-jsvu="hermes"  # .jsvu added to the path
+# .jsvu added to the path. Unfortunately I'm constantly getting this wrong.
+alias her-jsvu="hermes"
 
 js-to-bin-hbc() {
   her -emit-binary -out $1.hbc $1.js
@@ -212,31 +233,26 @@ hbc-bin-to-dis-hbc() {
   her -b -dump-bytecode $1.hbc > $1.dis
 }
 
-
-# [Exe] [Buck]
-alias her-run='buck run tools/hermes'
-alias her-run-strict='buck run tools/hermes -- -strict'
-
-# [Exe] [Emscripten]
-alias her-em="node $H_EM_DBG/bin/hermes.js"
-alias her-em-fastcomp-rel="node $H_EM_FASTCOMP_REL/bin/hermes.js"
-alias her-em-upstream-rel="node $H_EM_UPSTREAM_REL/bin/hermes.js"
-
-
 ########## Testing
 
 # [CMake] Clion only
 alias cmake-test-hermes="cd $H_CLION && ninja check-hermes"
 
 # [Buck] Testing
-alias test-hermes-all='buck test //xplat/hermes/...'
-alias test-hermes-quic='buck test //xplat/hermes/test:quick'
+alias test-hermes-all='buck test --config xplat.available_platforms=CXX //xplat/hermes/...'
+alias test-hermes-quick='buck test --config xplat.available_platforms=CXX //xplat/hermes/test:quick'
 alias test-hermes-asan='buck test @fbandroid/mode/asan @xplat/mode/hermes/asan'
 alias test-hermes-lit='buck test //xplat/hermes/test:lit'
 alias test-hermes-lit-ser='buck test @xplat/mode/hermes/serialize test:lit'
 alias test-hermes-lit-asan='buck test @fbandroid/mode/asan test:lit'
+alias test-hermes-lit-handlesan='buck test @xplat/mode/hermes/handlesan test:lit'
+
 alias test-lit="test-hermes-lit"
 alias test-lit-asan="test-hermes-lit-asan"
+alias test-lit-handlesan="test-hermes-lit-handlesan"
+
+alias test-hermes="test-hermes-quick"  # this also test lit btw.
+
 
 # [Buck] Testing Test262
 alias test262-hermes-matchAll-string='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/String/prototype/matchAll'
@@ -252,7 +268,6 @@ alias test262-hermes-async-fn-expr="buck run //xplat/hermes/utils/testsuite:run_
 alias test262-hermes-asyncFn="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/AsyncFunction/"
 alias test262-hermes-async="test262-hermes-async-fn-decl && test262-hermes-async-fn-expr && test262-hermes-async-arrow"
 
-
 ########## Dev Convenience
 
 alias format-fb="arc lint -a"
@@ -267,8 +282,10 @@ alias esex='eshost --tags esvu-web -itsx'
 ########## ANDROID
  
 alias android-emulator='ENABLE_WIFI=1 ~/fbsource/fbandroid/scripts/start_emulator -gpu host'
-alias fb4a='cd ~/fbsource/fbandroid && buck install -r fb4a'
-alias catalyst='cd ~/fbsource/fbandroid && buck install -r catalyst-android'
+alias fb4a-dev='cd ~/fbsource/fbandroid && buck install -r fb4a'
+alias fb4a-rel='cd ~/fbsource/fbandroid/ && buck install @fbsource//fbandroid/mode/opt -r fb4a'
+alias fb4a-fast='cd ~/fbsource/fbandroid && buck install @fbsource//fbandroid/mode/opt -r fb4a-fast' # doesn't work
+alias catalyst='cd ~/fbsource/fbandroid && buck install -r catalyst-android' # dev I guess
 
 ########## React Native
 
@@ -402,6 +419,9 @@ if [ -x "$(command -v opam)" ]; then
   eval $(opam config env)
 fi
 
+# init ruby
+eval "$(rbenv init -)"
+
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -490,3 +510,13 @@ export ANDROID_SDK=/opt/android_sdk
 export ANDROID_NDK_REPOSITORY=/opt/android_ndk
 export ANDROID_HOME=${ANDROID_SDK}
 export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/emulator:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
