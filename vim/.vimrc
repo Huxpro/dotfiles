@@ -42,7 +42,8 @@ endif
 " FZF is a independent replacement to CtrlP,
 " LC-neovim use it for contextMenu when it exists.
 " -----------------------------------------------------------------------------
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 
 " -----------------------------------------------------------------------------

@@ -349,10 +349,8 @@ alias ls='ls -FHG'
 
 # alias vim to neovim
 if [ -x "$(command -v nvim)" ]; then
-  # nvim will still invoke nvim stable
-  alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
-  alias vi='nvimnightly'
-  alias vim='nvimnightly'
+  alias vi='nvim'
+  alias vim='nvim'
   alias vim8='\vim' # vim 8.1
 fi
 

@@ -7,6 +7,10 @@ KEYTIMEOUT=1
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/sbin:$PATH"
 
+# Homebrew
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+
 # Haskell ghcup/cabal/stack/hie etc.
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/Library/Haskell/bin:$PATH"

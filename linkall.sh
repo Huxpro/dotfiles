@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash +x
 
 cwd=$(pwd)
 
@@ -14,15 +14,16 @@ ln -sf "$cwd/zsh/oh-my-zsh/themes/refined-lambda.zsh-theme" ~/.oh-my-zsh/themes/
 # vim
 ln -sf "$cwd/vim/.vimrc" ~/.vimrc
 ln -sf "$cwd/idea/.ideavimrc" ~/.ideavimrc
+ln -sf "$cwd/nvim/coc-settings.json" ~/.vim/coc-settings.json
 
 # neovim and coc
-if [ -d "~/.config/nvim" ]; then
-  ln -sf "$cwd/nvim/init.vim" ~/.config/nvim/init.vim
-  ln -sf "$cwd/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
-else
-  # fallback to vim
-  ln -sf "$cwd/nvim/coc-settings.json" ~/.vim/coc-settings.json
+if [ ! -d ~/.config/nvim ]; then
+  mkdir ~/.config/nvim
 fi
+
+# nvm
+ln -sf "$cwd/nvim/init.vim" ~/.config/nvim/init.vim
+ln -sf "$cwd/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
 
 # spacemacs
 ln -sf "$cwd/emacs/.spacemacs" ~/.spacemacs
