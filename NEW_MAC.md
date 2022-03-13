@@ -233,7 +233,7 @@ More on Developer Softwares
 ### Mainstream
 
 - JavaScript
-  - NodeJS, `brew install node`
+  - NodeJS, `nvm`, `nvm install stable`
   - Flow
   - TypeScript `npm i -g typescript`
   - Expo CLI (React Native)
