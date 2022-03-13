@@ -157,8 +157,8 @@ $(brew --prefix)/opt/fzf/install
   - `brew install ripgrep`
   - I bound Vim `<space>-f` to `:Rg`
 
-- [Hub](https://hub.github.com/)
-  - `brew install hub`
+- <del>[Hub](https://hub.github.com/)</del> [Gh](https://cli.github.com/), Github official CLI
+  - `brew install gh`
 
 - "Readline Wrap"
   - `brew install rlwrap`
