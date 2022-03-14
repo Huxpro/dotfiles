@@ -128,17 +128,16 @@ Install _Must-have_ Dependencies
 
 - [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* (now the default) shortcuts.
 
-- [Alfred (v3)](https://www.alfredapp.com/), better Spotlight
-  - Preferences folder is symlinked to this repo.
-  - Activate power pack to sync on preference folder.
+- [Alfred)](https://www.alfredapp.com/), better Spotlight
+  - Activate "Power Pack" to sync the preference folder captured in this repo.
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
-- [Sogou PinYin (Zh input method)](https://pinyin.sogou.com/mac/)
+- [Sogou PinYin (Chinese input method)](https://pinyin.sogou.com/mac/)
 
-- [Google Back and Sync](https://www.google.com/drive/download/)
+- [Google Drive](https://www.google.com/drive/download/)
 
-- Xcode, for the toolchain.
+- Xcode, for the native toolchain.
 
 
 Install _Good-to-have_ Dependencies
@@ -161,6 +160,7 @@ $(brew --prefix)/opt/fzf/install
 
 - <del>[Hub](https://hub.github.com/)</del> [Gh](https://cli.github.com/), Github official CLI
   - `brew install gh`
+  - [ghstack](https://github.com/ezyang/ghstack) for stack-based workflow: `pip3 install ghstack`
 
 - "Readline Wrap"
   - `brew install rlwrap`
@@ -175,14 +175,16 @@ $(brew --prefix)/opt/fzf/install
 
 - [PDF Expert](https://pdfexpert.com/), the pdf reader that I got used to.
 
-- Final Cut Pro & ArcTime Pro, vlogging.
+- Final Cut Pro, etc. for vlogging.
 
 - Monodraw
 
-- Web shortcuts
+- Notion
+
+- Web shortcuts 
   - Workplace
+  - ASTExplorer
   - Excalidraw
-  - Notion
   - Gmail
   - Prettier
   - Babel
@@ -211,7 +213,7 @@ More on Editors
 
 ### IDE
 
-- XCode, aforementioned.
+- XCode, as aforementioned.
 - Android Studio
 - [JetBrains Toolbox](https://www.jetbrains.com/) for Idea, CLion, PyCharm...
   * sync with `setting-sync` w/ a git repo
