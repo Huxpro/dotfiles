@@ -120,8 +120,8 @@ Install _Must-have_ Dependencies
     - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
   - [blurry font on macOS Mojave for non-retina screen e.g. display](https://github.com/Microsoft/vscode/issues/51132)
     - `defaults write com.microsoft.VSCode.helper CGFontRenderingFontSmoothingDisabled -bool NO`
-  - `im-select` for `smartim`-like input method switching
-    - `curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh`
+  - [`im-select`](https://github.com/daipeihust/im-select) for `smartim`-like input method switching
+    - `brew tap daipeihust/tap && brew install im-select`
 
 
 ### MacOS Apps
@@ -235,7 +235,7 @@ More on Developer Softwares
 ### Mainstream
 
 - JavaScript
-  - NodeJS, `nvm`, `nvm install stable`
+  - NodeJS, [`nvm`](https://github.com/nvm-sh/nvm), `nvm install stable`
   - Flow
   - TypeScript `npm i -g typescript`
   - Expo CLI (React Native)
