@@ -5,7 +5,7 @@ MacOS System
 ------------
 
 0. "Reset modifier key": map "Caps Lock" to "Control"
-1. Swap shortcuts for "Spotlight" and "Input Source" (`ctrl` <-> `cmd`)
+1. ~Swap shortcuts for "Spotlight" and "Input Source" (`ctrl` <-> `cmd`)~
 2. Turn on "Three finger drag", "Tap to click", "App expose" for trackpad
 3. Setup Touch ID (if available)
 4. Set "Appearences" to "Auto"
