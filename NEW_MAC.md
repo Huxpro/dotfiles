@@ -125,6 +125,7 @@ Install _Must-have_ Dependencies
 ### MacOS Apps
 
 - [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* (now the default) shortcuts.
+  - Preference - Repeated commands - "cycle 1/2, 2/3, and 1/3 on half actions"
 
 - [Alfred)](https://www.alfredapp.com/), better Spotlight
   - Activate "Power Pack" to sync the preference folder captured in this repo.
