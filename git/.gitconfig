@@ -2,8 +2,8 @@
 # https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
 
 [user]
-	name = Xuan Huang
-	email = huxpro@gmail.com
+	name = Xuan Huang (黄玄)
+	email = jsx@fb.com
 
 [core]
         editor = vim
@@ -132,4 +132,5 @@
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [commit]
-	template = /Users/hux/.stCommitMsg
+	; template = /Users/hux/.stCommitMsg
+	; template = /Users/jsx/.gitmessage

@@ -97,7 +97,251 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 
 #####################################
-# alias
+# Alias - Hermes
+#####################################
+
+########## Paths
+
+# [CMake] 
+# Maybe someday I should add -oss/dbg/rel as CLI args to simulate Buck flavor
+H_CLION="$HOME/hermes-clion"
+H_CMAKE_DBG="$HOME/hermes-cmake-build-dbg"
+H_CMAKE_REL="$HOME/hermes-cmake-build-rel"
+H_CMAKE_OSS_DBG="$HOME/hermes-cmake-build-oss-dbg"
+# H_CMAKE_OSS_REL="$HOME/hermes-cmake-build-oss-rel"
+H_CMAKE_OSS_REL="$HOME/github/build_release" # https://hermesengine.dev/docs/react-native-integration
+
+H_HOST_HERMESC="$HOME/hermes-host-hermesc"
+
+# [Emscripten] 
+H_EM_DBG="$HOME/hermes-embuild" # upstream
+H_EM_REL="$HOME/hermes-embuild-rel" # upstream
+H_EM_FASTCOMP_REL="$HOME/embuild-fastcomp-rel"
+alias emcc_upstream="$EM_upstream/emcc"
+alias emcc_fastcomp="$EM_fastcomp/emcc"
+alias emcc=emcc_upstream
+
+# [BUCK] 
+H_BUCK_OUT="$HOME/fbsource/buck-out/gen/xplat/hermes/tools/hermes"
+
+########## Configure the Build
+
+# [CMake] Configure the build
+alias config-cmake-hermes="./utils/build/configure.py $H_CMAKE_DBG"
+alias config-cmake-hermes-rel="./utils/build/configure.py --distribute $H_CMAKE_REL"
+alias config-cmake-hermes-oss="./utils/build/configure.py $H_CMAKE_OSS_DBG"
+alias config-cmake-hermes-oss-rel="./utils/build/configure.py --distribute $H_CMAKE_OSS_REL"
+
+# [Emscripten] Configure the build
+# assuming the existence of \host-hermesc
+build_host_hermesc() {
+  ./utils/build/configure.py $H_HOST_HERMESC
+  cmake --build $H_HOST_HERMESC --target hermesc
+}
+
+config-em-hermes() {
+  python3 ./utils/build/configure.py \
+    --cmake-flags " -DIMPORT_HERMESC:PATH=$H_HOST_HERMESC/ImportHermesc.cmake " \
+    --distribute \
+    --wasm \
+    --emscripten-platform=upstream \
+    --emscripten-root="${EM_upstream}" \
+    $H_EM_DBG
+}
+
+# TODO: enable LTO
+config-em-hermes-rel() {
+  cmake . \
+        -B $H_EM_REL \
+        -G Ninja \
+        -DCMAKE_TOOLCHAIN_FILE="${EM_upstream}/cmake/Modules/Platform/Emscripten.cmake" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1" \
+        -DIMPORT_HERMESC:PATH="$H_HOST_HERMESC/ImportHermesc.cmake"
+}
+
+config-em-hermes-fastcomp() {
+  cmake . \
+        -B $H_EM_FASTCOMP_REL \
+        -G Ninja \
+        -DCMAKE_TOOLCHAIN_FILE="${EM_fastcomp}/cmake/Modules/Platform/Emscripten.cmake" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXE_LINKER_FLAGS="-s NODERAWFS=1 -s WASM=0 -s ALLOW_MEMORY_GROWTH=1" \
+        -DIMPORT_HERMESC:PATH="$H_HOST_HERMESC/ImportHermesc.cmake"
+}
+
+########## Build
+
+# [CMake] Build
+alias cmake-hermes="(cd $H_CMAKE_DBG && ninja)"
+alias cmake-hermes-rel="(cd $H_CMAKE_REL && ninja)"
+alias cmake-hermes-oss="(cd $H_CMAKE_OSS_DBG && ninja)"
+alias cmake-hermes-oss-rel="(cd $H_CMAKE_OSS_REL && ninja)"
+
+# [Buck] Build
+alias buck-hermes='buck build //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-dbg='buck build @xplat/mode/hermes/dbg //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-asan='buck build @xplat/mode/hermes/asan //xplat/hermes/tools/hermes:hermes'
+alias buck-hermes-handlesan='buck build @xplat/mode/hermes/handlesan //xplat/hermes/tools/hermes:hermes'
+
+# [Emscripten] Build
+alias em-hermes="cmake --build $H_EM_DBG --target hermes"
+alias em-hermes-rel="cmake --build $H_EM_REL --target hermes"
+alias em-hermes-fastcomp-rel="cmake --build $H_EM_FASTCOMP_REL --target hermes"
+
+########## Executables
+
+# [Exe] CMake
+alias her-clion="rlwrap $H_CLION/bin/hermes"  # Config CLion to use this path
+alias her-cmake="rlwrap $H_CMAKE_DBG/bin/hermes" # rare use
+alias her-cmake-rel="rlwrap $H_CMAKE_REL/bin/hermes" # rare use
+alias her-cmake-oss="rlwrap $H_CMAKE_OSS_DBG/bin/hermes"
+alias her-cmake-oss-rel="rlwrap $H_CMAKE_OSS_REL/bin/hermes" # rare use
+
+# [Exe] [Buck]
+alias her-buck-run='buck run //xplat/hermes/tools/hermes'
+alias her-buck-run-ser='buck run //xplat/hermes/tools/hermes @fbsource//xplat/mode/hermes/dbg @fbsource//xplat/mode/hermes/ncgen @xplat/mode/hermes/serialize --'
+alias her-buck-run-strict='buck run tools/hermes -- -strict'
+# Only available after her-buck-run or buck-hermes is ran once.
+alias her-buck="rlwrap $H_BUCK_OUT/hermes"
+ 
+# [Exe] [Emscripten]
+alias her-em="node $H_EM_DBG/bin/hermes.js"
+alias her-em-rel="node $H_EM_REL/bin/hermes.js" # rare use
+alias her-em-fastcomp-rel="node $H_EM_FASTCOMP_REL/bin/hermes.js" # rare use
+
+# [Exe] Convenient Aliases
+alias her="her-clion" 
+alias her-oss="her-cmake-oss"
+alias herc="her-clion"
+alias herb="her-buck"
+alias here="her-em"
+
+# [Exe] [JSVU] optimized builds, useful for benchmarking/uses
+# .jsvu added to the path. Unfortunately I'm constantly getting this wrong.
+alias her-jsvu="hermes"
+
+js-to-bin-hbc() {
+  her -emit-binary -out $1.hbc $1.js
+}
+
+js-to-dis-hbc() {
+  her -dump-bytecode $1.js > $1.dis
+}
+
+hbc-bin-to-dis-hbc() {
+  her -b -dump-bytecode $1.hbc > $1.dis
+}
+
+########## Testing
+
+# [CMake] Clion only
+alias cmake-test-hermes="cd $H_CLION && ninja check-hermes"
+
+# [Buck] Testing
+alias test-hermes-all='buck test --config xplat.available_platforms=CXX //xplat/hermes/...'
+alias test-hermes-quick='buck test --config xplat.available_platforms=CXX //xplat/hermes/test:quick'
+alias test-hermes-asan='buck test @fbandroid/mode/asan @xplat/mode/hermes/asan'
+alias test-hermes-lit='buck test //xplat/hermes/test:lit'
+alias test-hermes-lit-ser='buck test @xplat/mode/hermes/serialize test:lit'
+alias test-hermes-lit-asan='buck test @fbandroid/mode/asan test:lit'
+alias test-hermes-lit-handlesan='buck test @xplat/mode/hermes/handlesan test:lit'
+
+alias test-lit="test-hermes-lit"
+alias test-lit-asan="test-hermes-lit-asan"
+alias test-lit-handlesan="test-hermes-lit-handlesan"
+
+alias test-hermes="test-hermes-quick"  # this also test lit btw.
+
+
+# [Buck] Testing Test262
+alias test262-hermes-matchAll-string='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/String/prototype/matchAll'
+alias test262-hermes-replaceAll-string='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/String/prototype/replaceAll'
+alias test262-hermes-matchAll-regexp='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/RegExp/prototype/Symbol.matchAll'
+alias test262-hermes-builtin='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/'
+alias test262-hermes-lang='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites//test262/test/language/'
+alias test262-hermes-all='buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test'
+
+alias test262-hermes-async-fn-decl="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/statements/async-function"
+alias test262-hermes-async-arrow="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/expressions/async-arrow-function"
+alias test262-hermes-async-fn-expr="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/language/expressions/async-function"
+alias test262-hermes-asyncFn="buck run //xplat/hermes/utils/testsuite:run_testsuite ~/fbsource/xplat/third-party/javascript-test-suites/test262/test/built-ins/AsyncFunction/"
+alias test262-hermes-async="test262-hermes-async-fn-decl && test262-hermes-async-fn-expr && test262-hermes-async-arrow"
+
+########## Dev Convenience
+
+alias format-fb="arc lint -a"
+alias format-hermes="./utils/format.sh"
+
+########## ESHOST
+## https://github.com/bterlson/eshost-cli
+
+alias estable='eshost --table'
+alias esex='eshost --tags esvu-web -itsx'
+
+########## ANDROID
+ 
+alias android-emulator='ENABLE_WIFI=1 ~/fbsource/fbandroid/scripts/start_emulator -gpu host'
+alias fb4a-dev='cd ~/fbsource/fbandroid && buck install -r fb4a'
+alias fb4a-rel='cd ~/fbsource/fbandroid/ && buck install @fbsource//fbandroid/mode/opt -r fb4a'
+alias fb4a-fast='cd ~/fbsource/fbandroid && buck install @fbsource//fbandroid/mode/opt -r fb4a-fast' # doesn't work
+alias catalyst='cd ~/fbsource/fbandroid && buck install -r catalyst-android' # dev I guess
+
+########## React Native
+
+alias rn-clean-build-android='cd android && ./gradlew clean && cd .. && npx react-native run-android'
+
+RNTESTER="${HOME}/react-native/react-native/packages/rn-tester"
+
+# under RNTester
+alias hash-apk-debug="unzip -p ${RNTESTER}/android/app/build/outputs/apk/hermes/debug/app-hermes-armeabi-v7a-debug.apk lib/armeabi-v7a/libhermes.so | shasum"
+alias hash-apk-rel="unzip -p ${RNTESTER}/android/app/build/outputs/apk/hermes/release/app-hermes-armeabi-v7a-release.apk lib/armeabi-v7a/libhermes.so | shasum"
+hash-hermes-debug() {
+  tar zxfO ~/hermes-releases/v$1/hermes-engine-v$1.tgz package/android/hermes-debug.aar | tar xfO - jni/armeabi-v7a/libhermes.so | shasum
+}
+hash-hermes-rel() {
+  tar zxfO ~/hermes-releases/v$1/hermes-engine-v$1.tgz package/android/hermes-release.aar | tar xfO - jni/armeabi-v7a/libhermes.so | shasum
+}
+
+
+#####################################
+# Alias - FB Source Control
+#####################################
+
+# submit then update info
+alias jfsu='jf s -u'
+alias jfsun='jf s -u -n' # draft
+
+# `e` for edit, same as `hg commit --amend`
+alias hg-amend-e='hg amend -e'
+
+# HG amend; Then JF push
+alias hgjf='hg amend && jf s'
+alias hgjfn='hg amend && jf s -n'
+
+# HG amend; Editing commit message; Then JF push.
+alias hgejfsu='hg amend -e && jf s -u'
+alias hgejfsun='hg amend -e && jf s -u -n'
+
+# HG revert is so damn hard to use
+alias hgco='hg revert'           # git co -- <filename>
+alias hgcoall='hg revert all'    # git co -- .
+alias hgcoHEAD='hg revert -r .^' # git co HEAD^ <filename>
+
+# bruto git push
+alias gitpush='git add . && git commit -m "auto" && git push origin master'
+
+# alias node='~/fbsource/xplat/third-party/node/bin/node'
+
+# a hux-ized machine
+alias sshdev='ssh devvm433.atn0.facebook.com'
+
+# a cleaner machine
+alias sshdev2='ssh devvm2238.vll0.facebook.com'
+
+
+#####################################
+# Alias
 #####################################
 
 # highlight dir from file
@@ -105,16 +349,12 @@ alias ls='ls -FHG'
 
 # alias vim to neovim
 if [ -x "$(command -v nvim)" ]; then
-  # nvim will still invoke nvim stable
-  alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
-  alias vi='nvimnightly'
-  alias vim='nvimnightly'
+  alias vi='nvim'
+  alias vim='nvim'
   alias vim8='\vim' # vim 8.1
 fi
 
-# vim
-EDITOR=vim
-GIT_EDITOR=vim
+# alias vim='/usr/local/Cellar/vim/8.2.0654/bin/vim'
 
 # emacs (open in new instance)
 alias emacs='open -n -a Emacs.app .'
@@ -154,19 +394,34 @@ alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
 # langfc
 alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
-# only eval opam on `source .zshrc` if opam is an executable
-if [ -x "$(command -v opam)" ]; then
-  eval $(opam config env)
-fi
-
-# FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# cling
+alias cpprepl='cling'
 
 # haskell
 alias stack-all='ls $(stack path --programs)'
 
 # permission
-alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
+alias sudochownlocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
+
+
+#####################################
+# Initilization on log
+#####################################
+
+# NVM (https://github.com/nvm-sh/nvm)
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# only eval opam on `source .zshrc` if opam is an executable
+if [ -x "$(command -v opam)" ]; then
+  eval $(opam config env)
+fi
+
+# init ruby
+eval "$(rbenv init -)"
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # colorful stderr
 # https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
@@ -176,34 +431,38 @@ color()(set -o pipefail;"$@" 2>&1 1>&3|sed $'s,.*,\e[31m&\e[m,'1>&2)3>&1
 # redefine prompt_context for hiding user@hostname
 prompt_context () { }
 
+# vim
+EDITOR=vim
+GIT_EDITOR=vim
+
 
 #####################################
 # iTerm - macOS dark mode awareness
 # https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
 #####################################
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-    sith() {
-        val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
-        if [[ $val == "Dark" ]]; then
-            i
-        fi
-    }
+# if [[ "$(uname -s)" == "Darwin" ]]; then
+#     sith() {
+#         val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+#         if [[ $val == "Dark" ]]; then
+#             i
+#         fi
+#     }
 
-    i() {
-        if [[ $ITERM_PROFILE == "Default" ]]; then
-            echo -ne "\033]50;SetProfile=Dark\a"
-            export ITERM_PROFILE="Dark"
-        else
-            echo -ne "\033]50;SetProfile=Default\a"
-            export ITERM_PROFILE="Default"
-        fi
-    }
+#     i() {
+#         if [[ $ITERM_PROFILE == "Default" ]]; then
+#             echo -ne "\033]50;SetProfile=Dark\a"
+#             export ITERM_PROFILE="Dark"
+#         else
+#             echo -ne "\033]50;SetProfile=Default\a"
+#             export ITERM_PROFILE="Default"
+#         fi
+#     }
 
-    sith
-fi
+#     sith
+# fi
 
-alias iterm-dark-mode="i"
+# alias iterm-dark-mode="i"
 
 
 
@@ -243,3 +502,19 @@ compdef _gnu_generic bsc bsb ocamlc yarn
 #   zstyle ':completion:*' completer _oldlist _complete
 # fi
 # zstyle ':auto-fu:var' postdisplay $''
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/emulator:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

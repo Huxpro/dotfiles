@@ -22,12 +22,13 @@
         "color" : "#DDE1F7FF"
       },
       "iconPaddingHorizontal" : 6,
+      "roundness" : 0,
       "paddingVertical" : 5,
       "iconSize" : 38
     },
     "search" : {
-      "paddingVertical" : 2,
-      "background" : "#272B34FF",
+      "backgroundSelected" : "#0096FFFF",
+      "paddingHorizontal" : 8,
       "spacing" : 6,
       "text" : {
         "size" : 24,
@@ -35,7 +36,9 @@
         "font" : "Menlo",
         "color" : "#DDE1F7FF"
       },
-      "backgroundSelected" : "#0096FFFF"
+      "background" : "#272B34FF",
+      "roundness" : 0,
+      "paddingVertical" : 2
     },
     "window" : {
       "color" : "#272B34FF",

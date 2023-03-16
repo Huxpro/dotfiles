@@ -42,7 +42,8 @@ endif
 " FZF is a independent replacement to CtrlP,
 " LC-neovim use it for contextMenu when it exists.
 " -----------------------------------------------------------------------------
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 
 " -----------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 " -----------------------------------------------------------------------------
 Plug 'altercation/vim-colors-solarized'
 Plug 'jordwalke/vim-one'
+"Plug 'joshdick/onedark.vim'
 Plug 'jordwalke/vim-taste'
 Plug 'NLKNguyen/papercolor-theme'
 
@@ -68,6 +70,9 @@ Plug 'rust-lang/rust.vim'
 
 " ReasonML
 Plug 'reasonml-editor/vim-reason-plus'
+
+" Hack
+Plug 'hhvm/vim-hack'
 
 " Scala
 Plug 'derekwyatt/vim-scala'
@@ -196,16 +201,16 @@ call plug#end()
 " Neovim
 " -----------------------------------------------------------------------------
 if (has("nvim"))
-" close terminal windows input mode with <esc>
-tnoremap <Esc> <C-\><C-n>
+  " close terminal windows input mode with <esc>
+  tnoremap <Esc> <C-\><C-n>
 
-" mapping for openning terminal in split windows
-" rather than splitting belowright by default by `set splitright` and `set splitbelow`
-" using `:belowright split` to treat terminal splitting specially
-command! -nargs=* D  belowright split | terminal <args>
-command! -nargs=* DD belowright vsplit | terminal <args>
+  " mapping for openning terminal in split windows
+  " rather than splitting belowright by default by `set splitright` and `set splitbelow`
+  " using `:belowright split` to treat terminal splitting specially
+  command! -nargs=* D  belowright split | terminal <args>
+  command! -nargs=* DD belowright vsplit | terminal <args>
 
-set inccommand=nosplit
+  set inccommand=nosplit
 endif
 
 
@@ -350,6 +355,7 @@ set lazyredraw
 set updatetime=300
 
 " No annoying sound on errors
+set visualbell
 set noerrorbells
 
 " mouse support
@@ -451,6 +457,7 @@ function! SetThemeOne()
   " I love italic for comments
   let g:one_allow_italics = 1
 
+  let g:onedark_termcolors=16
   let g:airline_theme='one'
 endfunction()
 
@@ -519,7 +526,8 @@ function! AutoDarkLight()
   if iterm_profile == "Dark"
     call SetTheme("One", "Dark")
   else
-    call SetTheme("PaperColor", "Light")
+    " call SetTheme("PaperColor", "Light")
+    call SetTheme("One", "Dark")
   endif
 endfunction()
 
@@ -536,10 +544,12 @@ call TrueColor()
 if term_prog == "Apple_Terminal" 
     " Set 256 color terminal support
     set t_Co=256
-    call SetTheme("PaperColor", "Light")
+    " call SetTheme("PaperColor", "Light")
+    call SetTheme("One", "Dark")
 " The vim itself might support 256 color only as well
 elseif &t_Co <= 256
-    call SetTheme("PaperColor", "Light")
+    " call SetTheme("PaperColor", "Light")
+    call SetTheme("One", "Dark")
 " Assume True Color
 else 
     call AutoDarkLight()
@@ -633,6 +643,9 @@ map <leader>s :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> t
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
+" terminal
+:onoremap <C-`> :term
+
 
 " =============================================================================
 " Plugin Configuration
@@ -707,7 +720,7 @@ map <leader>f : Rg<CR>
 " -----------------------------------------------------------------------------
 " Vim Rooter
 " -----------------------------------------------------------------------------
-let g:rooter_patterns = ['.hg', '.git/', 'package.json']
+let g:rooter_patterns = ['.hg', '.git', '.idea', 'README.md', 'README']
 
 
 " -----------------------------------------------------------------------------
@@ -908,7 +921,7 @@ function! MathAndLiquid()
     hi link math_block Function
 endfunction
 "let g:vim_markdown_fenced_languages =
-let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
+let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'rosetta=fnl', 'rosettas=scala', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=hack', 'vim', 'lex', 'yacc', 'grm=sml', 'mdx=markdown']
 
 " buggy
 let g:vim_markdown_folding_disabled = 1
