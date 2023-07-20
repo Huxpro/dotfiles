@@ -1,14 +1,13 @@
-# shameless modified from
-# https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
+# Credits: heavily inspired from # https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
 
 [user]
-	name = Xuan Huang
-	email = huxpro@gmail.com
+        name = xuan.huang
+        email = huxpro@gmail.com
 
 [core]
         editor = vim
         autocrlf = input
-	excludesfile = /Users/hux/.gitignore
+        excludesfile = /Users/hux/.gitignore
         #safecrlf = false
 
 [alias]
@@ -25,6 +24,7 @@
         c = commit
         ca = commit -a
         cm = commit -m
+        cam = commit -am
         amend = commit --amend
         amend-all = !git add --all && git commit --amend --reuse-message=HEAD
 
@@ -60,20 +60,44 @@
         # http://www.codeblocq.com/2016/01/Untrack-files-already-added-to-git-repository-based-on-gitignore/
         re-ignore = !git rm -r --cached . && git add . && git commit -m "reset .gitignore"
 
-        # Reset
-        unstage = reset HEAD --                      # Mixed reset (affects HEAD and Index)
-        undo = reset --soft HEAD~1                   # Undo last commit (affects HEAD only)
-        reset = reset --hard HEAD~1                  # Remove last commit (from HEAD, Index and Working Dir)
+        # Undos
+        # Undo staged files from Index
+        unstage = reset HEAD --
+        # Undo last commit but leave changes in working
+        uncommit = reset --soft HEAD~1
+        # Remove last commit completely.
+        uncommit-hard = reset --hard HEAD~1
+        # Discard workding changes
+        discard = checkout --
+        # Revert some changes to last commit.
+        rev = checkout HEAD --
+        revert-some = rev
+        # Revert entirely to last commit
+        revert-hard = reset --hard HEAD
 
         # Remote
         r = remote -v
 
+        # Status
+        st = status
+        ss = status -sb
+
+        # Logging
+        l = log --pretty=hux
+        lg = log --color --graph --all --pretty=hux --abbrev-commit#Graph
+        ll = log --stat --abbrev-commit# Stats
+        lc = shortlog --summary --numbered# List contributors
+
         # Misc
         publish = "!git push --set-upstream origin $(git branch-name)"
-        lg = log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-        st = status
-        st = status
-        l = log --stat
+
+[pretty]
+        hux = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
+        #            │                    │         │          │                  └─ author name
+        #            │                    │         │          └─ committer date (relative)
+        #            │                    │         └─ message
+        #            │                    └─ decorations (branch, heads or tags)
+        #            └─ hash (abbreviated)
 
 # So much color
 [color]
@@ -113,23 +137,29 @@
 
 # large file storage
 [filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+        required = true
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+        process = git-lfs filter-process
 
 
 # difftool for side-by-side diff in vim
 [diff]
-	tool = vimdiff
+        tool = vimdiff
 
 [difftool]
-	prompt = false
+        prompt = false
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+        path = 
+
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+        cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+        trustExitCode = true
+
 [commit]
-	template = /Users/hux/.stCommitMsg
+        template = ~/.stCommitMsg
+
+# Include local settings so different machines and dirs can override with its own requirements. e.g. I uses different email and url (proxy) for different machines
+[include]
+        path = ~/.gitconfig.local
