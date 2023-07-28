@@ -1,9 +1,5 @@
 # Credits: heavily inspired from # https://github.com/nicksp/dotfiles/blob/master/git/gitconfig
 
-[user]
-        name = xuan.huang
-        email = huxpro@gmail.com
-
 [core]
         editor = vim
         autocrlf = input
@@ -67,10 +63,10 @@
         uncommit = reset --soft HEAD~1
         # Remove last commit completely.
         uncommit-hard = reset --hard HEAD~1
-        # Discard workding changes
+        # Discard workding changes to HEAD commit
         discard = checkout --
-        # Revert some changes to last commit.
-        rev = checkout HEAD --
+        # Revert some changes from the HEAD commit to HEAD-1 commit.
+        rev = checkout HEAD^ --
         revert-some = rev
         # Revert entirely to last commit
         revert-hard = reset --hard HEAD
