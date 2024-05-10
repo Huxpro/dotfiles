@@ -18,10 +18,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " LSP
 " -----------------------------------------------------------------------------
 " Alternative LSP client for vim/nvim
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
 
 " -----------------------------------------------------------------------------
 " Deoplete
@@ -192,22 +192,6 @@ call plug#end()
 " =============================================================================
 " Vim Configuration
 " =============================================================================
-" -----------------------------------------------------------------------------
-" Neovim
-" -----------------------------------------------------------------------------
-if (has("nvim"))
-" close terminal windows input mode with <esc>
-tnoremap <Esc> <C-\><C-n>
-
-" mapping for openning terminal in split windows
-" rather than splitting belowright by default by `set splitright` and `set splitbelow`
-" using `:belowright split` to treat terminal splitting specially
-command! -nargs=* D  belowright split | terminal <args>
-command! -nargs=* DD belowright vsplit | terminal <args>
-
-set inccommand=nosplit
-endif
-
 
 " -----------------------------------------------------------------------------
 " File
@@ -473,27 +457,11 @@ endfunction()
 
 
 " -----------------------------------------------------------------------------
-" Theme - Taste
-" - True Color Terminal: GOOD.
-" - Non True Color Terminal: surprisingly good even w/o Terminal Theme support.
-" -----------------------------------------------------------------------------
-function! SetThemeTaste()
-  if has("syntax")
-      silent! colorscheme taste
-  endif
-
-  let g:airline_theme='taste'
-endfunction()
-
-
-" -----------------------------------------------------------------------------
 " Theme - Util
 " -----------------------------------------------------------------------------
 function! SetTheme(name, bg)
   if a:name == "PaperColor"
     call SetThemePaperColor()
-  elseif a:name == "Taste"
-    call SetThemeTaste()
   elseif a:name == "Solarized"
     call SetThemeSolarized()
   else 
@@ -512,11 +480,8 @@ endfunction()
 " Theme - Dark/Light switching
 " -----------------------------------------------------------------------------
 function! AutoDarkLight()
-  " https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
-  " A hot-key or iterm-script approach won't update Env so VIM won't know.
-  let iterm_profile = $ITERM_PROFILE
-
-  if iterm_profile == "Dark"
+  let theme = system('defaults read -g AppleInterfaceStyle')
+  if theme =~ "Dark"
     call SetTheme("One", "Dark")
   else
     call SetTheme("PaperColor", "Light")
@@ -532,18 +497,19 @@ let term_prog = $TERM_PROGRAM
 " Try to set True Color Flag
 call TrueColor()
 
-" Non True Color
-if term_prog == "Apple_Terminal" 
-    " Set 256 color terminal support
+" Detection for True Color support
+if exists("+termguicolors") && $COLORTERM == 'truecolor'
+    set termguicolors
+    call AutoDarkLight()
+" Check if running in Apple Terminal with 256 color support
+elseif $TERM_PROGRAM == 'Apple_Terminal'
     set t_Co=256
     call SetTheme("PaperColor", "Light")
-" The vim itself might support 256 color only as well
+" Fallback for other terminals with 256 color support
 elseif &t_Co <= 256
     call SetTheme("PaperColor", "Light")
-" Assume True Color
-else 
-    call AutoDarkLight()
 endif
+
 
 " -----------------------------------------------------------------------------
 " Theme - Key binding for switching themes
@@ -554,7 +520,6 @@ endif
 command! Light set background=light
 command! Dark set background=dark
 command! One :call SetThemeOne() | :AirlineRefresh
-command! Taste :call SetThemeTaste() | :AirlineRefresh
 command! Paper :call SetThemePaperColor() | :AirlineRefresh
 command! Solarized :call SetThemeSolarized()
 command! OneDark :call SetTheme("One", "Dark") | :AirlineRefresh
@@ -908,7 +873,7 @@ function! MathAndLiquid()
     hi link math_block Function
 endfunction
 "let g:vim_markdown_fenced_languages =
-let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'fnl', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
+let g:markdown_fenced_languages = ['sh', 'make', 'agda', 'coq=ocaml', 'ocaml', 'ml=ocaml', 'sml', 'f=sml', 'lgf=sml', 'core=sml', 'reploc=sml', 'vmcode=javascript', 'ts=typescript', 'typescript', 'reasonml=reason', 're=reason', 'reason', 'json', 'swift', 'html', 'css', 'js=javascript', 'hs=haskell', 'bnf=haskell', 'λ=haskell', 'kk=javascript', 'java', 'scala', 'kotlin', 'c', 'cs', 'cpp', 'rust', 'rs=rust', 'asm', 'wast', 'wat=wast', 'lisp', 'clj=clojure', 'racket=lisp', 'rkt=lisp', 'dune=lisp', 'py=python', 'python', 'ks=python', 'buck=python', 'yaml', 'php', 'hh=php', 'vim', 'lex', 'yacc', 'grm=sml']
 
 " buggy
 let g:vim_markdown_folding_disabled = 1
