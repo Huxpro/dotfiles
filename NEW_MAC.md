@@ -56,11 +56,11 @@ Applying Configurations (For Immediate Comforts!)
 
 > Immediately giving a sense of HOME.
 
-### Clone this repo and run `linkall.sh`
+### Clone this repo and run `install.sh`
 
 ```sh
-# using my one-stop linkall.sh (under the cloned repo)
-$ sh linkall.sh
+# using my one-stop install.sh (under the cloned repo)
+$ sh install.sh
 
 # manual symlink (under $HOME)
 $ ln -s <source_file> <target_file>

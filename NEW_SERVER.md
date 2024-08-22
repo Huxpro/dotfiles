@@ -17,11 +17,11 @@ Install _Meta_ Dependencies
 Applying Configurations (For Immediate Comforts!)
 -------------------------------------------------
 
-### Clone this repo and run `linkall.sh`
+### Clone this repo and run `install.sh`
 
 ```sh
-# using my one-stop linkall.sh (under the cloned repo)
-$ sh linkall.sh
+# using my one-stop install.sh (under the cloned repo)
+$ sh install.sh
 ```
 
 This should give youCLI configuration (e.g. `.zsh*`, `.bash*`, `.git*`) sync-ed immediately.
