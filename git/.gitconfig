@@ -6,6 +6,10 @@
         excludesfile = /Users/hux/.gitignore
         #safecrlf = false
 
+[init]
+        templatedir = ~/.gittemplates
+        defaultBranch = main
+
 [alias]
         # Staging
         a = add

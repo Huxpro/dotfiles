@@ -21,6 +21,7 @@ export PATH="$PYENV_ROOT/shims:$PATH"
 # Python pip
 export PATH="$HOME/Library/Python/3.6/bin:$PATH"
 export PATH="$HOME/Library/Python/3.7/bin:$PATH"
+export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 
 # Ruby gem
 export GEM_HOME=$HOME/gems
@@ -34,7 +35,7 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export PATH="$HOME/.jsvu:$PATH"
 
 # Flutter
-export PATH="$HOME/flutter/bin:$PATH"
+# export PATH="$HOME/flutter/bin:$PATH"
 
 # Sqlite
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
@@ -42,25 +43,25 @@ export PATH="/usr/local/opt/sqlite/bin:$PATH"
 # Rust cargo
 
 # openSSL
-export PATH="/usr/local/opt/openssl/bin:$PATH"
+# export PATH="/usr/local/opt/openssl/bin:$PATH"
 # export LDFLAGS="-L/usr/local/opt/openssl/lib"
 # export CPPFLAGS="-I/usr/local/opt/openssl/include"
 # export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
 # override coq with brew-installed coq
-export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
+# export PATH="/usr/local/Cellar/coq/8.9.0/bin:$PATH"
 
 # FNL
-export PATH="$HOME/.fnl/bin:$PATH"
+# export PATH="$HOME/.fnl/bin:$PATH"
 
 # LLVM
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
+# export PATH="/usr/local/opt/llvm/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/llvm/lib"
+# export CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 # Clang
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
-export CPATH=`xcrun --show-sdk-path`/usr/include
+# export CPATH=`xcrun --show-sdk-path`/usr/include
 
 # GCC
 export PATH=/usr/local/gcc-8.1/bin:$PATH
@@ -72,6 +73,8 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-
-
+# Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# BD
+[ -f "$HOME/.bytebm/config/config.sh" ] && . "$HOME/.bytebm/config/config.sh"

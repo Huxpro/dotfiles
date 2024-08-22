@@ -65,6 +65,8 @@ plugins=(
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
 source $ZSH/oh-my-zsh.sh
 # source ~/.oh-my-zsh/plugins/incr/incr*.zsh
 
@@ -255,3 +257,8 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+export PATH=$HOME/.local/bin:$PATH
+
+# Github Copilet
+eval "$(gh copilot alias -- zsh)"
