@@ -6,5 +6,5 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 # make cd case-INsensitive
-set completion-ignore-case
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 . "$HOME/.cargo/env"
