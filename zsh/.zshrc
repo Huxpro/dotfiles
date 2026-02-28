@@ -105,47 +105,15 @@ HISTFILESIZE=10000
 # highlight dir from file
 alias ls='ls -FHG'
 
-# alias vim to neovim
-if [ -x "$(command -v nvim)" ]; then
-  # nvim will still invoke nvim stable
-  alias nvimnightly='~/nvim-nightly/bin/nvim'  # neovim nightly
-  alias vi='nvimnightly'
-  alias vim='nvimnightly'
-  alias vim8='\vim' # vim 8.1
-fi
-
 # vim
-EDITOR=vim
-GIT_EDITOR=vim
-
-# emacs (open in new instance)
-alias emacs='open -n -a Emacs.app .'
-alias emacsterm='\emacs-26.2'
-alias oldemacs='\emacs'
-
-# rlwrap
-alias sml='rlwrap sml'
-alias jake='rlwrap jake'
-alias uscheme='rlwrap uscheme'
-alias scheme='rlwrap scheme'
-alias racket='rlwrap racket'
+export EDITOR=vim
+export GIT_EDITOR=vim
 
 # grep (recursive, linenum)
 alias greprn='grep -rn'
 
-# reason
-alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
-alias reml='pbpaste | refmt --parse re --print ml | pbcopy'
-alias prtop='pbpaste | rtop'
-
 # echo $PATH line by line
 alias echopath='tr ":" "\n" <<< "$PATH"'
-
-# cloc coq .v
-alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
-
-# langfc
-alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
 
 # FZF
@@ -205,33 +173,7 @@ alias iterm-dark-mode="i"
 noopt() {}
 compdef noopt npm make brew
 # enable completion for these commands.
-# See https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org#completing-generic-gnu-commands
-compdef _gnu_generic bsc bsb ocamlc yarn
-
-# https://github.com/hchbaw/auto-fu.zsh
-# Fork with cleaned-up readme:
-# https://github.com/HerringtonDarkholme/auto-fu.zsh
-
-# make sure history-substring-match is disabled (crashes window with auto-fu).
-# auto-fu master currently unstable. Use the `pu` branch instead
-
-# git clone https://github.com/HerringtonDarkholme/auto-fu.zsh ~/.auto-fu
-# cd ~/.auto-fu
-# git checkout pu
-
-# below is commented out to to turn off auto-fu.
-# the main issue is mis-match and performance
-# using ** for FZF for some cases instead
-
-# if [ -f ~/.auto-fu/auto-fu.zsh ]; then
-#   source ~/.auto-fu/auto-fu.zsh
-#   function zle-line-init () {
-#     auto-fu-init
-#   }
-#   zle -N zle-line-init
-#   zstyle ':completion:*' completer _oldlist _complete
-# fi
-# zstyle ':auto-fu:var' postdisplay $''
+compdef _gnu_generic yarn
 
 # nvm lazy load (~1s savings)
 export NVM_DIR="$HOME/.nvm"

@@ -3,8 +3,7 @@
 [core]
         editor = vim
         autocrlf = input
-        excludesfile = /Users/hux/.gitignore
-        #safecrlf = false
+        excludesfile = ~/.gitignore
 
 [init]
         templatedir = ~/.gittemplates
@@ -91,6 +90,16 @@
         # Misc
         publish = "!git push --set-upstream origin $(git branch-name)"
 
+        # Gerrit (Stacked Diff)
+        # 基于最新代码创建新的本地分支
+        new = "!f() { git fetch && git checkout -b sandbox/`git config user.email | awk -F@ '{print $1}'`/`date +%m-%d`/${2:-`date +%H-%M`} origin/${1:-master}; }; f"
+        # 推送代码并创建 Stack Diff
+        rv = "!f() { git push origin HEAD:refs/for/${1:-master}; }; f"
+        # 将当前更改提交添加到当前 mr
+        cin = commit --amend --no-edit
+        # 删除所有本地临时分支
+        delbranch = "!f() { git branch | grep sandbox | xargs git branch -D; }; f"
+
 [pretty]
         hux = "%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"
         #            │                    │         │          │                  └─ author name
@@ -163,3 +172,20 @@
 # Include local settings so different machines and dirs can override with its own requirements. e.g. I uses different email and url (proxy) for different machines
 [include]
         path = ~/.gitconfig.local
+[user]
+	email = 5563315+Huxpro@users.noreply.github.com
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+	updateRefs = true
+[fetch]
+	prune = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[safe]
+	directory = *
