@@ -7,11 +7,7 @@ KEYTIMEOUT=1
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/sbin:$PATH"
 
-# Haskell ghcup/cabal/stack/hie etc.
 export PATH=$HOME/.local/bin:$PATH
-export PATH="$HOME/Library/Haskell/bin:$PATH"
-export PATH="$HOME/.ghcup/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$PATH"
 
 # Python Pyenv verison manager
 export PYENV_ROOT="$HOME/.pyenv"
@@ -19,14 +15,8 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$PYENV_ROOT/shims:$PATH"
 
 # Python pip
-export PATH="$HOME/Library/Python/3.6/bin:$PATH"
-export PATH="$HOME/Library/Python/3.7/bin:$PATH"
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
 
-# Ruby gem
-export GEM_HOME=$HOME/gems
-export PATH=$HOME/gems/bin:$PATH
-export PATH=$HOME/.gem/ruby/X.X.0/bin:$PATH
 
 # JS Yarn
 export PATH="$HOME/.yarn/bin:$PATH"
@@ -63,8 +53,6 @@ export PATH="/usr/local/opt/sqlite/bin:$PATH"
 # https://clang.llvm.org/docs/CommandGuide/clang.html#environment
 # export CPATH=`xcrun --show-sdk-path`/usr/include
 
-# GCC
-export PATH=/usr/local/gcc-8.1/bin:$PATH
 
 # GNU utils
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -73,8 +61,13 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrew (hardcoded to avoid subprocess)
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+export HOMEBREW_REPOSITORY="/opt/homebrew"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+[ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}"
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 # BD
 [ -f "$HOME/.bytebm/config/config.sh" ] && . "$HOME/.bytebm/config/config.sh"

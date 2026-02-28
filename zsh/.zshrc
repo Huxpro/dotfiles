@@ -65,7 +65,7 @@ plugins=(
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
 
 source $ZSH/oh-my-zsh.sh
 # source ~/.oh-my-zsh/plugins/incr/incr*.zsh
@@ -138,15 +138,6 @@ alias mlre='pbpaste | refmt --parse ml --print re | pbcopy'
 alias reml='pbpaste | refmt --parse re --print ml | pbcopy'
 alias prtop='pbpaste | rtop'
 
-# ocaml / opam switch (upgrade to opam 2.0)
-alias evalopamenv='eval $(opam env)'
-
-# 4.02.3 for Reason/BuckleScript <=5 and Coq 8.4 (JSCert)
-alias opamswitch402='opam switch reason && evalopamenv'
-
-# 4.05.* for Coq 8.8.2 (Software Foundation)
-alias opamswitch405='opam switch unsafe-str && evalopamenv'
-
 # echo $PATH line by line
 alias echopath='tr ":" "\n" <<< "$PATH"'
 
@@ -156,19 +147,15 @@ alias clocv='cloc --by-file-by-lang --match-f=v --exclude-dir="Lib" .'
 # langfc
 alias fc='./bin/langfc -Ckeep-convert-to-reploc=true -Ckeep-vm-codegen=true'
 
-# only eval opam on `source .zshrc` if opam is an executable
-if [ -x "$(command -v opam)" ]; then
-  eval $(opam config env)
-fi
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# haskell
-alias stack-all='ls $(stack path --programs)'
-
 # permission
 alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
+
+# claude
+alias yolo='claude --dangerously-skip-permissions'
 
 # colorful stderr
 # https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
@@ -246,9 +233,22 @@ compdef _gnu_generic bsc bsb ocamlc yarn
 # fi
 # zstyle ':auto-fu:var' postdisplay $''
 
+# nvm lazy load (~1s savings)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  # Add nvm's node to PATH immediately (no waiting for full nvm load)
+  [ -d "$NVM_DIR/versions/node" ] && PATH="$(ls -d "$NVM_DIR/versions/node"/*/bin 2>/dev/null | tail -1):$PATH"
+  # Lazy-load nvm itself on first use
+  nvm() {
+    unset -f nvm node npm npx
+    \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    nvm "$@"
+  }
+  node() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; node "$@"; }
+  npm() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; npm "$@"; }
+  npx() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; npx "$@"; }
+fi
 
 # pnpm
 export PNPM_HOME="/Users/bytedance/Library/pnpm"
@@ -260,5 +260,21 @@ esac
 
 export PATH=$HOME/.local/bin:$PATH
 
-# Github Copilet
-eval "$(gh copilot alias -- zsh)"
+eval "$(direnv hook zsh)"
+
+# --- BEGIN FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
+# https://bytedance.sg.larkoffice.com/docx/SurId67UBoZxHwxe07Clr5Ufgog
+
+export FEDERATED_REPO_GIT_TELEMETRY_VERSION=1.2.0
+# export GIT_TRACE2_EVENT="$HOME/.trace2/event"
+# export GIT_TRACE2_EVENT_BRIEF=true
+# export GIT_TRACE2_MAX_FILES=100000
+
+# --- END FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
+
+# bun completions
+[ -s "/Users/bytedance/.bun/_bun" ] && source "/Users/bytedance/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
