@@ -116,8 +116,24 @@ alias greprn='grep -rn'
 alias echopath='tr ":" "\n" <<< "$PATH"'
 
 
-# FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# FZF: key bindings (^T, ^R, Alt-C) and ** completion.
+# ~/.fzf.zsh comes from fzf's git install (NEW_SERVER.md); with Homebrew's
+# fzf >= 0.48 the integration is built in (`fzf --zsh`).
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+elif (( $+commands[fzf] )); then
+  source <(fzf --zsh 2>/dev/null)  # silently no-op on fzf < 0.48
+fi
+# Use ripgrep to list files: respects .gitignore, includes dotfiles, and is
+# much faster in big repos. Also used by fzf.vim's :FZF / <C-p>.
+if (( $+commands[rg] )); then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
+# zoxide: `z foo` jumps to the most frecent dir matching foo, `zi` picks
+# interactively with fzf. https://github.com/ajeetdsouza/zoxide
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # permission
 alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
