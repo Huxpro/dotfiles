@@ -52,9 +52,10 @@ ZSH_THEME="refined-lambda"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-syntax-highlighting
   # zsh-autosuggestions
   zsh-completions
+  # must be the last plugin: it wraps the widgets defined before it
+  zsh-syntax-highlighting
 )
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -65,7 +66,7 @@ plugins=(
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
-FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+[ -n "$HOMEBREW_PREFIX" ] && FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 
 source $ZSH/oh-my-zsh.sh
 # source ~/.oh-my-zsh/plugins/incr/incr*.zsh
@@ -95,15 +96,24 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-HISTSIZE=10000
-HISTFILESIZE=10000
+# History size: oh-my-zsh already sets HISTSIZE=50000 / SAVEHIST=10000.
+# (HISTSIZE must stay larger than SAVEHIST for hist_expire_dups_first.)
+
+# 10ms for key sequences (e.g. <Esc> in vi mode). Not exported, so it has to
+# live here rather than in .zprofile to apply to every interactive shell.
+KEYTIMEOUT=1
 
 #####################################
 # alias
 #####################################
 
-# highlight dir from file
-alias ls='ls -FHG'
+# highlight dir from file. `-G` means "color" to BSD ls but "no group" to GNU
+# ls, which is first on PATH when Homebrew's coreutils gnubin is installed.
+if [[ $commands[ls] == */gnubin/ls || $OSTYPE == linux* ]]; then
+  alias ls='ls -FH --color=auto'
+else
+  alias ls='ls -FHG'
+fi
 
 # vim
 export EDITOR=vim
@@ -129,9 +139,6 @@ alias yolo='claude --dangerously-skip-permissions'
 # https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
 # color()(set -o pipefail;"$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 color()(set -o pipefail;"$@" 2>&1 1>&3|sed $'s,.*,\e[31m&\e[m,'1>&2)3>&1
-
-# redefine prompt_context for hiding user@hostname
-prompt_context () { }
 
 
 #####################################
@@ -193,16 +200,17 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 fi
 
 # pnpm
-export PNPM_HOME="/Users/bytedance/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+if [[ $OSTYPE == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+fi
+[ -d "$PNPM_HOME" ] && export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
 export PATH=$HOME/.local/bin:$PATH
 
-eval "$(direnv hook zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # --- BEGIN FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
 # https://bytedance.sg.larkoffice.com/docx/SurId67UBoZxHwxe07Clr5Ufgog
@@ -215,8 +223,8 @@ export FEDERATED_REPO_GIT_TELEMETRY_VERSION=1.2.0
 # --- END FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
 
 # bun completions
-[ -s "/Users/bytedance/.bun/_bun" ] && source "/Users/bytedance/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+[ -d "$BUN_INSTALL/bin" ] && export PATH="$BUN_INSTALL/bin:$PATH"

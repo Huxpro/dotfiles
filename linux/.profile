@@ -19,8 +19,10 @@ fi
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-# Keymap
-setxkbmap -option 'caps:ctrl_modifier'
-setxkbmap -option 'ctrl:swap_lalt_lctl_lwin'
+# Keymap (X11 desktop sessions only; skip over ssh / on headless servers)
+if [ -n "$DISPLAY" ] && command -v setxkbmap >/dev/null 2>&1; then
+    setxkbmap -option 'caps:ctrl_modifier'
+    setxkbmap -option 'ctrl:swap_lalt_lctl_lwin'
 
-xcape -e 'Caps_Lock=Escape;Control_L=Escape;Control_R=Escape'
+    command -v xcape >/dev/null 2>&1 && xcape -e 'Caps_Lock=Escape;Control_L=Escape;Control_R=Escape'
+fi
