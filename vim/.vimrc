@@ -60,14 +60,11 @@ Plug 'leafgarland/typescript-vim'
 Plug 'jez/vim-better-sml'
 Plug 'javier-lopez/sml.vim'
 
-" Haskell
-Plug 'Shougo/vimproc.vim'
-Plug 'eagletmt/ghcmod-vim'
+" Haskell (IDE features via haskell-language-server in coc-settings.json)
 Plug 'neovimhaskell/haskell-vim'
 Plug 'itchyny/vim-haskell-indent'
 Plug 'alx741/vim-stylishask'
 Plug 'alx741/vim-hindent'
-Plug 'parsonsmatt/intero-neovim'
 
 " Clojure
 Plug 'tpope/vim-fireplace'
@@ -105,17 +102,17 @@ Plug 'dart-lang/dart-vim-plugin'
 " Misc
 " -----------------------------------------------------------------------------
 " nerdtree
-Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] } 
+Plug 'preservim/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'jistr/vim-nerdtree-tabs'
 
 " work w/ ctag
-Plug 'majutsushi/tagbar', { 'on':  ['TagbarToggle'] }
+Plug 'preservim/tagbar', { 'on':  ['TagbarToggle'] }
 
 " Both for git and for better sign column
 Plug 'airblade/vim-gitgutter'
 
 " Asynchronous Lint Engine w/ LSP support
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " Smart input method
 Plug 'ybian/smartim'
@@ -136,7 +133,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'joom/latex-unicoder.vim'
 
 " Indent Guides
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'preservim/vim-indent-guides'
 
 " Comment
 Plug 'tpope/vim-commentary'
@@ -742,7 +739,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 augroup COC
   autocmd!
-  autocmd FileType c,h,cpp,fnl,reason,ocaml,rust,java,sh,python,html,css,yaml call SetCocShortcuts()
+  autocmd FileType c,h,cpp,fnl,reason,ocaml,rust,java,sh,python,html,css,yaml,haskell call SetCocShortcuts()
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup END
 
@@ -760,7 +757,7 @@ let g:ale_sign_warning = '--'
 " work with airline
 let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {
-\   'haskell': ['ghc-mod', 'hlint'],
+\   'haskell': ['hlint'],
 \}
 " \   'ocaml': ['merlin'],
 "
@@ -851,39 +848,19 @@ au FileType hgcommit set colorcolumn=50,67,72
 
 
 " -----------------------------------------------------------------------------
-" Haskell - GHC-Mod
+" Haskell - formatting
+" (type info / go-to-definition come from haskell-language-server via coc,
+" which replaced the defunct ghc-mod and intero)
 " -----------------------------------------------------------------------------
-augroup ghcmod
+augroup haskellfmt
   au!
-  " ----- Keybindings -----
-  au FileType haskell nnoremap <silent> <cr> :GhcModType<CR>
-  au FileType haskell nnoremap <silent> gd :GhcModInfo<CR>
-  au FileType haskell nnoremap <silent> gc :GhcModSigCodegen<CR>
-  au FileType haskell vnoremap <silent> gf :'<,'>Hindent<CR> 
-  "au FileType haskell vnoremap <silent> gf :'<,'>Stylishask<CR> 
-  au FileType haskell vnoremap <silent> gi :'<,'>Hindent<CR>
-  au FileType haskell nnoremap <silent> <esc> :GhcModTypeClear<CR>
+  au FileType haskell vnoremap <buffer> <silent> gf :'<,'>Hindent<CR>
+  "au FileType haskell vnoremap <buffer> <silent> gf :'<,'>Stylishask<CR>
+  au FileType haskell vnoremap <buffer> <silent> gi :'<,'>Hindent<CR>
 augroup END
 let g:hindent_on_save = 0
 let g:stylishask_on_save = 0
 let g:hindent_line_length = 100
-
-
-" -----------------------------------------------------------------------------
-" Haskell - Intero
-" -----------------------------------------------------------------------------
-" not sure if it gonna work but that's give it a try
-" Intero starts automatically. Set this if you'd like to prevent that.
-let g:intero_start_immediately = 0
-
-" Enable type information on hover (when holding cursor at point for ~1 second).
-let g:intero_type_on_hover = 1
-
-" Change the intero window size; default is 10.
-let g:intero_window_size = 15
-
-" Sets the intero window to split vertically; default is horizontal
-let g:intero_vertical_split = 1
 
 
 " -----------------------------------------------------------------------------
