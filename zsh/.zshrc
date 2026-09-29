@@ -212,19 +212,13 @@ export PATH=$HOME/.local/bin:$PATH
 
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
-# --- BEGIN FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
-# https://bytedance.sg.larkoffice.com/docx/SurId67UBoZxHwxe07Clr5Ufgog
-
-export FEDERATED_REPO_GIT_TELEMETRY_VERSION=1.2.0
-# export GIT_TRACE2_EVENT="$HOME/.trace2/event"
-# export GIT_TRACE2_EVENT_BRIEF=true
-# export GIT_TRACE2_MAX_FILES=100000
-
-# --- END FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
-
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 [ -d "$BUN_INSTALL/bin" ] && export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Machine/work specific settings that don't belong in a public repo
+# (secrets, company tooling, ...). Keep this last so it can override.
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"

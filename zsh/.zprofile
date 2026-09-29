@@ -45,5 +45,5 @@ export PATH=$HOME/.local/bin:$PATH
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# BD
-[ -f "$HOME/.bytebm/config/config.sh" ] && . "$HOME/.bytebm/config/config.sh"
+# Machine/work specific login settings, not tracked in this repo
+[ -f "$HOME/.zprofile.local" ] && . "$HOME/.zprofile.local"
