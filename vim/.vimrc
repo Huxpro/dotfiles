@@ -20,7 +20,18 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " FZF is a independent replacement to CtrlP,
 " LC-neovim use it for contextMenu when it exists.
 " -----------------------------------------------------------------------------
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+" Use the fzf that ships its own vim plugin: Homebrew (Apple Silicon/Intel),
+" the git install from NEW_SERVER.md, or let vim-plug fetch it.
+if isdirectory('/opt/homebrew/opt/fzf')
+  Plug '/opt/homebrew/opt/fzf'
+elseif isdirectory('/usr/local/opt/fzf')
+  Plug '/usr/local/opt/fzf'
+elseif isdirectory(expand('~/.fzf'))
+  Plug '~/.fzf'
+else
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+endif
+Plug 'junegunn/fzf.vim'
 
 
 " -----------------------------------------------------------------------------
@@ -35,11 +46,15 @@ Plug 'NLKNguyen/papercolor-theme'
 " -----------------------------------------------------------------------------
 " Languages
 " -----------------------------------------------------------------------------
-" FNL
-Plug '~/proto2/editors/fnl-vim'
+" FNL (local checkout, only on machines that have it)
+if isdirectory(expand('~/proto2/editors/fnl-vim'))
+  Plug '~/proto2/editors/fnl-vim'
+endif
 
-" FCL
-Plug '~/fcl/fcl-vim'
+" FCL (local checkout, only on machines that have it)
+if isdirectory(expand('~/fcl/fcl-vim'))
+  Plug '~/fcl/fcl-vim'
+endif
  
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -350,21 +365,24 @@ nnoremap <esc><esc> :noh<return>
 " Theme - True Color Support for True Color Theme
 " -----------------------------------------------------------------------------
 function! TrueColor()
-  "Credit joshdick
-  "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-  "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-  "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-  if (empty($TMUX))
-    if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    endif
-    "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-    "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-    if (has("termguicolors"))
-      set termguicolors
-    endif
+  if !has('termguicolors')
+    return
+  endif
+
+  " Terminals without 24-bit color: Apple's Terminal.app (before macOS 26)
+  " and the Linux console. Trust $COLORTERM if the terminal advertises it.
+  if $COLORTERM !~# 'truecolor\|24bit'
+        \ && ($TERM_PROGRAM ==# 'Apple_Terminal' || $TERM =~# '^\%(linux\|vt\)')
+    return
+  endif
+
+  set termguicolors
+
+  " Older Vims (not Neovim) only know the 24-bit escape codes for xterm-like
+  " $TERMs; teach them for tmux/screen so colors aren't broken inside tmux.
+  if !has('nvim') && &term =~# '^\%(screen\|tmux\)'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   endif
 endfunction()
 
@@ -458,7 +476,8 @@ endfunction()
 " Theme - Dark/Light switching
 " -----------------------------------------------------------------------------
 function! AutoDarkLight()
-  let theme = system('defaults read -g AppleInterfaceStyle')
+  " macOS only; elsewhere this used to spawn a failing shell command.
+  let theme = has('mac') || has('macunix') ? system('defaults read -g AppleInterfaceStyle') : ''
   if theme =~ "Dark"
     call SetTheme("One", "Dark")
   else
@@ -470,21 +489,16 @@ endfunction()
 " -----------------------------------------------------------------------------
 " Theme - Choose theme by terminal program using.
 " -----------------------------------------------------------------------------
-let term_prog = $TERM_PROGRAM
-
-" Try to set True Color Flag
 call TrueColor()
 
-" Detection for True Color support
-if exists("+termguicolors") && $COLORTERM == 'truecolor'
-    set termguicolors
+if &termguicolors
     call AutoDarkLight()
-" Check if running in Apple Terminal with 256 color support
-elseif $TERM_PROGRAM == 'Apple_Terminal'
-    set t_Co=256
-    call SetTheme("PaperColor", "Light")
-" Fallback for other terminals with 256 color support
-elseif &t_Co <= 256
+else
+    " 256 colors, e.g. Apple Terminal: PaperColor looks good even without
+    " a matching terminal theme.
+    if $TERM_PROGRAM == 'Apple_Terminal'
+        set t_Co=256
+    endif
     call SetTheme("PaperColor", "Light")
 endif
 
