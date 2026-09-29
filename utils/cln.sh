@@ -14,61 +14,76 @@
 #  $ sh <dir_contains_links>/.cln_gen.sh     -- replay      #
 #                                                           #
 #  Features:                                                #
-#  - replace $HOME in path to `~`                           #
-#                                                           #
-#  Known Issues:                                            #
-#  - cannot handle espaced space.                           #
+#  - replace $HOME in path to `$HOME`, so the generated     #
+#    script can be replayed by another user/machine         #
+#  - handles dotfiles and paths with spaces                 #
 #                                                           #
 #############################################################
 
-CWD=`pwd`
+set -euo pipefail
+
 GEN_NAME=".cln_gen.sh"
-GEN="${CWD}/${GEN_NAME}"
 
-function traverse() {
-  for target in "$1"/*    
-  do
-    # only looking for link
-    if [ -L "${target}" ] ; then
+# canonical path of a link's target
+# (GNU readlink, or BSD readlink on macOS >= 12.3; fall back to greadlink)
+canonical() {
+  readlink -f "$1" 2>/dev/null || greadlink -f "$1"
+}
 
-        # read canonical path
-        # require GNU readlink (`brew i coreutils` on mac)
-        source=`greadlink -f ${target}`
-        echo "[CLN] reading link: ${target} -> ${source}"
+# shell-quote a path, keeping a leading $HOME expandable
+# shellcheck disable=SC2016  # the literal "$HOME" is meant for the generated script
+quote_path() {
+  local path="$1"
+  if [[ "$path" == "$HOME" ]]; then
+    printf '"$HOME"'
+  elif [[ "$path" == "$HOME"/* ]]; then
+    printf '"$HOME"/%q' "${path#"$HOME"/}"
+  else
+    printf '%q' "$path"
+  fi
+}
 
-        # relative to $HOME
-        # echo "[CLN] relative-ize : ${target} -> ${source_rel}"
-        source_rel="${source//$HOME/~}"
+traverse() {
+  local dir="$1" gen="$2" target name source
 
-        # append to gen
-        echo "ln -s ${source_rel} ${target}" >> "${GEN}"
-    fi
+  # include dotfiles (the common case for $HOME), and nothing if empty
+  shopt -s dotglob nullglob
+
+  for target in "$dir"/*; do
+    # only looking for links
+    [[ -L "$target" ]] || continue
+
+    name="$(basename "$target")"
+    source="$(canonical "$target")"
+    echo "[CLN] reading link: ${target} -> ${source}"
+
+    printf 'ln -s %s %q\n' "$(quote_path "$source")" "$name" >> "$gen"
   done
 }
 
+main() {
+  local dir gen
+  dir="$(cd "$1" && pwd)"
+  gen="${dir}/${GEN_NAME}"
 
-function main() {
-  # trace
-  echo "[CLN] collecting links from: ${CWD}"
-  echo "[CLN] intend to generate: ${GEN}"
+  echo "[CLN] collecting links from: ${dir}"
+  echo "[CLN] intend to generate: ${gen}"
 
-  # make sure fresh
-  if [[ -f "${GEN}" ]]; then
-    rm "${GEN}"
-  fi
+  # the replayed links are created next to the generated script
+  # shellcheck disable=SC2016
+  {
+    echo '#!/bin/bash'
+    echo 'cd "$(dirname "$0")" || exit 1'
+  } > "$gen"
+  local header_lines=2
 
-  # traverse
-  traverse "$1"
+  traverse "$dir" "$gen"
 
-  # print gen
-  if [[ -f "${GEN}" ]]; then
-    # prepend hashbang 
-    echo "$(echo "#!/bin/bash"; cat $GEN)" > "${GEN}"
-
-    # trace
+  if (( $(wc -l < "$gen") > header_lines )); then
     echo "[CLN] script generated: "
-    cat "${GEN}"
+    cat "$gen"
   else
+    rm -f "$gen"
     echo "[CLN] no links found. "
   fi
 }
@@ -81,5 +96,3 @@ if [ "$#" -ne 1 ]; then
 fi
 
 main "$1"
-
-
