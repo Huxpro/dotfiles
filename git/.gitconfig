@@ -17,7 +17,9 @@
         # Branch
         br = branch
         branch-name = rev-parse --abbrev-ref HEAD
-        branch-diff = diff master...HEAD
+        # Default branch of a remote (origin by default): main, master, ...
+        default-branch = "!f() { r=${1:-origin}; b=$(git symbolic-ref --short refs/remotes/$r/HEAD 2>/dev/null) && echo ${b#$r/} && return; git show-ref -q --verify refs/heads/main && echo main || echo master; }; f"
+        branch-diff = !git diff $(git default-branch)...HEAD
 
         # Commit
         c = commit
@@ -31,9 +33,11 @@
         cl = clone
         sclone = clone --depth=1
 
-        # Checkout
+        # Checkout / Switch
         co = checkout
         cb = checkout -b
+        sw = switch
+        swc = switch -c
 
         # Cherry-pick
         cp = cherry-pick
@@ -47,13 +51,13 @@
 
         # Pull
         pl = pull
-        plom = pull origin master
-        plum = pull upstream master
-        preb = !git fetch upstream && git rebase upstream/master
+        plom = !git pull origin $(git default-branch)
+        plum = !git pull upstream $(git default-branch upstream)
+        preb = !git fetch upstream && git rebase upstream/$(git default-branch upstream)
 
         # Push
         p = push
-        pom = push origin master
+        pom = !git push origin $(git default-branch)
         poh = push origin head
 
         # http://www.codeblocq.com/2016/01/Untrack-files-already-added-to-git-repository-based-on-gitignore/
@@ -61,15 +65,15 @@
 
         # Undos
         # Undo staged files from Index
-        unstage = reset HEAD --
+        unstage = restore --staged --
         # Undo last commit but leave changes in working
         uncommit = reset --soft HEAD~1
         # Remove last commit completely.
         uncommit-hard = reset --hard HEAD~1
         # Discard workding changes to HEAD commit
-        discard = checkout --
+        discard = restore --
         # Revert some changes from the HEAD commit to HEAD-1 commit.
-        rev = checkout HEAD^ --
+        rev = restore --source=HEAD^ --staged --worktree --
         revert-some = rev
         # Revert entirely to last commit
         revert-hard = reset --hard HEAD
@@ -92,9 +96,9 @@
 
         # Gerrit (Stacked Diff)
         # 基于最新代码创建新的本地分支
-        new = "!f() { git fetch && git checkout -b sandbox/`git config user.email | awk -F@ '{print $1}'`/`date +%m-%d`/${2:-`date +%H-%M`} origin/${1:-master}; }; f"
+        new = "!f() { git fetch && git checkout -b sandbox/`git config user.email | awk -F@ '{print $1}'`/`date +%m-%d`/${2:-`date +%H-%M`} origin/${1:-$(git default-branch)}; }; f"
         # 推送代码并创建 Stack Diff
-        rv = "!f() { git push origin HEAD:refs/for/${1:-master}; }; f"
+        rv = "!f() { git push origin HEAD:refs/for/${1:-$(git default-branch)}; }; f"
         # 将当前更改提交添加到当前 mr
         cin = commit --amend --no-edit
         # 删除所有本地临时分支
@@ -142,6 +146,40 @@
         # annotated tags when pushing branches out
         followTags = true
         default = current
+        # Set upstream automatically on first push (no more `git publish`)
+        autoSetupRemote = true
+
+
+# Modern defaults (git >= 2.37)
+[merge]
+        # Show the base in conflict markers, without the common lines
+        conflictStyle = zdiff3
+
+[rerere]
+        # Remember conflict resolutions and replay them on rebase
+        enabled = true
+
+[branch]
+        sort = -committerdate
+
+[tag]
+        sort = version:refname
+
+[column]
+        ui = auto
+
+[commit]
+        # Show the diff in the commit message editor
+        verbose = true
+
+[help]
+        autocorrect = prompt
+
+[core]
+        # Fast `git status` in big monorepos: cache untracked-file scans and
+        # use git's builtin filesystem watcher (macOS/Windows; no-op on Linux)
+        untrackedCache = true
+        fsmonitor = true
 
 
 # large file storage
@@ -155,6 +193,10 @@
 # difftool for side-by-side diff in vim
 [diff]
         tool = vimdiff
+        # Better hunks for moved/re-indented code
+        algorithm = histogram
+        colorMoved = default
+        colorMovedWS = allow-indentation-change
 
 [difftool]
         prompt = false
@@ -179,6 +221,7 @@
 [rebase]
 	autoStash = true
 	updateRefs = true
+	autoSquash = true
 [fetch]
 	prune = true
 [credential "https://github.com"]
