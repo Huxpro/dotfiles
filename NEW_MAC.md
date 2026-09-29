@@ -19,7 +19,10 @@ Staring from macOS Sierra, apple has removed "Anywhere" from "Security & Privary
 sudo spctl --master-disable
 ```
 
-N.B. this does not require you to turn off [SIP (System Integrity Protection)](https://support.apple.com/en-us/HT204899).
+On macOS 15 (Sequoia) and later this only un-hides the option: then pick
+"Anywhere" in System Settings → Privacy & Security → "Allow applications from".
+
+N.B. this does not require you to turn off [SIP (System Integrity Protection)](https://support.apple.com/en-us/102149).
 
 
 Install _Meta_ Dependencies
@@ -29,15 +32,14 @@ Install _Meta_ Dependencies
 
 ### CLI:
 
-- [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
-  - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
-  - `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
-  - `git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions`
+- [Oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) (pre-configured ZShell)
+  - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
+  - `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting`
+  - `git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions`
 
 - [Homebrew](https://brew.sh/)
-  - `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-  - N.B. you might want to [change the ownership of some `usr/local/` from `root` to you](https://docs.brew.sh/FAQ#why-does-homebrew-prefer-i-install-to-usrlocal)
-    - `sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin`
+  - `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+  - Apple Silicon installs to `/opt/homebrew` (already on `PATH` via `zsh/.zprofile`), so no `sudo chown` of `/usr/local` is needed anymore.
 
 
 ### MacOS Apps
@@ -45,9 +47,8 @@ Install _Meta_ Dependencies
 - [iTerm2](https://www.iterm2.com/), better terminal.
   - See configuration below.
  
-- [Karabiner](https://pqrs.org/osx/karabiner/) for replacing `capslock`.
-  - [Does not work on MacOS Catalina #1867](https://github.com/pqrs-org/Karabiner-Elements/issues/1867)
-    - add `/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_grabber`
+- [Karabiner](https://karabiner-elements.pqrs.org/) for replacing `capslock`.
+  - Grant it "Input Monitoring" and allow its driver extension in System Settings → Privacy & Security when prompted.
   - A weaker alternatives is to use macOS native modifer keys mapping.
 
 
@@ -110,10 +111,8 @@ Install _Must-have_ Dependencies
   - Within `vim`, run `:PlugInstall`.
 
 - VSCode: 
-  - Settings Sync 
-    - It's now official: <https://code.visualstudio.com/docs/editor/settings-sync>
-    - [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
-    - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
+  - Settings Sync is built in: <https://code.visualstudio.com/docs/editor/settings-sync>
+    (the old `shanalikhan/code-settings-sync` extension is deprecated)
   - [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
     - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
     - or `defaults write -g ApplePressAndHoldEnabled -bool false` if you prefer this globally
@@ -128,8 +127,9 @@ Install _Must-have_ Dependencies
 - [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* (now the default) shortcuts.
   - Preference - Repeated commands - "cycle 1/2, 2/3, and 1/3 on half actions"
 
-- [Alfred)](https://www.alfredapp.com/), better Spotlight
+- [Alfred](https://www.alfredapp.com/), better Spotlight
   - Activate "Power Pack" to sync the preference folder captured in this repo.
+  - The _Focus_ and _TimeZones_ workflows run PHP, which macOS dropped in 12.3: `brew install php`.
 
 - [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
 
@@ -197,13 +197,9 @@ More on Editors
 
 ### Vim
 
-- Vim 8.1
-- OniVim
-- SpaceVim
-- [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
-  * [nightly release](https://github.com/neovim/neovim/releases) 
-  * there are tricks to share `.vimrc` w/ `vim`
-  * Potential [issue](https://github.com/neovim/neovim/issues/9050) on Python and macOS Mojave.
+- Vim 9 (`brew install vim`, built with `+termguicolors`)
+- [Neovim](https://github.com/neovim/neovim/blob/master/INSTALL.md) (`brew install neovim`)
+  * `nvim/init.vim` shares `.vimrc` w/ `vim` (linked by `install.sh`)
 
 ### Emacs
 
