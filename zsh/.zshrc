@@ -139,7 +139,9 @@ prompt_context () { }
 # https://apas.gr/2018/11/dark-mode-macos-safari-iterm-vim/
 #####################################
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
+# Only iTerm understands the SetProfile escape; skip the `defaults` fork
+# everywhere else (VSCode, Terminal.app, ssh, ...).
+if [[ "$OSTYPE" == darwin* && "$TERM_PROGRAM" == "iTerm.app" ]]; then
     sith() {
         val=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
         if [[ $val == "Dark" ]]; then
@@ -178,8 +180,17 @@ compdef _gnu_generic yarn
 # nvm lazy load (~1s savings)
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
-  # Add nvm's node to PATH immediately (no waiting for full nvm load)
-  [ -d "$NVM_DIR/versions/node" ] && PATH="$(ls -d "$NVM_DIR/versions/node"/*/bin 2>/dev/null | tail -1):$PATH"
+  # Add nvm's default node to PATH immediately (no waiting for full nvm load).
+  # Pure zsh globbing: no `ls | tail` forks, and numeric (`n`) sort so that
+  # v22 ranks above v9. Falls back to the newest installed version when the
+  # default alias is not a plain version number (e.g. `lts/*`, `node`).
+  () {
+    local def bins
+    [[ -r $NVM_DIR/alias/default ]] && def=${$(<$NVM_DIR/alias/default)#v}
+    [[ $def == [0-9]* ]] && bins=( $NVM_DIR/versions/node/v${def}(|.*)/bin(N/nOn) )
+    (( $#bins )) || bins=( $NVM_DIR/versions/node/*/bin(N/nOn) )
+    (( $#bins )) && PATH="$bins[1]:$PATH"
+  }
   # Lazy-load nvm itself on first use
   nvm() {
     unset -f nvm node npm npx

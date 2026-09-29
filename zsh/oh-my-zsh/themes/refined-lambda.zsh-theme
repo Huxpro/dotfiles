@@ -26,53 +26,53 @@ setopt prompt_subst
 
 # Load required modules
 #
-autoload -Uz vcs_info
+autoload -Uz vcs_info add-zsh-hook
+zmodload zsh/datetime  # $EPOCHSECONDS, so timing a command needs no `date` fork
 
 # Set vcs_info parameters
 #
-zstyle ':vcs_info:*' enable hg bzr git
+zstyle ':vcs_info:*' enable hg git
 zstyle ':vcs_info:*:*' unstagedstr '!'
 zstyle ':vcs_info:*:*' stagedstr '+'
 zstyle ':vcs_info:*:*' formats "$FX[bold]%r$FX[no-bold]/%S" "%s/%b" "%%u%c"
 zstyle ':vcs_info:*:*' actionformats "$FX[bold]%r$FX[no-bold]/%S" "%s/%b" "%u%c (%a)"
 zstyle ':vcs_info:*:*' nvcsformats "%~" "" ""
 
-# Fastest possible way to check if repo is dirty
+# Fastest possible way to check if repo is dirty.
+# vcs_info already knows whether we're in a git repo, so outside of one this
+# costs nothing, and inside one it's a single `git diff` (no subshells).
 #
-git_dirty() {
-    # Check if we're in a git repo
-    command git rev-parse --is-inside-work-tree &>/dev/null || return
-    # Check if it's dirty
-    command git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo "*"
+_refined_lambda_git_dirty() {
+    REPLY=
+    [[ $vcs_info_msg_1_ == git/* ]] || return
+    command git diff --quiet --ignore-submodules HEAD &>/dev/null
+    (( $? == 1 )) && REPLY="*"
 }
 
-# Display information about the current repository
+# Get the initial timestamp for the exec time of the last command
 #
-repo_information() {
-    echo "%F{blue}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f"
-}
-
-# Displays the exec time of the last command if set threshold was exceeded
-#
-cmd_exec_time() {
-    local stop=`date +%s`
-    local start=${cmd_timestamp:-$stop}
-    let local elapsed=$stop-$start
-    [ $elapsed -gt 5 ] && echo ${elapsed}s
-}
-
-# Get the initial timestamp for cmd_exec_time
-#
-preexec() {
-    cmd_timestamp=`date +%s`
+_refined_lambda_preexec() {
+    cmd_timestamp=$EPOCHSECONDS
 }
 
 # Output additional information about paths, repos and exec time
 #
-precmd() {
+_refined_lambda_precmd() {
     vcs_info # Get version control info before we start outputting stuff
-    print -P "\n$(repo_information) %F{yellow}$(cmd_exec_time)%f"
+
+    local elapsed=$(( EPOCHSECONDS - ${cmd_timestamp:-$EPOCHSECONDS} ))
+    local exec_time=
+    (( elapsed > 5 )) && exec_time="${elapsed}s"
+    unset cmd_timestamp
+
+    local REPLY
+    _refined_lambda_git_dirty
+
+    print -P "\n%F{blue}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_$REPLY $vcs_info_msg_2_%f %F{yellow}$exec_time%f"
 }
+
+add-zsh-hook preexec _refined_lambda_preexec
+add-zsh-hook precmd _refined_lambda_precmd
 
 # Define prompts
 #
