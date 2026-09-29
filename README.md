@@ -5,6 +5,15 @@ I maintained this for my personal use, but you're welcome to borrow any part of 
 
 My personal setup instructions for a [💻 new mac](./NEW_MAC.md) or [☁️  new server](./NEW_SERVER.md).
 
+Quick start on a new Mac (after installing [Homebrew](https://brew.sh/) and oh-my-zsh):
+
+```sh
+git clone https://github.com/Huxpro/dotfiles ~/dotfiles && cd ~/dotfiles
+brew bundle --file=Brewfile   # CLI tools, apps and fonts
+./install.sh                  # symlink the configs
+./macos/defaults.sh           # trackpad / keyboard / appearance tweaks
+```
+
 
 
 🎨 Screenshots
