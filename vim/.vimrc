@@ -3,6 +3,12 @@ scriptencoding utf-8
 set ffs=unix,dos
 set nocompatible              " Disable Vi compatibility
 
+" All autocmds below go into this group. Clearing it first keeps them from
+" piling up each time this file is re-sourced (see the auto-reload at the end).
+augroup vimrc
+  autocmd!
+augroup END
+
 
 " =============================================================================
 " Plugins (via Vim-Plug)
@@ -176,7 +182,6 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " Encoding
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-set fileencodings=utf-8
 set encoding=utf-8
 
 " Enable filetype plugins
@@ -366,7 +371,7 @@ function! TrueColor()
       set termguicolors
     endif
   endif
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -396,7 +401,7 @@ function! SetThemeSolarized()
           let g:solarized_termcolors=16
       endif
   endif
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -414,7 +419,7 @@ function! SetThemeOne()
   let g:one_allow_italics = 1
 
   let g:airline_theme='one'
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -431,7 +436,7 @@ function! SetThemePaperColor()
   endif
 
   let g:airline_theme='papercolor'
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -451,7 +456,7 @@ function! SetTheme(name, bg)
   else
       set background=light
   endif
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -464,7 +469,7 @@ function! AutoDarkLight()
   else
     call SetTheme("PaperColor", "Light")
   endif
-endfunction()
+endfunction
 
 
 " -----------------------------------------------------------------------------
@@ -532,10 +537,10 @@ map <S-Left>  :tabp<CR>
 " mapping window switch without maximizing
 "set wmw=0
 "set wmh=0
-map <C-J> <C-W>j<C-W>
-map <C-K> <C-W>k<C-W>
-map <c-h> <c-w>h<c-w>
-map <c-l> <c-w>l<c-w>
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-H> <C-W>h
+nnoremap <C-L> <C-W>l
 
 " (not used, I map CAPS to ESC) insert mode mapping
 " imap jk <Esc>
@@ -682,11 +687,13 @@ let g:AutoPairsMapBS = 0
 set shortmess+=c
 
 " Use tab for trigger completion with characters ahead and navigate.
+" coc >= 0.0.82 draws its own popup menu, which pumvisible() can't see, so the
+" coc#pum#* API has to be used instead.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -698,44 +705,46 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#pum#confirm()
+      \ : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
   endif
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
 " Link document highlight to underscore (Underlined is colored. It depends on theme)
 highlight default link CocHighlightText SpellBad 
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
+" Buffer-local, so e.g. <CR> keeps working in quickfix/help buffers.
 function! SetCocShortcuts()
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
-  nmap <leader>d <Plug>(coc-definition)
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <leader>* <Plug>(coc-references)
-  nmap <leader>r <Plug>(coc-rename)
-  nmap <silent> gr <Plug>(coc-rename)
-  nmap <leader>t <Plug>(coc-type-definition)
-  nmap <leader>i <Plug>(coc-implementation)
-  nnoremap <silent> <cr> :call <SID>show_documentation()<CR>
-  nnoremap <silent> <leader>a  :<C-u>CocList diagnostics<cr>
-  nnoremap <silent> <leader>e  :<C-u>CocList extensions<cr>
-  nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
-  nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
-  nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
-  nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
-  nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
-  nnoremap <silent> <leader>p  :<C-u>CocListResume<CR>
-endfunction()
+  nmap <buffer> <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <buffer> <silent> ]c <Plug>(coc-diagnostic-next)
+  nmap <buffer> <leader>d <Plug>(coc-definition)
+  nmap <buffer> <silent> gd <Plug>(coc-definition)
+  nmap <buffer> <leader>* <Plug>(coc-references)
+  nmap <buffer> <leader>r <Plug>(coc-rename)
+  nmap <buffer> <silent> gr <Plug>(coc-rename)
+  nmap <buffer> <leader>t <Plug>(coc-type-definition)
+  nmap <buffer> <leader>i <Plug>(coc-implementation)
+  nnoremap <buffer> <silent> <cr> :call <SID>show_documentation()<CR>
+  nnoremap <buffer> <silent> <leader>a  :<C-u>CocList diagnostics<cr>
+  nnoremap <buffer> <silent> <leader>e  :<C-u>CocList extensions<cr>
+  nnoremap <buffer> <silent> <leader>c  :<C-u>CocList commands<cr>
+  nnoremap <buffer> <silent> <leader>o  :<C-u>CocList outline<cr>
+  nnoremap <buffer> <silent> <leader>s  :<C-u>CocList -I symbols<cr>
+  nnoremap <buffer> <silent> <leader>j  :<C-u>CocNext<CR>
+  nnoremap <buffer> <silent> <leader>k  :<C-u>CocPrev<CR>
+  nnoremap <buffer> <silent> <leader>p  :<C-u>CocListResume<CR>
+endfunction
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
@@ -812,7 +821,7 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_strikethrough = 1
 
 " Call everytime we open a Markdown file
-autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
+autocmd vimrc BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
 
 " -----------------------------------------------------------------------------
 " Vim Tex
@@ -843,11 +852,11 @@ let g:javascript_plugin_flow = 1
 " -----------------------------------------------------------------------------
 " Git/Hg Commit Message
 " -----------------------------------------------------------------------------
-au FileType gitcommit setlocal tw=72
-au FileType gitcommit set colorcolumn=50,67,72
+au vimrc FileType gitcommit setlocal tw=72
+au vimrc FileType gitcommit set colorcolumn=50,67,72
 
-au FileType hgcommit setlocal tw=72
-au FileType hgcommit set colorcolumn=50,67,72
+au vimrc FileType hgcommit setlocal tw=72
+au vimrc FileType hgcommit set colorcolumn=50,67,72
 
 
 " -----------------------------------------------------------------------------
@@ -894,12 +903,12 @@ augroup BetterSML
 
   " ----- Keybindings -----
 
-  au FileType sml nnoremap <silent> <cr> :SMLTypeQuery<CR>
-  au FileType sml nnoremap <silent> gd :SMLJumpToDef<CR>
+  au FileType sml nnoremap <silent> <buffer> <cr> :SMLTypeQuery<CR>
+  au FileType sml nnoremap <silent> <buffer> gd :SMLJumpToDef<CR>
   " open the REPL terminal buffer
-  au FileType sml nnoremap <silent> <leader>is :SMLReplStart<CR>
+  au FileType sml nnoremap <silent> <buffer> <leader>is :SMLReplStart<CR>
   " close the REPL (mnemonic: k -> kill)
-  au FileType sml nnoremap <silent> <leader>ik :SMLReplStop<CR>
+  au FileType sml nnoremap <silent> <buffer> <leader>ik :SMLReplStop<CR>
   " build the project (using CM if possible)
   au FileType sml nnoremap <silent> <buffer> <leader>ib :SMLReplBuild<CR>
   " for opening a structure, not a file
@@ -924,29 +933,29 @@ augroup BetterSML
 
 augroup END
 
-au Filetype sml setlocal tabstop=3
-au Filetype sml setlocal softtabstop=3
-au Filetype sml setlocal shiftwidth=3
+au vimrc Filetype sml setlocal tabstop=3
+au vimrc Filetype sml setlocal softtabstop=3
+au vimrc Filetype sml setlocal shiftwidth=3
 
 
 " -----------------------------------------------------------------------------
 " Isabelle
 " -----------------------------------------------------------------------------
 
-au BufRead,BufNewFile *.thy setfiletype isabelle
-au BufRead,BufNewFile *.thy set conceallevel=2
+au vimrc BufRead,BufNewFile *.thy setfiletype isabelle
+au vimrc BufRead,BufNewFile *.thy set conceallevel=2
 
 " -----------------------------------------------------------------------------
 " Language specfic settings - Syntax Extension
 " -----------------------------------------------------------------------------
 " Add comment to JSON
-au FileType json syntax match Comment +\/\/.\+$+
+au vimrc FileType json syntax match Comment +\/\/.\+$+
 
 
 " -----------------------------------------------------------------------------
 " Language specfic settings - Tab size
 " -----------------------------------------------------------------------------
-au Filetype asm setlocal tabstop=8
+au vimrc Filetype asm setlocal tabstop=8
 
 
 " -----------------------------------------------------------------------------
@@ -971,46 +980,44 @@ augroup END
 " -----------------------------------------------------------------------------
 
 " Tiger
-au bufnewfile,bufread *.tig  setlocal filetype=ocaml
+au vimrc bufnewfile,bufread *.tig  setlocal filetype=ocaml
 
 " Coq
 " ocaml will trigger language server which will report err
-au bufnewfile,bufread *.v   setlocal filetype=sml
+au vimrc bufnewfile,bufread *.v   setlocal filetype=sml
 
 " Emjc
-au bufnewfile,bufread *.ast setlocal filetype=lisp
-au bufnewfile,bufread *.emj setlocal filetype=java
-au bufnewfile,bufread *.flex setlocal filetype=lex
+au vimrc bufnewfile,bufread *.ast setlocal filetype=lisp
+au vimrc bufnewfile,bufread *.emj setlocal filetype=java
+au vimrc bufnewfile,bufread *.flex setlocal filetype=lex
 
 " PLT
-au bufnewfile,bufread *.imp setlocal filetype=fnl
+au vimrc bufnewfile,bufread *.imp setlocal filetype=fnl
 
 " LangF
-au bufnewfile,bufread *.lgf  setlocal filetype=sml   "CC
-au bufnewfile,bufread *.langf setlocal filetype=sml  "PLT
-au bufnewfile,bufread *.scan.toks setlocal filetype=sml
-au bufnewfile,bufread *.scan.*.toks setlocal filetype=sml
-au bufnewfile,bufread *.parse.pt setlocal filetype=sml
-au bufnewfile,bufread *.parse.*.pt setlocal filetype=sml
-au bufnewfile,bufread *.type-check.ast setlocal filetype=sml
-au bufnewfile,bufread *.type-check.*.ast setlocal filetype=sml
-au bufnewfile,bufread *.convert-to-core.core setlocal filetype=sml
-au bufnewfile,bufread *.convert-to-anf.anf setlocal filetype=sml
-au bufnewfile,bufread *.pre.core setlocal filetype=sml
-au bufnewfile,bufread *.post.core setlocal filetype=sml
-au bufnewfile,bufread *.pre.anf setlocal filetype=sml
-au bufnewfile,bufread *.post.anf setlocal filetype=sml
-au bufnewfile,bufread *.reploc setlocal filetype=sml
-au bufnewfile,bufread *.vmcode setlocal filetype=javascript
+au vimrc bufnewfile,bufread *.lgf  setlocal filetype=sml   "CC
+au vimrc bufnewfile,bufread *.langf setlocal filetype=sml  "PLT
+au vimrc bufnewfile,bufread *.scan.toks setlocal filetype=sml
+au vimrc bufnewfile,bufread *.scan.*.toks setlocal filetype=sml
+au vimrc bufnewfile,bufread *.parse.pt setlocal filetype=sml
+au vimrc bufnewfile,bufread *.parse.*.pt setlocal filetype=sml
+au vimrc bufnewfile,bufread *.type-check.ast setlocal filetype=sml
+au vimrc bufnewfile,bufread *.type-check.*.ast setlocal filetype=sml
+au vimrc bufnewfile,bufread *.convert-to-core.core setlocal filetype=sml
+au vimrc bufnewfile,bufread *.convert-to-anf.anf setlocal filetype=sml
+au vimrc bufnewfile,bufread *.pre.core setlocal filetype=sml
+au vimrc bufnewfile,bufread *.post.core setlocal filetype=sml
+au vimrc bufnewfile,bufread *.pre.anf setlocal filetype=sml
+au vimrc bufnewfile,bufread *.post.anf setlocal filetype=sml
+au vimrc bufnewfile,bufread *.reploc setlocal filetype=sml
+au vimrc bufnewfile,bufread *.vmcode setlocal filetype=javascript
 
 " Koka
-au bufnewfile,bufread *.kk  setlocal filetype=javascript
+au vimrc bufnewfile,bufread *.kk  setlocal filetype=javascript
 
 
 " -----------------------------------------------------------------------------
-" This is injected by `opam user-setup install`
-"
 " Hot-reload .vimrc changes
 " https://vim.fandom.com/wiki/Change_vimrc_with_auto_reload
 " -----------------------------------------------------------------------------
-autocmd! bufwritepost .vimrc source %
+autocmd vimrc BufWritePost .vimrc nested source %
