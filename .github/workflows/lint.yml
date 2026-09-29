@@ -1,0 +1,73 @@
+name: lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: syntax & static checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh and shellcheck
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq zsh shellcheck
+
+      - name: zsh syntax
+        run: zsh -n zsh/.zshenv zsh/.zprofile zsh/.zshrc zsh/oh-my-zsh/themes/*.zsh-theme
+
+      - name: bash/sh syntax
+        run: |
+          bash -n bash/.bashrc
+          sh -n linux/.profile
+
+      - name: shellcheck
+        # TODO: raise to --severity=warning once the existing warnings are fixed
+        run: shellcheck --severity=error install.sh utils/*.sh
+
+      - name: JSON is valid
+        run: |
+          for f in karabiner/karabiner.json nvim/coc-settings.json; do
+            python3 -m json.tool "$f" > /dev/null && echo "ok $f"
+          done
+
+      - name: gitconfig parses
+        run: git config --file git/.gitconfig --list > /dev/null
+
+  vim:
+    name: vim starts without errors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install vim
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq vim
+
+      - name: Install vim-plug and plugins
+        run: |
+          ln -sf "$PWD/vim/.vimrc" ~/.vimrc
+          curl -fsSLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+          # vim-plug needs a real terminal (not -es) to run its install jobs
+          timeout 600 script -qec "vim -N -u ~/.vimrc +'PlugInstall --sync' +qa!" /dev/null > /dev/null
+          test -d ~/.vim/plugged/coc.nvim
+
+      - name: Start vim and fail on any startup message
+        run: |
+          # Run under a pty (script) so vim behaves like it does interactively;
+          # feed a few Enters so a "Press ENTER" prompt can't hang CI.
+          printf '\n%.0s' {1..10} | timeout 60 script -qec "vim -N -u ~/.vimrc \
+            +'call writefile(split(execute(\"messages\"), \"\n\"), \"/tmp/vim-messages\")' \
+            +qa!" /dev/null > /dev/null
+          test -f /tmp/vim-messages || { echo "::error::vim did not start"; exit 1; }
+          if [ -s /tmp/vim-messages ]; then
+            echo "::error::vim printed messages on startup:"
+            cat /tmp/vim-messages
+            exit 1
+          fi
+          echo "vim started cleanly"
