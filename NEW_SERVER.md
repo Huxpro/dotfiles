@@ -6,10 +6,12 @@ Install _Meta_ Dependencies
 
 ### CLI:
 
-- `chsh zsh`
+- `chsh -s "$(command -v zsh)"`
 
-- [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
-  - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+- [Oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) (pre-configured ZShell)
+  - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
+  - `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting`
+  - `git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions`
 
 - include internal specific `zshrc`
 
@@ -24,7 +26,7 @@ Applying Configurations (For Immediate Comforts!)
 $ sh install.sh
 ```
 
-This should give youCLI configuration (e.g. `.zsh*`, `.bash*`, `.git*`) sync-ed immediately.
+This should give you CLI configuration (e.g. `.zsh*`, `.bash*`, `.git*`) sync-ed immediately.
 
 
 Install Must-have Dependencies
