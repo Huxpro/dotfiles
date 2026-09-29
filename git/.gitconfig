@@ -4,9 +4,11 @@
         editor = vim
         autocrlf = input
         excludesfile = ~/.gitignore
+        # install.sh links git/.gitattributes here; git only reads a global
+        # attributes file when it is configured explicitly.
+        attributesfile = ~/.gitattributes
 
 [init]
-        templatedir = ~/.gittemplates
         defaultBranch = main
 
 [alias]
@@ -108,9 +110,10 @@
         #            │                    └─ decorations (branch, heads or tags)
         #            └─ hash (abbreviated)
 
-# So much color
+# So much color (`auto` = only when writing to a terminal, so pipes such as
+# `git branch | grep ... | xargs ...` don't receive escape codes)
 [color]
-        ui = always
+        ui = auto
 
 [color "branch"]
         current = green bold
@@ -158,16 +161,6 @@
 
 [difftool]
         prompt = false
-[difftool "sourcetree"]
-        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-        path = 
-
-[mergetool "sourcetree"]
-        cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-        trustExitCode = true
-
-[commit]
-        template = ~/.stCommitMsg
 
 # Include local settings so different machines and dirs can override with its own requirements. e.g. I uses different email and url (proxy) for different machines
 [include]
@@ -183,9 +176,9 @@
 	prune = true
 [credential "https://github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [safe]
 	directory = *
