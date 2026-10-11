@@ -1,287 +1,277 @@
-Xuan's New Mac Setup Guide
-===========================
+New Mac Runbook
+===============
 
-MacOS System
-------------
+Written for a coding agent (Claude Code) to execute on a fresh Mac, with a human
+nearby for the steps marked **[HUMAN]**. Goal: the same working environment as
+the previous machine, rebuilt cleanly rather than cloned from a disk image.
 
-0. "Reset modifier key": map "Caps Lock" to "Control"
-1. ~Swap shortcuts for "Spotlight" and "Input Source" (`ctrl` <-> `cmd`)~
-2. Turn on "Three finger drag", "Tap to click", "App expose" for trackpad
-4. Set "Appearences" to "Auto"
-5. Set "Default web browser" to "Google Chrome"
+What "the same" means:
 
-### ⚠️  Allow apps from "Anywhere"
+- two project roots, `~/github` (personal/open source) and `~/byted` (work), each
+  committing with its own identity and talking to its own git host
+- shell, git, vim, Karabiner configuration from this repo
+- agent tooling: Claude Code and Codex with the same settings, skills, plugins,
+  MCP servers and memories
+- no project clones (a list of what was cloned is provided, clone on demand)
 
-Staring from macOS Sierra, apple has removed "Anywhere" from "Security & Privary" settings:
+Rules for the agent
+-------------------
 
-```sh
-# to get "Anywhere" back
-sudo spctl --master-disable
-```
+1. Run the phases in order. Every phase ends with **Verify**; do not start the
+   next phase until it passes. If a check fails, fix the cause; do not write it
+   off as unrelated.
+2. **[HUMAN]** means stop and ask. Never type a password, token or passphrase,
+   never copy a private key, never change macOS security settings yourself.
+3. This repository is **public**. Nothing company-internal (hostnames, emails,
+   internal package names, memories) may be committed to it. That material
+   comes from the private bundle and lives in `~/.dotfiles-private/` and in
+   untracked files under `$HOME`.
+4. `~/.zshrc`, `~/.gitconfig` and friends are symlinks into this repo, and
+   installers love to append to them. After every phase run
+   `git -C ~/github/dotfiles status --short` and deal with what changed:
+   keep it (using `$HOME`, never `/Users/<name>`), drop duplicates, or move
+   machine-specific git settings to `~/.gitconfig.local`. Do not commit or push
+   without asking.
+5. The old machine's user was `bytedance`. Do not assume the new one is.
+6. Do not clone project repos unless asked.
 
-N.B. this does not require you to turn off [SIP (System Integrity Protection)](https://support.apple.com/en-us/HT204899).
-
-
-Install _Meta_ Dependencies
+Phase 0: bootstrap **[HUMAN]**
 ------------------------------
 
-> Dependencies of dependencies.
-
-### CLI:
-
-- [Oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) (pre-configured ZShell)
-  - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
-  - `git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting`
-  - `git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions`
-
-- [Homebrew](https://brew.sh/)
-  - `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-  - N.B. you might want to [change the ownership of some `usr/local/` from `root` to you](https://docs.brew.sh/FAQ#why-does-homebrew-prefer-i-install-to-usrlocal)
-    - `sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin`
-
-
-### MacOS Apps
-
-- [iTerm2](https://www.iterm2.com/), better terminal.
-  - See configuration below.
- 
-- [Karabiner](https://pqrs.org/osx/karabiner/) for replacing `capslock`.
-  - [Does not work on MacOS Catalina #1867](https://github.com/pqrs-org/Karabiner-Elements/issues/1867)
-    - add `/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_grabber`
-  - A weaker alternatives is to use macOS native modifer keys mapping.
-
-
-Applying Configurations (For Immediate Comforts!)
--------------------------------------------------
-
-> Immediately giving a sense of HOME.
-
-### Clone this repo and run `install.sh`
+Done by hand, because no agent exists yet.
 
 ```sh
-# using my one-stop install.sh (under the cloned repo)
-$ sh install.sh
-
-# manual symlink (under $HOME)
-$ ln -s <source_file> <target_file>
-$ ln -s dotfiles/vim/.vimrc .vimrc
+xcode-select --install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew install --cask claude-code
+mkdir -p ~/github ~/byted
+git clone https://github.com/Huxpro/dotfiles.git ~/github/dotfiles
 ```
 
-This should give you
+Then:
 
-- Karabiner configuration
-- CLI configuration (e.g. `.zsh*`, `.bash*`, `.git*`)
+- copy `dotfiles-private-<date>.tgz` from the old machine (AirDrop) to `~/Downloads`
+- `cd ~/github/dotfiles && claude`, log in, and say:
+  *"Read NEW_MAC.md and execute it starting at phase 1."*
 
-sync-ed immediately.
+**Verify**: `brew --version`, `git --version`, `ls ~/Downloads/dotfiles-private-*.tgz`.
 
+Phase 1: packages and shell framework
+-------------------------------------
 
-### CLI Appearences & Configuration
+```sh
+brew bundle --file ~/github/dotfiles/Brewfile
 
-- Fonts [Iosevka (SS05)](https://github.com/be5invis/Iosevka)
-  - (was [FiraCode](https://github.com/tonsky/FiraCode))
+# oh-my-zsh, without letting it replace ~/.zshrc or switch shells mid-script
+RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 
-- iTerm
-  - Appearence
-    * General - Theme - "Minimal"
-    * Panes - uncheck "Show per-pane title bar with split panes"
-    * Dimming - uncheck "Dim inactive split panes"
-  - Profiles
-    * Terminal - Notifications - check "Silence bell"
-    * General - Working Directory - switch to "Reuse previous session's directory".
-    * Colors - Color Presets...
-      * [_One Light_](https://github.com/nathanbuchar/atom-one-dark-terminal)
-      * _One Dark_ (I'm using the one from this repo but I forget where's from)
+# fzf key bindings (creates ~/.fzf.zsh, which .zshrc sources)
+"$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc
 
-- Terminal.app (if you use it)
-  - Profiles
-    - _PaperColor_
-
-
-Install _Must-have_ Dependencies
---------------------------------
-
-> Retrieve back my normal workflow.
-
-### Editors:
-
-- Vim
-  - Install [vim-plug](https://github.com/junegunn/vim-plug) 
-    - `curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
-  - Within `vim`, run `:PlugInstall`.
-
-- VSCode: 
-  - Settings Sync 
-    - It's now official: <https://code.visualstudio.com/docs/editor/settings-sync>
-    - [Settings Sync](https://github.com/shanalikhan/code-settings-sync) and `Sync: Download Settings`.
-    - [Frozen when trying to install unpublished extensions](https://github.com/shanalikhan/code-settings-sync/issues/1194)
-  - [holding key does not repeat e.g. jjjj](https://stackoverflow.com/questions/39972335/how-do-i-press-and-hold-a-key-and-have-it-repeat-in-vscode/44010683#44010683)
-    - `defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false`
-    - or `defaults write -g ApplePressAndHoldEnabled -bool false` if you prefer this globally
-  - [blurry font on macOS Mojave for non-retina screen e.g. display](https://github.com/Microsoft/vscode/issues/51132)
-    - `defaults write com.microsoft.VSCode.helper CGFontRenderingFontSmoothingDisabled -bool NO`
-  - [`im-select`](https://github.com/daipeihust/im-select) for `smartim`-like input method switching
-    - `brew tap daipeihust/tap && brew install im-select`
-
-
-### MacOS Apps
-
-- [Rectangle](https://rectangleapp.com/), better Spectacle, w/ *Magnet* (now the default) shortcuts.
-  - Preference - Repeated commands - "cycle 1/2, 2/3, and 1/3 on half actions"
-
-- [Alfred)](https://www.alfredapp.com/), better Spotlight
-  - Activate "Power Pack" to sync the preference folder captured in this repo.
-
-- [MacOS Quick-Look](https://github.com/sindresorhus/quick-look-plugins), better space preview.
-
-- [Sogou PinYin (Chinese input method)](https://pinyin.sogou.com/mac/)
-
-- [Google Drive](https://www.google.com/drive/download/)
-
-- Xcode, for the native toolchain.
-
-
-Install _Good-to-have_ Dependencies
------------------------------------
-
-### CLI (some are also used in Vim)
-
-- [FZF](https://github.com/junegunn/fzf)
-
-```
-brew install fzf
-
-# To install useful key bindings and fuzzy completion:
-$(brew --prefix)/opt/fzf/install
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-- [Rg](https://github.com/BurntSushi/ripgrep)
-  - `brew install ripgrep`
-  - I bound Vim `<space>-f` to `:Rg`
+The Brewfile is a dump of the old machine. A formula that no longer exists is
+not a blocker: report it and continue.
 
-- <del>[Hub](https://hub.github.com/)</del> [Gh](https://cli.github.com/), Github official CLI
-  - `brew install gh`
-  - [ghstack](https://github.com/ezyang/ghstack) for stack-based workflow: `pip3 install ghstack`
+**Verify**: `brew bundle check --file ~/github/dotfiles/Brewfile`;
+`ls ~/.oh-my-zsh/custom/plugins` shows both plugins.
 
-- "Readline Wrap"
-  - `brew install rlwrap`
+Phase 2: dotfiles, private bundle, identities
+---------------------------------------------
 
-### MacOS Apps
+```sh
+~/github/dotfiles/install.sh --plan    # preview, changes nothing
+~/github/dotfiles/install.sh
+~/github/dotfiles/utils/unpack-private.sh ~/Downloads/dotfiles-private-*.tgz
+direnv allow ~/byted                   # if the bundle placed ~/byted/.envrc
+vim +PlugInstall +qall
+```
 
-- [Dash](https://kapeli.com/dash)
+`install.sh` is idempotent and moves anything it replaces to
+`<path>.pre-dotfiles.<timestamp>`. `unpack-private.sh` never overwrites.
 
-- Docker, required by `circleci` CLI.
- 
-- [IINA](https://iina.io/), open source media player for macOS.
+Now read `~/.dotfiles-private/NOTES.md`: it holds the work-side half of this
+runbook (hosts, internal tools, internal skills).
 
-- [PDF Expert](https://pdfexpert.com/), the pdf reader that I got used to.
+### How the two identities work
 
-- Final Cut Pro, etc. for vlogging.
+| Root | Host | Transport | Commit email comes from |
+| --- | --- | --- | --- |
+| `~/github/` | github.com | HTTPS via `gh auth git-credential` (`git@github.com:` is rewritten to HTTPS) | `[user]` in `git/.gitconfig` |
+| `~/byted/` | work git hosts | SSH | `~/.gitconfig-bytedance`, pulled in by `includeIf "gitdir:~/byted/"` |
 
-- Monodraw
+The npm registry is also per root: `~/byted/.envrc` (direnv) and a `.npmrc` in
+each root, restored from the private bundle with their tokens stripped. The
+global `~/.npmrc` stays on the public registry.
 
-- Notion
+`~/.gitconfig` (this repo) includes `~/.gitconfig.local` (private bundle:
+`user.name`, work URL rewrites, anything machine-specific) near the top, sets the
+personal email after it, and applies the `includeIf` last. Order matters; do not
+reshuffle. Tools that run `git config --global` write into the tracked file;
+move such entries to `~/.gitconfig.local`.
 
-- Web shortcuts 
-  - Workplace
-  - ASTExplorer
-  - Excalidraw
-  - Gmail
-  - Prettier
-  - Babel
-  - Hermes Playground
-  - Youtube Music
+### Credentials **[HUMAN]**
 
+None were transferred. Create fresh ones:
 
-More on Editors
+- GitHub: `gh auth login -h github.com -p https -w`, then
+  `gh extension install github/gh-stack`
+- SSH: `ssh-keygen -t ed25519`; the human registers the public key with the
+  work git hosts (see private notes)
+- npm: `npm login` for publishing if needed (`~/.npmrc` is never synced); the
+  human re-adds the registry tokens that were stripped from `~/byted/.envrc`
+  and `~/byted/.npmrc`
+
+**Verify**: `~/github/dotfiles/utils/verify.sh`. The `shell`, `git identities`
+and `npm registry per root` sections must pass; `tools` and `agents` will still
+have failures until phases 3 and 4.
+
+Phase 3: language runtimes
+--------------------------
+
+```sh
+# nvm: use the install command from https://github.com/nvm-sh/nvm#installing-and-updating
+nvm install 22 && nvm alias default 22
+nvm install 24
+
+curl -fsSL https://get.pnpm.io/install.sh | sh -      # ~/Library/pnpm
+curl -fsSL https://bun.sh/install | bash              # ~/.bun
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+curl -LsSf https://astral.sh/uv/install.sh | sh       # ~/.local/bin
+
+npm install -g @openai/codex @larksuite/cli agent-browser agent-device
+```
+
+`.zshrc` already has the nvm (lazy-loaded), pnpm, bun and cargo blocks, so undo
+whatever the installers append (rule 4). Two things to know about Node:
+
+- the lazy loader puts the highest installed Node on `PATH`, independent of
+  `nvm alias default`
+- `npm install -g` under nvm is per Node version, so install the globals after
+  the last `nvm install`, and again whenever a newer Node is added
+
+Xcode **[HUMAN]**: install from the App Store, open it once, accept the license,
+install an iOS simulator runtime. Android: `android-commandlinetools` and
+`temurin` come from the Brewfile; install SDK packages on demand.
+
+**Verify**: `node -v && pnpm -v && bun -v && rustc -V && uv --version && codex --version`
+in a new shell; `xcode-select -p` points into `Xcode.app`.
+
+Phase 4: agents
 ---------------
 
-### Vim
+`install.sh` has already linked `~/.claude/CLAUDE.md`, merged
+`claude/settings.base.json` into `~/.claude/settings.json`, and seeded
+`~/.codex/config.toml`.
 
-- Vim 8.1
-- OniVim
-- SpaceVim
-- [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
-  * [nightly release](https://github.com/neovim/neovim/releases) 
-  * there are tricks to share `.vimrc` w/ `vim`
-  * Potential [issue](https://github.com/neovim/neovim/issues/9050) on Python and macOS Mojave.
+```sh
+# Claude Code: user-scope MCP server (no plugins are part of the baseline)
+claude mcp add --scope user lynx-docs -- npx -y @lynx-js/docs-mcp-server@latest
 
-### Emacs
+# Global skills from public sources (~/.agents/skills, symlinked into ~/.claude/skills)
+~/github/dotfiles/agents/skills.sh install
 
-- [Spacemacs](http://spacemacs.org/)
-  * synced under `emacs/.spacemacs`
-  * GUI app options: `emacs-plus`, `emacs-mac`
+# Codex and Lark CLI logins [HUMAN]
+codex login
+lark-cli auth login
+```
 
-### IDE
+The skill set is deliberately small (about 20 public skills plus a handful of
+internal ones). It was pruned from ~100 after checking real usage: every
+installed skill costs context in every session, and past a budget their
+descriptions get dropped. Add a skill when a task needs it, not in advance.
 
-- XCode, as aforementioned.
-- Android Studio
-- [JetBrains Toolbox](https://www.jetbrains.com/) for Idea, CLion, PyCharm...
-  * sync with `setting-sync` w/ a git repo
-  * require github access token
-  * *Must-have* Plugins:
-    * IdeaVim
-    * OneDark Theme
-    * VSCode Keymap
+Internal skills and internal agent tooling: follow `~/.dotfiles-private/NOTES.md`
+once work SSH access is up.
 
+Things to know:
 
+- **Memories** were restored to `~/.claude/projects/<key>/memory`, where `<key>`
+  is the project's absolute path. They attach only if a repo is cloned to the
+  same place relative to `$HOME` as before (`~/github/<name>`, `~/byted/<name>`).
+- **Permissions are wide open on purpose**: the `cc`/`yolo`/`cx` aliases skip
+  permission prompts, `settings.base.json` sets
+  `skipDangerousModePermissionPrompt`, and Codex runs with
+  `sandbox_mode = "danger-full-access"`. This mirrors the old machine; it is a
+  choice, not an accident.
+- **Hooks and status line** in `~/.claude/settings.json` on the old machine were
+  injected by a desktop app, which re-injects them when installed. They are not
+  part of `settings.base.json`.
+- The tmux helpers (`ccx`/`cca`/`cxx`...) use `tmux -CC`, which needs iTerm2.
 
-More on Developer Softwares
----------------------------------
+**Verify**: `~/github/dotfiles/utils/verify.sh` passes completely.
 
-> This is WIP. 
-> 
-> It's intended to track non-trivial dependencies, but it's not very useful at this moment.
+Phase 5: macOS and apps **[HUMAN]**, agent assists
+--------------------------------------------------
 
-### Mainstream
+System Settings:
 
-- JavaScript
-  - NodeJS, [`nvm`](https://github.com/nvm-sh/nvm), `nvm install stable`
-  - Flow
-  - TypeScript `npm i -g typescript`
-  - Expo CLI (React Native)
+- Keyboard: map Caps Lock to Control
+- Trackpad: three finger drag, tap to click, App Exposé
+- Appearance: Auto
+- Default browser: Google Chrome
 
-- Python 3
+The agent may run:
 
-- Java
-  - Gradle
+```sh
+defaults write -g ApplePressAndHoldEnabled -bool false   # key repeat instead of accent menu
+```
 
-- Scala
-  - Sbt, `brew install scala sbt`
+Apps (the commented casks at the bottom of the Brewfile cover most of these):
 
-### System
+- iTerm2. General > Theme "Minimal"; Panes: no per-pane title bar; no dimming of
+  inactive panes; Profile: silence bell, "Reuse previous session's directory";
+  Colors: import `theme/One Light.itermcolors` and `theme/One Dark.itermcolors`
+  as profiles named `Default` and `Dark` (`.zshrc` switches between them).
+- Font: [Iosevka](https://github.com/be5invis/Iosevka) (SS05)
+- Karabiner-Elements: config already seeded to `~/.config/karabiner/`; needs
+  Input Monitoring permission
+- Rectangle: "cycle 1/2, 2/3, and 1/3 on half actions"
+- Raycast, Ghostty, VS Code (Settings Sync restores extensions), Cursor,
+  Claude desktop, ChatGPT/Codex desktop, cmux, Obsidian, Notion, Chrome,
+  Google Drive, IINA, PDF Expert, Sogou Pinyin
+- Company apps: see private notes
 
-- LLVM `brew install llvm` 
+Optional, human only: `sudo spctl --master-disable` to allow apps from anywhere.
 
-- Emscripten SDK [`emsdk`](https://emscripten.org/docs/getting_started/downloads.html)
+Phase 6: final check and report
+-------------------------------
 
-- CMake `brew install cmake`  
+```sh
+~/github/dotfiles/install.sh --plan   # prints only "plan only, nothing changed."
+~/github/dotfiles/utils/verify.sh
+```
 
-- Rust
-  - Rustup
+Report to the human: what passed, what was skipped and why, every **[HUMAN]**
+item still open, and any diff left in this repo. Offer the repo list in
+`~/.dotfiles-private/REPOS.md` for cloning.
 
-### Others
+Keeping machines in sync
+------------------------
 
-- OCaml
-  - Opam
+| What | How it syncs |
+| --- | --- |
+| shell, git, vim, `claude/CLAUDE.md` | symlinks; edit in place, commit here |
+| Claude settings | edit `claude/settings.base.json`, re-run `install.sh` |
+| Karabiner, Codex config | copy the live file back into this repo when it is worth keeping |
+| global skills | `agents/skills.sh dump` after adding or removing skills |
+| Homebrew | `brew bundle dump --force --file Brewfile`, then strip internal taps and `npm`/`vscode` lines |
+| private bundle | `utils/pack-private.sh` on the source machine, `utils/unpack-private.sh` on the target |
 
-- ReScript/ReasonML
+Appendix: toolchains installed on demand
+----------------------------------------
 
-- SML
-  - SMLNJ, `brew install smlnj`
-  - MLton
+Not part of the baseline; install when a project needs them.
 
-- [Coq](https://coq.inria.fr/)
-  - CoqMake
-
-- Haskell
-  - GHC, `ghcup`
-
-- Racket
-  - `brew install racket` (miminal)
-
-- Agda
-
-- Isabelle
-
-- Prolog
-
+- Python: `pyenv` (`.zprofile` already has the PATH entries)
+- JVM: `openjdk@11`/`@17` (Brewfile), Gradle, Scala (`brew install scala sbt`)
+- Native: LLVM (`brew install llvm`), CMake (Brewfile), Emscripten (`emsdk`)
+- Neovim (`install.sh` links `nvim/` when `~/.config/nvim` exists), Spacemacs
+- JetBrains Toolbox with IdeaVim (`~/.ideavimrc` is linked), Android Studio
+- OCaml (opam), Haskell (ghcup), Racket, SML/NJ, Coq, Agda
+- Docker, Dash, Monodraw, `im-select` (`brew tap daipeihust/tap && brew install im-select`)

@@ -5,7 +5,7 @@ I maintained this for my personal use, but you're welcome to borrow any part of 
 
 My personal setup instructions for a [💻 new mac](./NEW_MAC.md) or [☁️  new server](./NEW_SERVER.md).
 
-
+The new mac guide is a runbook meant to be executed by a coding agent: clone this repo, then tell the agent to read `NEW_MAC.md`. Besides the classic dotfiles, the repo carries my agent setup (`claude/`, `agents/`, `codex/`); see [AGENTS.md](./AGENTS.md) for the layout and the rules for editing it.
 
 🎨 Screenshots
 --------------
