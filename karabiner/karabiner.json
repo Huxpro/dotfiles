@@ -71,11 +71,145 @@
                                         ]
                                     }
                                 },
+                                "conditions": [
+                                    {
+                                        "type": "variable_if",
+                                        "name": "window_one_full_done",
+                                        "value": 1
+                                    }
+                                ],
                                 "to": [
                                     {
-                                        "shell_command": "f=\"${TMPDIR:-/tmp}/rectangle-one\"; now=$(/bin/date +%s); i=0; t=0; [ -f \"$f\" ] && read i t <\"$f\"; [ $((now - t)) -gt 2 ] && i=0; case $i in 0) a=center;; 1) a=maximize;; *) a=restore;; esac; echo \"$(( (i + 1) % 3 )) $now\" >\"$f\"; /usr/bin/open -g \"rectangle://execute-action?name=$a\""
+                                        "key_code": "delete_or_backspace",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_one_full_done",
+                                            "value": 0
+                                        }
                                     }
                                 ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "1",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "conditions": [
+                                    {
+                                        "type": "variable_if",
+                                        "name": "window_one_center_done",
+                                        "value": 1
+                                    }
+                                ],
+                                "to": [
+                                    {
+                                        "key_code": "return_or_enter",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_one_center_done",
+                                            "value": 0
+                                        }
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_one_full_done",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to_delayed_action": {
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_one_full_done",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_one_full_done",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "1",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option",
+                                            "left_shift",
+                                            "left_command"
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_one_center_done",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to_delayed_action": {
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_one_center_done",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_one_center_done",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     },

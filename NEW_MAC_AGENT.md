@@ -250,8 +250,9 @@ Apps (the commented casks at the bottom of the Brewfile cover most of these):
   defaults write $D firstThird -dict-add keyCode -float 20 modifierFlags -float 786432   # Ctrl+Option+3: thirds
   defaults write $D topLeft -dict-add keyCode -float 21 modifierFlags -float 786432      # Ctrl+Option+4: corners
   defaults write $D topLeftSixth -dict-add keyCode -float 22 modifierFlags -float 786432 # Ctrl+Option+6: sixths
+  defaults write $D center -dict-add keyCode -float 8 modifierFlags -float 1966080      # hidden (all four modifiers + C): the `1` rule presses it
   # letter shortcuts Rectangle ships with; an empty value clears one
-  for k in topRight bottomLeft bottomRight centerThird lastThird firstTwoThirds lastTwoThirds center toggleTodo reflowTodo; do
+  for k in topRight bottomLeft bottomRight centerThird lastThird firstTwoThirds lastTwoThirds toggleTodo reflowTodo; do
     defaults write $D $k -dict
   done
   ```
