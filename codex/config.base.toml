@@ -1,0 +1,37 @@
+# Seed for ~/.codex/config.toml. Codex rewrites that file constantly (trusted
+# projects, hook hashes, app state), so it is COPIED once by install.sh, never
+# symlinked. Only portable preferences live here.
+
+# Model as observed on the old machine; check it is available to the account.
+model = "gpt-6.1-sol"
+personality = "pragmatic"
+approval_policy = "never"
+approvals_reviewer = "user"
+sandbox_mode = "danger-full-access"
+service_tier = "default"
+model_reasoning_effort = "medium"
+
+[mcp_servers.cloudflare]
+url = "https://mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-docs]
+url = "https://docs.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-bindings]
+url = "https://bindings.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-builds]
+url = "https://builds.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-observability]
+url = "https://observability.mcp.cloudflare.com/mcp"
+
+[desktop]
+followUpQueueMode = "queue"
+keepRemoteControlAwakeWhilePluggedIn = true
+conversationDetailMode = "STEPS_COMMANDS"
+show-context-window-usage = true
+preventSleepWhileRunning = true
+git-branch-prefix = "huxcx/"
+git-create-pull-request-as-draft = false
+worktree-keep-count = 15

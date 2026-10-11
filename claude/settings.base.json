@@ -1,0 +1,11 @@
+{
+  "includeCoAuthoredBy": false,
+  "model": "opus[1m]",
+  "effortLevel": "high",
+  "theme": "dark-daltonized",
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "switchModelsOnFlag": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
+}

@@ -1,0 +1,10 @@
+EvanBacon/serve-sim	claude-code codex	serve-sim
+callstackincubator/agent-device	claude-code codex	agent-device react-devtools
+cloudflare/skills	codex	cloudflare durable-objects workers-best-practices wrangler
+github/gh-stack	claude-code codex	gh-stack
+larksuite/cli	claude-code codex	lark-base lark-calendar lark-contact lark-doc lark-drive lark-im lark-shared lark-sheets lark-wiki
+lynx-community/skills	claude-code codex	habitat-usage lynx-debug-info-remapping lynx-devtool lynx-typescript reactlynx-best-practices trace-analysis
+pbakaus/impeccable	claude-code codex	frontend-design
+vercel-labs/agent-browser	claude-code codex	agent-browser
+vercel-labs/agent-skills	claude-code codex	vercel-react-best-practices writing-guidelines
+vercel-labs/skills	claude-code codex	find-skills

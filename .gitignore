@@ -1,0 +1,14 @@
+midscene_run/
+private/
+*.tgz
+.DS_Store
+
+# Never stage machine-local or credential files.
+*.local
+*.keytab
+.env
+.env.*
+!.env.example
+auth.json
+hosts.yml
+settings.local.json
