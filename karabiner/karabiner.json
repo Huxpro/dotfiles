@@ -4,7 +4,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Quick windows: Ctrl + Cmd + C/X/D opens the floating window of Claude/Codex/Doubao (presses each app's own shortcut)",
+                        "description": "Quick windows: Ctrl + Cmd + C/D opens the floating window of Claude/Doubao (presses each app's own shortcut; ChatGPT has Ctrl + Cmd + X natively)",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -23,29 +23,6 @@
                                 "to": [
                                     {
                                         "key_code": "c",
-                                        "modifiers": [
-                                            "left_option"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "x",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "control",
-                                            "command"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "spacebar",
                                         "modifiers": [
                                             "left_option"
                                         ]

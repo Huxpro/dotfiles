@@ -255,10 +255,10 @@ Apps (the commented casks at the bottom of the Brewfile cover most of these):
     defaults write $D $k -dict
   done
   ```
-- Quick windows **[HUMAN]**: Karabiner maps `Ctrl+Cmd` + `C` / `X` / `D` to the
-  shortcut each app uses for its floating window, so set those in the apps:
-  Claude quick entry `Option+C`, Codex hotkey window `Option+Space`, Doubao
-  launcher `Option+D`.
+- Quick windows **[HUMAN]**: `Ctrl+Cmd` + letter is the floating window of an
+  assistant. ChatGPT already has its own on `Ctrl+Cmd+X`. For Claude and Doubao,
+  Karabiner maps `Ctrl+Cmd` + `C` / `D` to the shortcut the app uses, so set
+  those in the apps: Claude quick entry `Option+C`, Doubao launcher `Option+D`.
 - Raycast, Ghostty, VS Code (Settings Sync restores extensions), Cursor,
   Claude desktop, ChatGPT/Codex desktop, cmux, Obsidian, Notion, Chrome,
   Google Drive, IINA, PDF Expert, Sogou Pinyin
