@@ -270,7 +270,10 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
         fi
     }
 
-    sith
+    # only talk to iTerm, and only when stdout is a terminal
+    if [[ -t 1 && ( "$TERM_PROGRAM" == "iTerm.app" || -n "$ITERM_SESSION_ID" ) ]]; then
+        sith
+    fi
 fi
 
 alias iterm-dark-mode="i"
@@ -291,18 +294,27 @@ compdef _gnu_generic yarn
 # nvm lazy load (~1s savings)
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
-  # Add nvm's node to PATH immediately (no waiting for full nvm load)
-  [ -d "$NVM_DIR/versions/node" ] && PATH="$(ls -d "$NVM_DIR/versions/node"/*/bin 2>/dev/null | tail -1):$PATH"
-  # Lazy-load nvm itself on first use
-  nvm() {
-    unset -f nvm node npm npx
+  # Add nvm's node to PATH immediately (no waiting for full nvm load): the
+  # newest install matching `nvm alias default`, else the newest install.
+  () {
+    local def="$(cat "$NVM_DIR/alias/default" 2>/dev/null)"
+    local -a found
+    [[ "$def" == (v|)<->(|.<->)(|.<->) ]] && found=("$NVM_DIR"/versions/node/v${def#v}(|.*)(N/nOn))
+    (( $#found )) || found=("$NVM_DIR"/versions/node/v*(N/nOn))
+    (( $#found )) && PATH="$found[1]/bin:$PATH"
+  }
+  # Lazy-load nvm itself on first use. NVM_DIR is re-derived because shells
+  # that inherit these functions do not always inherit the variable.
+  _nvm_lazy_load() {
+    unset -f nvm node npm npx _nvm_lazy_load
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
     \. "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-    nvm "$@"
   }
-  node() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; node "$@"; }
-  npm() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; npm "$@"; }
-  npx() { unset -f nvm node npm npx; \. "$NVM_DIR/nvm.sh"; npx "$@"; }
+  nvm() { _nvm_lazy_load; nvm "$@"; }
+  node() { _nvm_lazy_load; node "$@"; }
+  npm() { _nvm_lazy_load; npm "$@"; }
+  npx() { _nvm_lazy_load; npx "$@"; }
 fi
 
 # pnpm

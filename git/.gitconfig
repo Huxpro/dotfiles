@@ -110,7 +110,7 @@
 
 # So much color
 [color]
-        ui = always
+        ui = auto
 
 [color "branch"]
         current = green bold
@@ -158,16 +158,6 @@
 
 [difftool]
         prompt = false
-[difftool "sourcetree"]
-        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-        path = 
-
-[mergetool "sourcetree"]
-        cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-        trustExitCode = true
-
-[commit]
-        template = ~/.stCommitMsg
 
 # Include local settings so different machines and dirs can override with its own requirements. e.g. I uses different email and url (proxy) for different machines
 [include]

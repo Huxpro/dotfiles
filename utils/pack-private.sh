@@ -21,7 +21,7 @@ echo "old_home=$HOME" >"$B/MANIFEST"
 echo "packed_at=$(date +%Y-%m-%dT%H:%M:%S%z)" >>"$B/MANIFEST"
 
 # git: machine-local + work identity
-for f in .gitconfig.local .gitconfig-bytedance .stCommitMsg; do
+for f in .gitconfig.local .gitconfig-bytedance; do
   [ -f "$HOME/$f" ] && cp "$HOME/$f" "$B/git/$f"
 done
 [ -d "$HOME/.gittemplates" ] && cp -R "$HOME/.gittemplates" "$B/git/.gittemplates"

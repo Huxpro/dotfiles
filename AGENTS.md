@@ -2,7 +2,7 @@
 
 Personal dotfiles, symlinked into `$HOME` by `install.sh`. **This repo is public.**
 
-- Setting up a machine: follow [NEW_MAC.md](./NEW_MAC.md).
+- Setting up a machine: follow [NEW_MAC_AGENT.md](./NEW_MAC_AGENT.md). `NEW_MAC.md` and `NEW_SERVER.md` are the owner's personal notes; do not rewrite them.
 - Never commit company-internal material (hostnames, emails, internal package
   or repo names, agent memories) or credentials. That lives in the private
   bundle (`utils/pack-private.sh`) and in untracked files such as
@@ -20,7 +20,7 @@ Personal dotfiles, symlinked into `$HOME` by `install.sh`. **This repo is public
 
 | Path | Purpose |
 | --- | --- |
-| `zsh/`, `bash/`, `git/`, `vim/`, `nvim/`, `emacs/`, `idea/` | classic dotfiles |
+| `zsh/`, `bash/`, `git/`, `vim/`, `nvim/`, `emacs/` | classic dotfiles (`~/.ideavimrc` links to `vim/.vimrc`) |
 | `claude/` | Claude Code: user `CLAUDE.md`, `settings.base.json`; optional `commands/` and `skills/` are linked if present |
 | `agents/` | global skill manifest (`skills.tsv`) and `skills.sh` to dump/install it |
 | `codex/` | seed for `~/.codex/config.toml` |

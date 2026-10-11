@@ -25,7 +25,7 @@ place() { # copy a file or directory unless the destination exists
   echo "  place   $dst"
 }
 
-for f in .gitconfig.local .gitconfig-bytedance .stCommitMsg .gittemplates; do
+for f in .gitconfig.local .gitconfig-bytedance .gittemplates; do
   place "$B/git/$f" "$HOME/$f"
 done
 # paths written into the local git config by tools on the old machine
