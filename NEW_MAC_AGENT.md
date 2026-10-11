@@ -234,7 +234,27 @@ Apps (the commented casks at the bottom of the Brewfile cover most of these):
 - Font: [Iosevka](https://github.com/be5invis/Iosevka) (SS05)
 - Karabiner-Elements: config already seeded to `~/.config/karabiner/`; needs
   Input Monitoring permission
-- Rectangle: "cycle 1/2, 2/3, and 1/3 on half actions"
+- Rectangle (2.x, installed by the Brewfile). `Ctrl+Option` is shared with the
+  Karabiner app launcher: arrows and digits place windows, every letter is free
+  for apps. A digit means "split the screen into that many parts" and repeating
+  it cycles through them. `1` (center, full screen, restore) and `2` (left/right
+  halves) are Karabiner rules that drive Rectangle; `3`, `4` and `6` are
+  Rectangle's own. The agent may apply these with Rectangle quit, then
+  start it:
+
+  ```sh
+  D=com.knollsoft.Rectangle
+  defaults write $D alternateDefaultShortcuts -bool true   # the Ctrl+Option set
+  defaults write $D subsequentExecutionMode -int 5         # repeat: corners cycle position, sides cycle size
+  defaults write $D halvesPreserveOtherAxisSize -bool true # on a tiled window an arrow resizes its own axis only (quarter <-> sixth)
+  defaults write $D firstThird -dict-add keyCode -float 20 modifierFlags -float 786432   # Ctrl+Option+3: thirds
+  defaults write $D topLeft -dict-add keyCode -float 21 modifierFlags -float 786432      # Ctrl+Option+4: corners
+  defaults write $D topLeftSixth -dict-add keyCode -float 22 modifierFlags -float 786432 # Ctrl+Option+6: sixths
+  # letter shortcuts Rectangle ships with; an empty value clears one
+  for k in topRight bottomLeft bottomRight centerThird lastThird firstTwoThirds lastTwoThirds center toggleTodo reflowTodo; do
+    defaults write $D $k -dict
+  done
+  ```
 - Raycast, Ghostty, VS Code (Settings Sync restores extensions), Cursor,
   Claude desktop, ChatGPT/Codex desktop, cmux, Obsidian, Notion, Chrome,
   Google Drive, IINA, PDF Expert, Sogou Pinyin

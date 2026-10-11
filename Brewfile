@@ -107,10 +107,10 @@ cask "xurl"
 
 # GUI apps that were installed by hand on the old machine. Uncomment to let
 # brew own them on the new one.
+cask "rectangle"
 # cask "iterm2"
 # cask "ghostty"
 # cask "raycast"
-# cask "rectangle"
 # cask "karabiner-elements"
 # cask "visual-studio-code"
 # cask "cursor"
