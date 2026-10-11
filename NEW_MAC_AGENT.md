@@ -257,9 +257,10 @@ Apps (the commented casks at the bottom of the Brewfile cover most of these):
   done
   ```
 - Quick windows **[HUMAN]**: `Ctrl+Cmd` + letter is the floating window of an
-  assistant. ChatGPT already has its own on `Ctrl+Cmd+X`. For Claude and Doubao,
-  Karabiner maps `Ctrl+Cmd` + `C` / `D` to the shortcut the app uses, so set
-  those in the apps: Claude quick entry `Option+C`, Doubao launcher `Option+D`.
+  assistant, with the same letter as its app on `Ctrl+Option`. There is no
+  Karabiner rule for this; each one is set in the app's own settings: Claude
+  quick entry `Ctrl+Cmd+C`, Doubao launcher `Ctrl+Cmd+D`. ChatGPT's is already
+  `Ctrl+Cmd+X`.
 - Raycast, Ghostty, VS Code (Settings Sync restores extensions), Cursor,
   Claude desktop, ChatGPT/Codex desktop, cmux, Obsidian, Notion, Chrome,
   Google Drive, IINA, PDF Expert, Sogou Pinyin
