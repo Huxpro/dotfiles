@@ -96,11 +96,93 @@
                                         ]
                                     }
                                 },
+                                "conditions": [
+                                    {
+                                        "type": "variable_if",
+                                        "name": "window_halves_side",
+                                        "value": 1
+                                    }
+                                ],
                                 "to": [
                                     {
-                                        "shell_command": "f=\"${TMPDIR:-/tmp}/rectangle-two\"; now=$(/bin/date +%s); i=0; t=0; [ -f \"$f\" ] && read i t <\"$f\"; [ $((now - t)) -gt 2 ] && i=0; case $i in 0) a=left-half;; *) a=right-half;; esac; echo \"$(( (i + 1) % 2 )) $now\" >\"$f\"; /usr/bin/open -g \"rectangle://execute-action?name=restore\"; /usr/bin/open -g \"rectangle://execute-action?name=$a\""
+                                        "key_code": "delete_or_backspace",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_halves_side",
+                                            "value": 0
+                                        }
                                     }
                                 ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "2",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_or_backspace",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_option"
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "window_halves_side",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "parameters": {
+                                    "basic.to_delayed_action_delay_milliseconds": 2000
+                                },
+                                "to_delayed_action": {
+                                    "to_if_invoked": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_halves_side",
+                                                "value": 0
+                                            }
+                                        }
+                                    ],
+                                    "to_if_canceled": [
+                                        {
+                                            "set_variable": {
+                                                "name": "window_halves_side",
+                                                "value": 0
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     },
