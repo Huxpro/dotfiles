@@ -1,5 +1,5 @@
 #!/bin/bash
-# Checks a machine set up from NEW_MAC.md. Read-only apart from two throwaway
+# Checks a machine set up from NEW_MAC_AGENT.md. Read-only apart from two throwaway
 # git repos used to probe the per-directory identity. Exit code 1 on any FAIL.
 #
 # Expected values are derived from the config itself rather than written here,

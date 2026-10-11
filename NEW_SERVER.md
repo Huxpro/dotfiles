@@ -21,7 +21,7 @@ Applying Configurations (For Immediate Comforts!)
 
 ```sh
 # using my one-stop install.sh (under the cloned repo)
-$ sh install.sh
+$ ./install.sh
 ```
 
 This should give youCLI configuration (e.g. `.zsh*`, `.bash*`, `.git*`) sync-ed immediately.

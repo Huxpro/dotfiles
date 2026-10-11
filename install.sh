@@ -79,7 +79,7 @@ link emacs/.spacemacs ~/.spacemacs
 
 # git
 # ~/.gitconfig includes ~/.gitconfig.local (machine-local, never tracked) and,
-# for repos under ~/byted/, ~/.gitconfig-bytedance. See NEW_MAC.md phase 2.
+# for repos under ~/byted/, ~/.gitconfig-bytedance. See NEW_MAC_AGENT.md phase 2.
 link git/.gitconfig ~/.gitconfig
 link git/.gitignore ~/.gitignore
 link git/.gitattributes ~/.gitattributes
