@@ -7,4 +7,4 @@ fi
 
 # make cd case-INsensitive
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

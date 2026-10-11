@@ -22,3 +22,5 @@ Thumbs.db
 *.sw?
 *.vi
 
+
+**/.claude/settings.local.json

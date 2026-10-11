@@ -189,3 +189,8 @@
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [safe]
 	directory = *
+
+[includeIf "gitdir:~/byted/"]
+	path = ~/.gitconfig-bytedance
+[url "https://github.com/"]
+	insteadOf = git@github.com:

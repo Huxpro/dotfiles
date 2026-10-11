@@ -38,3 +38,6 @@ export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 # BD
 [ -f "$HOME/.bytebm/config/config.sh" ] && . "$HOME/.bytebm/config/config.sh"
+
+# Added by Obsidian
+export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"

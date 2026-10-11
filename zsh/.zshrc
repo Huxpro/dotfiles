@@ -122,8 +122,121 @@ alias echopath='tr ":" "\n" <<< "$PATH"'
 # permission
 alias sudolocalbin='sudo chown -R $(whoami) /usr/local/bin /usr/local/lib /usr/local/sbin'
 
-# claude
+# =============================================
+# Agent aliases
+# cc/cx/tt = 裸跑（全权限，当前 shell）
+# *x       = tmux 版（iTerm native 窗口）
+# *a       = attach, *ls = list, *k = kill
+# =============================================
+
+# --- Claude Code ---
+alias cc='claude --dangerously-skip-permissions'
 alias yolo='claude --dangerously-skip-permissions'
+
+# ccx [name] — 开新 CC tmux session
+function ccx {
+  local name="${1:-$(basename $(pwd))}"
+  shift 2>/dev/null
+  tmux -CC new-session -s "cc-${name}" "claude --dangerously-skip-permissions $*"
+}
+
+# cca [name] — attach 已有 CC session
+function cca {
+  if [[ -n "$1" ]]; then
+    tmux -CC attach -d -t "cc-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^cc-' | fzf --prompt="attach> ")
+    [[ -n "$s" ]] && tmux -CC attach -d -t "$s"
+  fi
+}
+
+alias ccls='tmux ls 2>/dev/null | grep "^cc-" || echo "no cc sessions"'
+
+function cck {
+  if [[ -n "$1" ]]; then
+    tmux kill-session -t "cc-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^cc-' | fzf --prompt="kill> ")
+    [[ -n "$s" ]] && tmux kill-session -t "$s"
+  fi
+}
+
+# Back-compat for older muscle memory.
+alias ccxa=cca
+alias ccxls=ccls
+alias ccxk=cck
+
+# --- Codex ---
+alias cx='codex -a never -s danger-full-access'
+
+# cxx [name] — 开新 Codex tmux session
+function cxx {
+  local name="${1:-$(basename $(pwd))}"
+  shift 2>/dev/null
+  tmux -CC new-session -s "cx-${name}" "codex -a never -s danger-full-access $*"
+}
+
+function cxa {
+  if [[ -n "$1" ]]; then
+    tmux -CC attach -d -t "cx-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^cx-' | fzf --prompt="attach> ")
+    [[ -n "$s" ]] && tmux -CC attach -d -t "$s"
+  fi
+}
+
+alias cxls='tmux ls 2>/dev/null | grep "^cx-" || echo "no cx sessions"'
+
+function cxk {
+  if [[ -n "$1" ]]; then
+    tmux kill-session -t "cx-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^cx-' | fzf --prompt="kill> ")
+    [[ -n "$s" ]] && tmux kill-session -t "$s"
+  fi
+}
+
+# Back-compat for older muscle memory.
+alias cxxa=cxa
+alias cxxls=cxls
+alias cxxk=cxk
+
+# --- Trae ---
+alias tt='traecli -y'
+
+# ttx [name] — 开新 Trae tmux session
+function ttx {
+  local name="${1:-$(basename $(pwd))}"
+  shift 2>/dev/null
+  tmux -CC new-session -s "tt-${name}" "traecli -y $*"
+}
+
+function tta {
+  if [[ -n "$1" ]]; then
+    tmux -CC attach -d -t "tt-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^tt-' | fzf --prompt="attach> ")
+    [[ -n "$s" ]] && tmux -CC attach -d -t "$s"
+  fi
+}
+
+alias ttls='tmux ls 2>/dev/null | grep "^tt-" || echo "no tt sessions"'
+
+function ttk {
+  if [[ -n "$1" ]]; then
+    tmux kill-session -t "tt-$1"
+  else
+    local s=$(tmux ls -F '#{session_name}' 2>/dev/null | grep '^tt-' | fzf --prompt="kill> ")
+    [[ -n "$s" ]] && tmux kill-session -t "$s"
+  fi
+}
+
+# Back-compat for the old Trae naming.
+# (no `tr` alias: it shadows /usr/bin/tr and breaks `echopath` and scripts)
+alias trx=ttx
+alias trxa=tta
+alias trxls=ttls
+alias trxk=ttk
 
 # colorful stderr
 # https://serverfault.com/questions/59262/bash-print-stderr-in-red-color
@@ -193,7 +306,7 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 fi
 
 # pnpm
-export PNPM_HOME="/Users/bytedance/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -202,7 +315,7 @@ esac
 
 export PATH=$HOME/.local/bin:$PATH
 
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
 # --- BEGIN FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
 # https://bytedance.sg.larkoffice.com/docx/SurId67UBoZxHwxe07Clr5Ufgog
@@ -215,8 +328,25 @@ export FEDERATED_REPO_GIT_TELEMETRY_VERSION=1.2.0
 # --- END FEDERATED REPO GIT TELEMETRY CODE BLOCK ---
 
 # bun completions
-[ -s "/Users/bytedance/.bun/_bun" ] && source "/Users/bytedance/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Codex defaults (no network sandbox)
+# codex alias now covered by `cx` above
+# alias codex="codex -a never -s danger-full-access"
+
+# Trae CLI default no-confirm mode
+# traecli alias now covered by `tt` above
+# alias traecli='traecli --yolo'
+
+export PATH=$PATH:$HOME/bin
+export PATH="$HOME/byted/template-assembler/buildtools/clang-format:$PATH"
+
+# Added by coco installer
+export PATH="$HOME/.local/bin:$PATH"
+
+# OpenClaw Completion
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
