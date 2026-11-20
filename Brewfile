@@ -79,7 +79,7 @@ cask "android-commandlinetools"
 # Inspect application bundles
 cask "apparency"
 # Server for forwarding iMessages
-cask "bluebubbles"
+# cask "bluebubbles"  # disabled upstream 2026-09-01 (fails Gatekeeper)
 # Terminal-based AI coding assistant
 cask "claude-code"
 # Streamdeck extension and emulation software
@@ -88,13 +88,13 @@ cask "companion"
 cask "ngrok"
 # Quick Look plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
-cask "qlimagesize"
+# cask "qlimagesize"  # cask no longer exists
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for plaintext files without an extension
 cask "qlstephen"
 # Quick Look plugin for JSON files
-cask "quicklook-json"
+# cask "quicklook-json"  # disabled upstream 2025-12-23
 # Thumbnails, static previews, cover art and metadata for video files
 cask "quicklook-video"
 # Quick Look generator for Adobe Swatch Exchange files
