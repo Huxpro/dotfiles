@@ -41,8 +41,8 @@ Read more at <https://gist.github.com/XVilka/8346728#terminal-colors>
 λ /usr/bin/vim --version | grep 'termguicolors'
 +autocmd           +find_in_path      +mouse_xterm       -termguicolors
 
-# brew install vim
-λ /usr/local/bin/vim --version | grep 'termguicolors'
+# brew install vim (/usr/local on Intel Macs)
+λ /opt/homebrew/bin/vim --version | grep 'termguicolors'
 -autoservername    +folding           +multi_byte        +termguicolors
 ```
 
@@ -54,8 +54,7 @@ Neovim is usually built with `termguicolors` turned on.
 
 ### Amend the Git configuration!
 
-Although git auth users by their github username/password, the commits are tracked by the email recorded on your local `git config`. Please follow [Why are my commits linked to the wrong user?
-](https://help.github.com/en/github/committing-changes-to-your-project/why-are-my-commits-linked-to-the-wrong-user) to change the email:
+Although git auth users by their github username/password, the commits are tracked by the email recorded on your local `git config`. Please follow [Why are my commits linked to the wrong user?](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/troubleshooting-commits/why-are-my-commits-linked-to-the-wrong-user) to change the email:
 
 ```sh
 $ git config --global user.email "email@example.com"
