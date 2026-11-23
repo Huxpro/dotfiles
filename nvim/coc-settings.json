@@ -11,6 +11,12 @@
       "args": ["--background-index"],
       "rootPatterns": ["Makefile", "compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
       "filetypes": ["c", "cpp", "objc", "objcpp"]
+    },
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": ["hie.yaml", "*.cabal", "cabal.project", "stack.yaml", "package.yaml"],
+      "filetypes": ["haskell", "lhaskell"]
     }
   },
   "highlight.disableLanguages" : ["markdown"],
